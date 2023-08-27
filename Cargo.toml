@@ -1,0 +1,24 @@
+[package]
+name = "news-site"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono = { version = "0.4.26", features = ["serde"] }
+dotenvy = "0.15.7"
+rocket = { version = "0.5.0-rc.3", features = ["json"] }
+rocket_dyn_templates = { version = "0.1.0-rc.3", features = ["tera"] }
+serde = "1.0.183"
+sqlx = { version = "0.7.1", features = [ "runtime-tokio-rustls", "postgres", "chrono", "uuid" ] }
+tokio-test = "0.4.2"
+uuid = { version = "1.4.1", features = ["v4", "fast-rng", "macro-diagnostics", "serde"]}
+
+[profile.release]
+debug = false
+codegen-units = 1
+lto = true
+
+[build]
+rustflags = ["-C", "target-cpu=native"]
