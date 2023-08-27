@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/styles/main.css">
+    {% block head %}
+    <title>Nyheter</title>
+    {% endblock head %}
+</head>
+
+<body>
+    <nav>
+        <a href="#">Hem</a>
+        <a href="#">Om</a>
+    </nav>
+    <main>
+        {% block main %}
+        <p>Hello world!</p>
+        {% endblock main %}
+    </main>
+    <aside>
+        {% block aside %}
+        <p>I love content creation!</p>
+        {% endblock aside %}
+    </aside>
+    <footer>
+        <p>ⓒ Något</p>
+    </footer>
+</body>
+
+</html>

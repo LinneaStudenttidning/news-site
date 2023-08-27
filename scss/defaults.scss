@@ -1,0 +1,27 @@
+@use "palette";
+@use "settings";
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+
+:root,
+body {
+    font-family: settings.$font-family-default;
+    line-height: 1.5;
+    color: palette.$text;
+    font-size: 12pt;
+}
+
+// TODO: REMOVE THIS!!
+img {
+    width: 100%;
+    aspect-ratio: 3 / 1;
+    background-color: red;
+}

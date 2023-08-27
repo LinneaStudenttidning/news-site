@@ -1,0 +1,62 @@
+@use "palette";
+
+html {
+    background-color: palette.$surface;
+    display: grid;
+    grid-template-columns: 1fr min(90vw, 120ch) 1fr;
+    grid-template-areas: '. body .';
+}
+
+body {
+    grid-area: body;
+    display: grid;
+    min-height: 100vh;
+    grid-template-columns: 1fr 20%;
+    grid-template-rows: max-content 1fr max-content;
+    grid-template-areas: 'nav nav' 'main aside' 'footer footer';
+
+    > nav {
+        grid-area: nav;
+        padding: 1rem;
+    }
+
+    > main {
+        grid-area: main;
+        margin: 1rem .5rem 1rem 0;
+        background-color: transparent;
+        box-shadow: none;
+    }
+
+    > aside {
+        grid-area: aside;
+        margin: 1rem 0 1rem .5rem;
+        height: max-content;
+        position: sticky;
+        top: 1rem;
+    }
+
+    > footer {
+        grid-area: footer;
+    }
+}
+
+main,
+.side-content {
+    > h1:first-child {
+        color: palette.$white;
+        background-color: palette.$primary;
+        margin: 0 0 1rem 0;
+        padding: 1rem;
+        font-size: 1.5rem;
+    }
+}
+
+.side-content {
+    box-shadow: 0 .5rem .75rem palette.$shadow200;
+    background-color: palette.$standout;
+    margin-bottom: 1rem;
+
+    > div {
+        padding: 0 1rem 1rem 1rem;
+    }
+}

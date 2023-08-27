@@ -1,0 +1,32 @@
+@use "palette";
+
+.news-item,
+.news-item:visited {
+    all: unset;
+
+    cursor: pointer;
+    display: block;
+    box-shadow: 0 .5rem .75rem palette.$shadow200;
+    background-color: palette.$standout;
+    margin-bottom: 2rem;
+
+    // This is necessary for teh CSS to work correctly (at least in Firefox)...
+    // I don't know why, but it pisses me off too!
+    // Without it, the margin defined for `p` below, will not create "padding" on the `.news-item`-element...
+    padding-bottom: 1px;
+
+    > h1,
+    > p {
+        margin: 1rem;
+    }
+
+    &:hover {
+        > h1 {
+            text-decoration: underline;
+        }
+    }
+
+    .news-meta-data {
+        color: palette.$grey400;
+    }
+}

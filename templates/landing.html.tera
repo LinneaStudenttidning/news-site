@@ -1,0 +1,64 @@
+{% extends "templates/app" %}
+
+{% block main %}
+<h1>Senaste nyheterna</h1>
+<div>
+    <a href="#" class="news-item">
+        <img src="https://source.unsplash.com/random/600x200?a" alt="Random image (GG)">
+        <h1>Furo sköt en älg (sob)</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore iusto, temporibus, fugit totam nostrum optio
+            quibusdam molestias quas quia perspiciatis commodi atque consequuntur aliquid facere dolorum sint corporis
+            expedita unde dolor obcaecati.</p>
+        <p class="news-meta-data">BurnyLlama, 19:07</p>
+    </a>
+    <a href="#" class="news-item">
+        <img src="https://source.unsplash.com/random/600x200?b" alt="Random image (GG)">
+        <h1>Furo sköt en älg (sob)</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore iusto, temporibus, fugit totam nostrum optio
+            quibusdam molestias quas quia perspiciatis commodi atque consequuntur aliquid facere dolorum sint corporis
+            expedita unde dolor obcaecati.</p>
+        <p class="news-meta-data">BurnyLlama, 19:07</p>
+    </a>
+    <a href="#" class="news-item">
+        <img src="https://source.unsplash.com/random/600x200?c" alt="Random image (GG)">
+        <h1>Furo sköt en älg (sob)</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore iusto, temporibus, fugit totam nostrum optio
+            quibusdam molestias quas quia perspiciatis commodi atque consequuntur aliquid facere dolorum sint corporis
+            expedita unde dolor obcaecati.</p>
+        <p class="news-meta-data">BurnyLlama, 19:07</p>
+    </a>
+</div>
+{% endblock main %}
+
+{% block aside %}
+<div class="side-content">
+    <h1>Mest lästa</h1>
+    <div id="latest-news-items">
+        <p><a href="#">Furo sköt en älg</a></p>
+        <p><a href="#">Furo sköt en älg</a></p>
+        <p><a href="#">Furo sköt en älg</a></p>
+        <p>KÖP NYA IPHONE <a href="#">HÄR</a>!!!</p>
+    </div>
+</div>
+
+
+<div class="side-content">
+    <h1>Populära taggar</h1>
+    <div id="popular-tags">
+        <p><a href="#">furo</a></p>
+        <p><a href="#">älg</a></p>
+        <p><a href="#">klimat</a></p>
+        <p><a href="#">jakt</a></p>
+    </div>
+</div>
+
+<div class="side-content">
+    <h1>Skribenter</h1>
+    <div id="writers">
+        <p><a href="#">BurnyLlama</a></p>
+        <p><a href="#">furo</a></p>
+        <p><a href="#">Bob</a></p>
+        <p><a href="#">makane</a></p>
+    </div>
+</div>
+{% endblock aside %}
