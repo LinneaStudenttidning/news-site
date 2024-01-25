@@ -18,6 +18,29 @@ body {
     > nav {
         grid-area: nav;
         padding: 1rem;
+        background-color: palette.$standout;
+        display: flex;
+        border-bottom: .2rem solid palette.$primary;
+        box-shadow: 0 .5rem .75rem palette.$shadow200;
+
+        a,
+        a:visited {
+            display: block;
+            padding: 0 1rem;
+            color: palette.$text;
+            text-decoration: solid underline 1px palette.$primary200;
+            border-right: 1px solid palette.$grey200;
+
+            transition: text-decoration .3s;
+
+            &:hover {
+                text-decoration: solid underline 2px palette.$primary;
+            }
+
+            &:last-child {
+                border-right: 0 none transparent;
+            }
+        }
     }
 
     > main {

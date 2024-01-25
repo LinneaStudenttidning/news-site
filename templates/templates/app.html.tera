@@ -13,7 +13,12 @@
 <body>
     <nav>
         <a href="#">Hem</a>
-        <a href="#">Om</a>
+        <a href="#">Nyheter</a>
+        <a href="#">Reportage</a>
+        <a href="#">Debatt</a>
+        <a href="#">Annat</a>
+        <a href="#">Om oss</a>
+        <a href="#">Sök</a>
     </nav>
     <main>
         {% block main %}
