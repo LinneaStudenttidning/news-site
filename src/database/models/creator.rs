@@ -1,6 +1,10 @@
-use chrono::DateTime;
+use chrono::NaiveDateTime;
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
+use sqlx::postgres::PgQueryResult;
+use sqlx::Error;
+
+use crate::database::DatabaseHandler;
 
 /**
  * The type of creator.
@@ -23,18 +27,18 @@ pub struct Creator {
     pub username: String,
     pub password: String,
     pub biography: String,
-    pub joined_at: DateTime<Utc>,
+    pub joined_at: NaiveDateTime,
     pub role: CreatorRole,
 }
 
 impl Default for Creator {
     fn default() -> Self {
-        Creator {
+        Self {
             display_name: "No Name".to_string(),
             username: "no_name".to_string(),
             password: "".to_string(),
             biography: "Empty biography.".to_string(),
-            joined_at: Utc::now(),
+            joined_at: Utc::now().naive_utc(),
             role: CreatorRole::Writer,
         }
     }
@@ -42,7 +46,7 @@ impl Default for Creator {
 
 impl Creator {
     pub fn create_writer(username: &str, display_name: &str, password: &str) -> Self {
-        Creator {
+        Self {
             username: username.to_string(),
             display_name: display_name.to_string(),
             password: password.to_string(),
@@ -51,7 +55,7 @@ impl Creator {
     }
 
     pub fn create_publisher(username: &str, display_name: &str, password: &str) -> Self {
-        Creator {
+        Self {
             username: username.to_string(),
             display_name: display_name.to_string(),
             password: password.to_string(),
@@ -62,5 +66,30 @@ impl Creator {
 
     pub fn is_publisher(&self) -> bool {
         matches!(self.role, CreatorRole::Publisher)
+    }
+
+    pub async fn save_to_db(&self, db: &DatabaseHandler) -> Result<PgQueryResult, Error> {
+        sqlx::query_file!(
+            "sql/creators/insert.sql",
+            self.display_name,
+            self.username,
+            self.password,
+            self.biography,
+            &self.role as &CreatorRole
+        )
+        .execute(&db.pool)
+        .await
+    }
+
+    pub async fn get_all(db: &DatabaseHandler) -> Result<Vec<Self>, Error> {
+        sqlx::query_file_as!(Self, "sql/creators/get_all.sql")
+            .fetch_all(&db.pool)
+            .await
+    }
+
+    pub async fn get_by_username(db: &DatabaseHandler, username: &str) -> Result<Self, Error> {
+        sqlx::query_file_as!(Self, "sql/creators/get_by_username.sql", username)
+            .fetch_one(&db.pool)
+            .await
     }
 }
