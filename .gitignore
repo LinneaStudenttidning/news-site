@@ -21,3 +21,5 @@ Cargo.lock
 
 # Added by project
 static/styles/*
+
+.env
