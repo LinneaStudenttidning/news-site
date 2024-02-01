@@ -6,6 +6,7 @@ extern crate rocket;
 
 pub mod app;
 pub mod database;
+pub mod token;
 
 use app::get_all_routes;
 use database::DatabaseHandler;

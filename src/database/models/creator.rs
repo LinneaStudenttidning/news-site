@@ -1,14 +1,18 @@
 use argon2::password_hash::rand_core::OsRng;
 use argon2::password_hash::SaltString;
 use argon2::Argon2;
+use argon2::PasswordHash;
 use argon2::PasswordHasher;
 use chrono::NaiveDateTime;
 use chrono::Utc;
+use jsonwebtoken::Header;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgQueryResult;
 use sqlx::Error;
 
 use crate::database::DatabaseHandler;
+use crate::token::get_encoding_key;
+use crate::token::Claims;
 
 type HashError = argon2::password_hash::Error;
 
@@ -138,5 +142,25 @@ impl Creator {
             joined_at: self.joined_at,
             role: self.role.clone(),
         })
+    }
+
+    pub async fn login(&self, password: &str) -> Result<String, String> {
+        let password_hash =
+            PasswordHash::new(&self.password).map_err(|_| "Error parsing password hash!")?;
+
+        if password_hash.to_string() != password {
+            return Err("Invalid password!".into());
+        }
+
+        let claims = Claims {
+            // FIXME: This should probably be something like 4 hours into the future...
+            exp: 0,
+            sub: self.username.clone(),
+            admin: self.is_publisher(),
+            data: self.clone(),
+        };
+
+        jsonwebtoken::encode::<Claims>(&Header::default(), &claims, &get_encoding_key())
+            .map_err(|_| "Failed to encode token!".into())
     }
 }
