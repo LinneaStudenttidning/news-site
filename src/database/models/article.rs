@@ -12,7 +12,6 @@ pub enum TextType {
     Opinion,
     Other,
 }
-
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Text {
     pub id: i32,
@@ -41,6 +40,7 @@ impl Default for Text {
 }
 
 impl Text {
+    /// Create a new `Text`; this should be prefered over manually creating a new `Text`.
     pub fn create(
         title: &str,
         author: &str,
@@ -58,6 +58,7 @@ impl Text {
         }
     }
 
+    /// Saves an instance of `Text` to the database.
     pub async fn save_to_db(&self, db: &DatabaseHandler) -> Result<PgQueryResult, Error> {
         sqlx::query_file!(
             "sql/articles/insert.sql",
@@ -71,18 +72,21 @@ impl Text {
         .await
     }
 
+    /// Gets ONE `Text` from the database by its id.
     pub async fn get_by_id(db: &DatabaseHandler, id: i32) -> Result<Self, Error> {
         sqlx::query_file_as!(Self, "sql/articles/get_by_id.sql", id)
             .fetch_one(&db.pool)
             .await
     }
 
+    /// Gets ALL `Text`s from the database by `author`.
     pub async fn get_by_author(db: &DatabaseHandler, author: &str) -> Result<Vec<Self>, Error> {
         sqlx::query_file_as!(Self, "sql/articles/get_by_author.sql", author)
             .fetch_all(&db.pool)
             .await
     }
 
+    /// Gets ALL `Text`s from the database by `type`.
     pub async fn get_by_type(
         db: &DatabaseHandler,
         text_type: TextType,
@@ -92,8 +96,51 @@ impl Text {
             .await
     }
 
-    pub async fn search(db: &DatabaseHandler) -> Result<Vec<Self>, Error> {
-        println!("{:?}", &db.pool);
-        todo!("IMPLEMENT ME!")
+    /// Gets ALL `Text`s from the database matching the search query.
+    pub async fn search(db: &DatabaseHandler, query: &str) -> Result<Vec<Self>, Error> {
+        sqlx::query_file_as!(Self, "sql/articles/search.sql", query)
+            .fetch_all(&db.pool)
+            .await
+    }
+
+    /// Deletes ONE `Text` from the database by its id.
+    pub async fn delete(db: &DatabaseHandler, id: i32) -> Result<PgQueryResult, Error> {
+        sqlx::query!("DELETE FROM articles WHERE id = $1", id)
+            .execute(&db.pool)
+            .await
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Search is confirmed working (I think); no need to run this.
+    /// NEVER RUN THIS AGAINST A PRODUCTION DATABASE!
+    #[test]
+    fn test_search() {
+        async fn test() {
+            let db = DatabaseHandler::create()
+                .await
+                .expect("FAILED TO CONNECT TO DATABASE");
+
+            let text = Text::create(
+                "Katter och hundar",
+                "author",
+                "content",
+                TextType::Article,
+                vec![],
+            );
+
+            text.save_to_db(&db).await.expect("SAVING FAILED");
+
+            let results = Text::search(&db, "katt")
+                .await
+                .expect("ERR WHILE SEARCHING");
+
+            println!("{:?}", results);
+        }
+
+        tokio_test::block_on(test())
     }
 }

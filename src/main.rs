@@ -11,6 +11,7 @@ use rocket_dyn_templates::Template;
 
 #[rocket::main]
 async fn main() {
+    // Initialize the database connection.
     let database = match DatabaseHandler::create().await {
         Ok(db) => db,
         Err(err) => panic!(
@@ -19,6 +20,7 @@ async fn main() {
         ),
     };
 
+    // Launch the application
     match rocket::build()
         .attach(Template::fairing())
         .manage(database)

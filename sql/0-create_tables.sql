@@ -8,6 +8,11 @@ DO $$ BEGIN
         EXCEPTION WHEN DUPLICATE_OBJECT THEN RAISE NOTICE '"text_type" exists, skipping...';
 END $$;
 
+DO $$ BEGIN
+    CREATE TYPE text_lang AS ENUM('english', 'swedish');
+        EXCEPTION WHEN DUPLICATE_OBJECT THEN RAISE NOTICE '"text_type" exists, skipping...';
+END $$;
+
 CREATE TABLE IF NOT EXISTS creators (
     display_name varchar(128) NOT NULL,
     username varchar(64) NOT NULL PRIMARY KEY,
@@ -28,7 +33,17 @@ CREATE TABLE IF NOT EXISTS articles (
     text_type text_type NOT NULL,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    tags varchar(64) [] NOT NULL DEFAULT ARRAY[]::integer[]
+    tags varchar(64) [] NOT NULL DEFAULT ARRAY[]::integer[],
+    -- Generate a search vector for title and content. It should prioritize Swedish over English.
+    search_vec tsvector GENERATED ALWAYS AS (
+        setweight(
+            to_tsvector('swedish', title || ' ' || content),
+            'A'
+        ) || setweight(
+            to_tsvector('english', title || ' ' || content),
+            'B'
+        )
+    ) STORED
 );
 
 CREATE INDEX IF NOT EXISTS idx_creators_username ON creators (username);
@@ -39,4 +54,4 @@ CREATE INDEX IF NOT EXISTS idx_articles_title ON articles (title);
 
 CREATE INDEX IF NOT EXISTS idx_articles_tags ON articles USING GIN (tags);
 
--- TODO: Implement full text search (FTS)
+CREATE INDEX IF NOT EXISTS idx_articles_search ON articles USING GIN (search_vec);

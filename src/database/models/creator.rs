@@ -6,10 +6,8 @@ use sqlx::Error;
 
 use crate::database::DatabaseHandler;
 
-/**
- * The type of creator.
- * `Writer` is a "normal" creator, while `Publisher` is more like an admin.
- */
+/// The type of creator.
+/// `Writer` is a "normal" creator, while `Publisher` is more like an admin.
 #[derive(Clone, Debug, Serialize, Deserialize, sqlx::Type)]
 #[sqlx(type_name = "creator_role", rename_all = "lowercase")]
 pub enum CreatorRole {
@@ -17,9 +15,7 @@ pub enum CreatorRole {
     Writer,
 }
 
-/**
- * A `Creator` is someone who can write articles on the site.
- */
+/// A `Creator` is someone who can write articles on the site.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Creator {
     /// `display_name` may use any characters.
@@ -45,6 +41,7 @@ impl Default for Creator {
 }
 
 impl Creator {
+    /// Create a new `Creator` that is a regular Writer; this should be prefered over manually creating a new `Creator`.
     pub fn create_writer(username: &str, display_name: &str, password: &str) -> Self {
         Self {
             username: username.to_string(),
@@ -54,6 +51,7 @@ impl Creator {
         }
     }
 
+    /// Create a new `Creator` that is a regular Publisher; this should be prefered over manually creating a new `Creator`.
     pub fn create_publisher(username: &str, display_name: &str, password: &str) -> Self {
         Self {
             username: username.to_string(),
@@ -64,10 +62,12 @@ impl Creator {
         }
     }
 
+    /// Checks what it says.
     pub fn is_publisher(&self) -> bool {
         matches!(self.role, CreatorRole::Publisher)
     }
 
+    /// Saves an instance of `Creator` to the database.
     pub async fn save_to_db(&self, db: &DatabaseHandler) -> Result<PgQueryResult, Error> {
         sqlx::query_file!(
             "sql/creators/insert.sql",
@@ -81,12 +81,14 @@ impl Creator {
         .await
     }
 
+    /// Gets ALL creators from the database.
     pub async fn get_all(db: &DatabaseHandler) -> Result<Vec<Self>, Error> {
         sqlx::query_file_as!(Self, "sql/creators/get_all.sql")
             .fetch_all(&db.pool)
             .await
     }
 
+    /// Gets ONE creator from the database by its `username`.
     pub async fn get_by_username(db: &DatabaseHandler, username: &str) -> Result<Self, Error> {
         sqlx::query_file_as!(Self, "sql/creators/get_by_username.sql", username)
             .fetch_one(&db.pool)

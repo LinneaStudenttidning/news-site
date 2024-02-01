@@ -4,11 +4,15 @@ use std::{env, error::Error};
 
 pub mod models;
 
+/// A `DatabaseHandler` holds a connection to the database.
 pub struct DatabaseHandler {
+    /// A connection pool to the database.
+    /// This allows multple connections to the database.
     pub pool: PgPool,
 }
 
 impl DatabaseHandler {
+    /// Creates a new `DatabaseHandler`; this should be prefered over manual initialization.
     pub async fn create() -> Result<Self, Box<dyn Error>> {
         // Load environment variables
         dotenv().ok();
@@ -21,6 +25,7 @@ impl DatabaseHandler {
             .connect(&db_url)
             .await?;
 
+        // Run a quick sanity check on the database connection.
         let row: (i64,) = sqlx::query_as("SELECT $1")
             .bind(150_i64)
             .fetch_one(&pool)

@@ -9,3 +9,5 @@ SELECT
     tags
 FROM
     articles
+WHERE
+    to_tsquery($1) @@ search_vec
