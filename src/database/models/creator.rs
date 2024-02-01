@@ -1,3 +1,7 @@
+use argon2::password_hash::rand_core::OsRng;
+use argon2::password_hash::SaltString;
+use argon2::Argon2;
+use argon2::PasswordHasher;
 use chrono::NaiveDateTime;
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
@@ -5,6 +9,8 @@ use sqlx::postgres::PgQueryResult;
 use sqlx::Error;
 
 use crate::database::DatabaseHandler;
+
+type HashError = argon2::password_hash::Error;
 
 /// The type of creator.
 /// `Writer` is a "normal" creator, while `Publisher` is more like an admin.
@@ -41,25 +47,38 @@ impl Default for Creator {
 }
 
 impl Creator {
-    /// Create a new `Creator` that is a regular Writer; this should be prefered over manually creating a new `Creator`.
-    pub fn create_writer(username: &str, display_name: &str, password: &str) -> Self {
-        Self {
-            username: username.to_string(),
-            display_name: display_name.to_string(),
-            password: password.to_string(),
-            ..Default::default()
-        }
+    fn hash_password(password: &str) -> Result<String, HashError> {
+        let salt = SaltString::generate(&mut OsRng);
+        let argon2 = Argon2::default();
+
+        let hashed_password = argon2
+            .hash_password(password.as_bytes(), &salt)?
+            .to_string();
+
+        Ok(hashed_password)
     }
 
     /// Create a new `Creator` that is a regular Publisher; this should be prefered over manually creating a new `Creator`.
-    pub fn create_publisher(username: &str, display_name: &str, password: &str) -> Self {
-        Self {
+    /// * `username` should never change.
+    /// * `display_name` can be changed.
+    /// * `password` is automatically hashed.
+    /// * `as_publisher` creates user as publisher if true.
+    pub fn create(
+        username: &str,
+        display_name: &str,
+        password: &str,
+        as_publisher: bool,
+    ) -> Result<Self, HashError> {
+        Ok(Self {
             username: username.to_string(),
             display_name: display_name.to_string(),
-            password: password.to_string(),
-            role: CreatorRole::Publisher,
+            password: Self::hash_password(password)?,
+            role: match as_publisher {
+                true => CreatorRole::Publisher,
+                _ => CreatorRole::Writer,
+            },
             ..Default::default()
-        }
+        })
     }
 
     /// Checks what it says.
@@ -93,5 +112,31 @@ impl Creator {
         sqlx::query_file_as!(Self, "sql/creators/get_by_username.sql", username)
             .fetch_one(&db.pool)
             .await
+    }
+
+    /// Changes the display name of a `Creator`.
+    pub async fn change_display_name(
+        &self,
+        db: &DatabaseHandler,
+        new_display_name: &str,
+    ) -> Result<Self, Error> {
+        sqlx::query!(
+            "UPDATE creators SET display_name = $1 WHERE username = $2",
+            new_display_name,
+            &self.username
+        )
+        .execute(&db.pool)
+        .await?;
+
+        // Return what the new `Creator` looks like.
+        // FIXME: Maybe this should only return the new `display_name`?
+        Ok(Self {
+            username: self.username.to_string(),
+            password: self.password.to_string(),
+            display_name: new_display_name.into(),
+            biography: self.biography.to_string(),
+            joined_at: self.joined_at,
+            role: self.role.clone(),
+        })
     }
 }

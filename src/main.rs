@@ -1,3 +1,6 @@
+// Don't build with warnings.
+#![deny(warnings)]
+
 #[macro_use]
 extern crate rocket;
 
