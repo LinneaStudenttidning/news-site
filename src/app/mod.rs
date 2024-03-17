@@ -6,6 +6,11 @@ fn landing() -> Template {
     Template::render("landing", context! {})
 }
 
+#[get("/about-us")]
+fn about_us() -> Template {
+    Template::render("about", context! {})
+}
+
 pub fn get_all_routes() -> Vec<Route> {
-    routes![landing]
+    routes![landing, about_us]
 }
