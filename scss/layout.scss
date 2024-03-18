@@ -11,7 +11,7 @@ body {
     grid-area: body;
     display: grid;
     min-height: 100vh;
-    grid-template-columns: 1fr 20%;
+    grid-template-columns: 1fr 30ch;
     grid-template-rows: max-content 1fr max-content;
     grid-template-areas: 'nav nav' 'main aside' 'footer footer';
 
@@ -81,5 +81,23 @@ main,
 
     > div {
         padding: 0 1rem 1rem 1rem;
+    }
+}
+
+.flex {
+    display: flex;
+    width: 100%;
+    column-fill: balance;
+
+    &.wrap {
+        flex-wrap: wrap;
+    }
+
+    &.column {
+        flex-direction: column;
+    }
+
+    &.gap {
+        gap: .5rem;
     }
 }

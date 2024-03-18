@@ -3,7 +3,10 @@
 
 h1,
 h2,
-h3 {
+h3,
+h4,
+h5,
+h6 {
     font-weight: 200;
     margin: .5em 0 .15em 0;
 }
@@ -38,4 +41,8 @@ a {
     &:visited {
         color: palette.$purple;
     }
+}
+
+article p {
+    font-family: settings.$font-family-paragraph;
 }

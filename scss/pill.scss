@@ -1,0 +1,45 @@
+@use "palette";
+
+.pill,
+.pill:visited {
+    background-color: palette.$primary100;
+    color: palette.$primary400;
+    text-decoration: none;
+    padding: .5em 1em;
+    border-radius: .5rem;
+    font-size: .95rem;
+    max-width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    transition: border-radius .3s, background-color .2s;
+
+    &:hover,
+    &:focus {
+        border-radius: 1rem;
+    }
+
+    &:active {
+        background-color: darken(palette.$primary100, 10%);
+    }
+
+    &[icon] {
+        padding: .5em 1em .5em .75em;
+    }
+
+    &[icon]::before {
+        vertical-align: -15%;
+        color: palette.$primary400;
+        content: attr(icon);
+        margin-right: .35em;
+
+        font-size: 1.2rem;
+        font-family: 'Material Symbols Outlined';
+        font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+    }
+}

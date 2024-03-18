@@ -1,6 +1,10 @@
 @use "palette";
 @use "settings";
 
+//TODO: SELF HOST.
+@import url("https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Readex+Pro:wght@160..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+
 *,
 *::before,
 *::after {
@@ -14,9 +18,19 @@
 :root,
 body {
     font-family: settings.$font-family-default;
+    font-weight: 250;
     line-height: 1.5;
     color: palette.$text;
     font-size: 12pt;
+}
+
+/*
+ * Since `font-weight` is set above, we need to re-define it
+ * here for the <b> tag to bold text.
+ * (Yes, this seems really dumb.)
+ */
+b {
+    font-weight: bold;
 }
 
 // TODO: REMOVE THIS!!
