@@ -1,0 +1,27 @@
+{% extends "templates/app" %}
+
+{% block head %}
+<title>Textredigerare</title>
+<script type="module" src="/static/scripts/editor.js" async defer></script>
+{% endblock head %}
+
+{% block main %}
+<h1>Textredigerare</h1>
+<div class="editor">
+    <pre></pre>
+    <div role="textbox" class="textbox" placeholder="Skriv här..." contenteditable></div>
+</div>
+{% endblock main %}
+
+{% block aside %}
+<div class="side-content">
+    <h1>Guide</h1>
+    <div>
+        <p><i>*Kursivt*</i></p>
+        <p><b>**Fetstil**</b></p>
+        <h1># Rubrik 1</h1>
+        <h2>## Rubrik 2</h2>
+        <h3>### Rubrik 3</h3>
+    </div>
+</div>
+{% endblock aside %}

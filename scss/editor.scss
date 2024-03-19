@@ -1,0 +1,65 @@
+@use "palette";
+
+.editor {
+    position: relative;
+    margin-bottom: 10vh;
+    height: fit-content;
+
+    > * {
+        position: absolute;
+        width: 100%;
+        min-height: 60vh;
+        height: fit-content;
+        padding: 1rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        background-color: transparent;
+        overflow-wrap: break-word;
+        font-family: 'Fira Code', monospace;
+    }
+
+    > .textbox {
+        color: transparent;
+        caret-color: palette.$primary;
+    }
+
+    > pre {
+        background-color: palette.$grey100;
+        white-space: pre-wrap;
+
+        &,
+        * {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .heading {
+            font-weight: bold;
+        }
+
+        .special-char {
+            color: palette.$secondary;
+        }
+
+        .ul > .list-item::before {
+            content: "• ";
+            color: palette.$secondary;
+        }
+
+        // FIXME: For some reason the `start`-attribute isn't read/applied.
+        .ol {
+            counter-reset: ol-count attr(start, 0);
+        }
+
+        .ol > .list-item::before {
+            counter-increment: ol-count;
+            content: counter(ol-count) ". ";
+            color: palette.$secondary;
+        }
+    }
+}
