@@ -11,6 +11,7 @@
     <pre></pre>
     <div role="textbox" class="textbox" contenteditable>
         <div># Rubrik lorem ipsum dolor</div>
+        <div><br></div>
         <div>
             Ingress Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim fugiat iste magni.
         </div>

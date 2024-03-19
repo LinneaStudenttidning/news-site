@@ -3,6 +3,10 @@
 // FIXME: This could also be self hosted.
 import * as marked from "https://cdn.jsdelivr.net/npm/marked@12.0.1/lib/marked.esm.js"
 
+// Create a custom renderer.
+// This is a bit scuffed -- stuff has to be `display: inline`, but
+// when I tried doing it with CSS stuff seemed to break, so this might
+// be the best solution as far as I know.
 const renderer = {
     paragraph: text => `<span class="p">${text}</span><br>`,
     heading: (text, level) => {
@@ -34,7 +38,7 @@ const replacements = [
 
 marked.use({
     gfm: true,
-    breaks: true,
+    // breaks: true,
     renderer
 })
 
@@ -45,10 +49,11 @@ editors.forEach(editor => {
     const textbox = editor.querySelector(".textbox")
 
     textbox.addEventListener("input", () => {
-        let md = textbox.innerText.replace(/\n\n/g, "\n \n")
+        let md = textbox
+            .innerText
+            .replace(/\n\n/g, "\n \n")
 
         for (const replacement of replacements) {
-            console.log(replacement[0], replacement[1])
             md = md.replace(replacement[0], replacement[1])
         }
 
