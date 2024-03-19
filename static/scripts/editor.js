@@ -4,10 +4,10 @@
 import * as marked from "https://cdn.jsdelivr.net/npm/marked@12.0.1/lib/marked.esm.js"
 
 const renderer = {
-    paragraph: text => `<span class="p">${text}</span>`,
+    paragraph: text => `<span class="p">${text}</span><br>`,
     heading: (text, level) => {
         const tags = new Array(level).fill("#").join(" ")
-        return `<span class="heading"><span class="special-char">${tags} </span>${text}</span>`
+        return `<span class="heading"><span class="special-char">${tags} </span>${text}</span><br>`
     },
     strong: text => {
         const asterisks = `<span class="special-char">**</span>`
@@ -27,6 +27,11 @@ const renderer = {
     }
 }
 
+const replacements = [
+    [/--/g, "——"],
+    [/---/g, "———"],
+]
+
 marked.use({
     gfm: true,
     breaks: true,
@@ -40,13 +45,19 @@ editors.forEach(editor => {
     const textbox = editor.querySelector(".textbox")
 
     textbox.addEventListener("input", () => {
-        const md = textbox.innerText.replace(/\n\n/g, "\n \n")
+        let md = textbox.innerText.replace(/\n\n/g, "\n \n")
+
+        for (const replacement of replacements) {
+            console.log(replacement[0], replacement[1])
+            md = md.replace(replacement[0], replacement[1])
+        }
+
         const html = marked.parse(md)
         preview.innerHTML = html
-
-        console.log(html)
-        console.log(md)
     })
+
+    // Dispatch an initial event in case there is text in the textbox.
+    textbox.dispatchEvent(new Event("input"))
 
     textbox.addEventListener("scroll", () => preview.scrollTop = textbox.scrollTop)
 })

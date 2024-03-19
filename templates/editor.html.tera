@@ -9,7 +9,19 @@
 <h1>Textredigerare</h1>
 <div class="editor">
     <pre></pre>
-    <div role="textbox" class="textbox" placeholder="Skriv här..." contenteditable></div>
+    <div role="textbox" class="textbox" contenteditable>
+        <div># Rubrik lorem ipsum dolor</div>
+        <div>
+            Ingress Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim fugiat iste magni.
+        </div>
+        <div><br></div>
+        <div>
+            Brödtext Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus nesciunt odio harum aut natus
+            iure
+            a excepturi tempora eos? Qui nesciunt, quae sequi dignissimos ipsam asperiores reprehenderit quam alias
+            expedita, debitis sed!
+        </div>
+    </div>
 </div>
 {% endblock main %}
 

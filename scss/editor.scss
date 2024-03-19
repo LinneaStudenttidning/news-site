@@ -38,6 +38,15 @@
             padding: 0;
         }
 
+        // Bold the preface/preamble (Swedish: "ingress")
+        .p {
+            font-weight: bold;
+
+            & ~ .p {
+                font-weight: normal;
+            }
+        }
+
         .heading {
             font-weight: bold;
         }
