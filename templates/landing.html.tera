@@ -1,7 +1,7 @@
 {% extends "templates/app" %}
 
 {% block main %}
-<h1>Senaste nyheterna</h1>
+<h1>Senaste inom nyheter, reportage, & opinion</h1>
 <div>
     <a href="#" class="news-item">
         <img src="https://source.unsplash.com/random/600x200?a" alt="Random image (GG)">
