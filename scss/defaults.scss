@@ -29,7 +29,8 @@ body {
  * here for the <b> tag to bold text.
  * (Yes, this seems really dumb.)
  */
-b {
+b,
+strong {
     font-weight: bold;
 }
 

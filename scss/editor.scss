@@ -1,75 +1,69 @@
 @use "palette";
+@use "settings";
 
 .editor {
-    position: relative;
-    margin-bottom: 10vh;
+    width: 100%;
     height: fit-content;
+    padding: 1rem;
+    background-color: palette.$grey100;
 
-    > * {
-        position: absolute;
-        width: 100%;
-        min-height: 60vh;
+    .actions {
         height: fit-content;
+        margin-bottom: 1rem;
+    }
+
+    .textbox {
+        background-color: palette.$surface;
+        height: fit-content;
+        min-height: 60vh;
         padding: 1rem;
-        font-size: 1rem;
-        line-height: 1.5;
-        background-color: transparent;
-        overflow-wrap: break-word;
-        font-family: 'Fira Code', monospace;
-    }
 
-    > .textbox {
-        color: transparent;
-        caret-color: palette.$primary;
-    }
+        > * {
+            margin-bottom: .5em;
+        }
 
-    > pre {
-        background-color: palette.$grey100;
-        white-space: pre-wrap;
+        h1 {
+            font-size: 2rem;
+            font-weight: 400;
 
-        &,
-        * {
+            &:not(:first-child) {
+                color: palette.$white;
+                background-color: palette.$red;
+            }
+        }
+
+        h2 {
             font-size: 1rem;
-            line-height: 1.5;
+            font-weight: 400;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
+        :not(h1, h2) {
+            font-family: settings.$font-family-paragraph;
         }
 
-        // Bold the preface/preamble (Swedish: "ingress")
-        // FIXME: This doesn't seem to work...
-        // .p {
-        //     font-weight: bold;
-
-        //     & ~ .p {
-        //         font-weight: normal;
-        //     }
-        // }
-
-        .heading {
+        p:first-of-type {
             font-weight: bold;
         }
 
-        .special-char {
-            color: palette.$secondary;
+        ul,
+        ol {
+            margin-left: 2rem;
         }
+    }
 
-        .ul > .list-item::before {
-            content: "• ";
-            color: palette.$secondary;
-        }
+    // FIXME: Import this font.
+    .info {
+        margin-top: 1rem;
 
-        // FIXME: For some reason the `start`-attribute isn't read/applied.
-        .ol {
-            counter-reset: ol-count attr(start, 0);
-        }
+        p {
+            font-family: settings.$font-family-default;
+            font-size: .85rem;
 
-        .ol > .list-item::before {
-            counter-increment: ol-count;
-            content: counter(ol-count) ". ";
-            color: palette.$secondary;
+            &:not(:last-child) {
+                // padding-right: .5em;
+                // border-right: 1px solid palette.$text;
+                margin-right: 1em;
+            }
         }
     }
 }

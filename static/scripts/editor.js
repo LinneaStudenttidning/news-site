@@ -1,68 +1,78 @@
-// TODO: This dependency is not listed anywhere else.
-// Keep this TODO as a remember not for updating it if need be.
-// FIXME: This could also be self hosted.
-import * as marked from "https://cdn.jsdelivr.net/npm/marked@12.0.1/lib/marked.esm.js"
-
-// Create a custom renderer.
-// This is a bit scuffed -- stuff has to be `display: inline`, but
-// when I tried doing it with CSS stuff seemed to break, so this might
-// be the best solution as far as I know.
-const renderer = {
-    paragraph: text => `<span class="p">${text}</span><br>`,
-    heading: (text, level) => {
-        const tags = new Array(level).fill("#").join(" ")
-        return `<span class="heading"><span class="special-char">${tags} </span>${text}</span><br>`
-    },
-    strong: text => {
-        const asterisks = `<span class="special-char">**</span>`
-        return `<strong>${asterisks}${text}${asterisks}</strong>`
-    },
-    em: text => {
-        const asterisks = `<span class="special-char">*</span>`
-        return `<em>${asterisks}${text}${asterisks}</em>`
-    },
-    list: (body, ordered, start) => {
-        const listType = ordered ? "ol" : "ul"
-        const startAt = start ? `start="${start}"` : ""
-        return `<span class="${listType}" ${startAt}>${body}</span>`
-    },
-    listitem: (text, task, checked) => {
-        return `<span class="list-item">${text}</span><br>`
-    }
-}
-
-const replacements = [
-    [/--/g, "——"],
-    [/---/g, "———"],
-]
-
-marked.use({
-    gfm: true,
-    // breaks: true,
-    renderer
-})
-
 const editors = document.querySelectorAll(".editor")
 
 editors.forEach(editor => {
-    const preview = editor.querySelector("pre")
+    const actions = editor.querySelector(".actions")
     const textbox = editor.querySelector(".textbox")
 
-    textbox.addEventListener("input", () => {
-        let md = textbox
-            .innerText
-            .replace(/\n\n/g, "\n \n")
+    const charCount = editor.querySelector("#char-count")
+    const charCountNoWs = editor.querySelector("#char-count-no-ws")
+    const wordCount = editor.querySelector("#word-count")
 
-        for (const replacement of replacements) {
-            md = md.replace(replacement[0], replacement[1])
+    function setupAction(htmlClass, commands) {
+        actions.querySelector(htmlClass)?.addEventListener("click", () => {
+            textbox?.focus()
+            document.execCommand(...commands
+                .map(command =>
+                    // If a command is a function, execute it.
+                    Object.prototype.toString.call(command) == "[object Function]"
+                        ? command()
+                        : command
+                )
+            )
+        })
+    }
+
+    setupAction("[icon=\"undo\"]", ["undo"])
+    setupAction("[icon=\"redo\"]", ["redo"])
+    setupAction("[icon=\"format_clear\"]", ["removeFormar"])
+    setupAction("[icon=\"format_h1\"]", ["formatBlock", false, "<h1>"])
+    setupAction("[icon=\"format_h2\"]", ["formatBlock", false, "<h2>"])
+    setupAction("[icon=\"format_paragraph\"]", ["formatBlock", false, "<p>"])
+    setupAction("[icon=\"format_bold\"]", ["bold"])
+    setupAction("[icon=\"format_italic\"]", ["italic"])
+    setupAction("[icon=\"format_list_bulleted\"]", ["insertUnorderedList"])
+    setupAction("[icon=\"format_list_numbered\"]", ["insertOrderedList"])
+    setupAction("[icon=\"add_photo_alternate\"]", ["insertImage", false, () => prompt("Länk till bild?")])
+    setupAction("[icon=\"chat\"]", ["insertText", false, () => "– "])
+
+    document.execCommand("defaultParagraphSeparator", false, "p")
+
+    const keyMap = {
+        "CtrlB": ["bold"],
+        "CtrlI": ["italic"],
+    }
+
+    textbox.addEventListener("keyup", event => {
+        event.preventDefault()
+        event.stopPropagation()
+        event.stopImmediatePropagation()
+
+        const keyCombo = [
+            event.ctrlKey ? "Ctrl" : "",
+            event.altKey ? "Alt" : "",
+            event.shiftKey ? "Shift" : "",
+            event.key.toUpperCase()
+        ].join("")
+
+        if (keyMap[keyCombo]) {
+            document.execCommand(...keyMap[keyCombo]
+                .map(command =>
+                    // If a command is a function, execute it.
+                    Object.prototype.toString.call(command) == "[object Function]"
+                        ? command()
+                        : command
+                )
+            )
         }
 
-        const html = marked.parse(md)
-        preview.innerHTML = html
+        console.dir({ keyCombo }, { depth: null })
     })
 
-    // Dispatch an initial event in case there is text in the textbox.
-    textbox.dispatchEvent(new Event("input"))
+    textbox.addEventListener("input", () => {
+        charCount.textContent = textbox.textContent.length
+        charCountNoWs.textContent = textbox.textContent.replace(/\s+/g, "").length
+        wordCount.textContent = textbox.textContent.split(/\s+/).length
+    })
 
-    textbox.addEventListener("scroll", () => preview.scrollTop = textbox.scrollTop)
+    textbox.dispatchEvent(new Event("input"))
 })

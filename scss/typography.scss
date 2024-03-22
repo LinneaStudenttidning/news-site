@@ -43,6 +43,24 @@ a {
     }
 }
 
-article p {
+p,
+ul,
+ol {
     font-family: settings.$font-family-paragraph;
+}
+
+ul,
+ol {
+    margin-left: 1em;
+}
+
+// FIXME: Import this font.
+code,
+var {
+    font-family: 'Fira Code', monospace;
+    font-size: .85em;
+    color: palette.$primary400;
+    background-color: palette.$primary100;
+    padding: .15em .5em;
+    border-radius: .15em;
 }

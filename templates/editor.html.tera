@@ -8,20 +8,37 @@
 {% block main %}
 <h1>Textredigerare</h1>
 <div class="editor">
-    <pre></pre>
+    <div class="actions flex wrap gap">
+        <button class="pill icon-only" icon="undo"></button>
+        <button class="pill icon-only" icon="redo"></button>
+        <button class="pill icon-only" icon="format_clear"></button>
+        <button class="pill icon-only" icon="format_h1"></button>
+        <button class="pill icon-only" icon="format_h2"></button>
+        <button class="pill icon-only" icon="format_paragraph"></button>
+        <button class="pill icon-only" icon="format_bold"></button>
+        <button class="pill icon-only" icon="format_italic"></button>
+        <button class="pill icon-only" icon="format_list_bulleted"></button>
+        <button class="pill icon-only" icon="format_list_numbered"></button>
+        <button class="pill icon-only" icon="add_photo_alternate"></button>
+        <button class="pill icon-only" icon="chat"></button>
+    </div>
     <div role="textbox" class="textbox" contenteditable>
-        <div># Rubrik lorem ipsum dolor</div>
-        <div><br></div>
-        <div>
-            Ingress Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim fugiat iste magni.
-        </div>
-        <div><br></div>
-        <div>
-            Brödtext Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus nesciunt odio harum aut natus
-            iure
-            a excepturi tempora eos? Qui nesciunt, quae sequi dignissimos ipsam asperiores reprehenderit quam alias
-            expedita, debitis sed!
-        </div>
+        <h1>Rubrik</h1>
+        <p>Ingress Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit quam dicta molestias molestiae
+            ea error esse sit consectetur expedita, nesciunt odit cupiditate cum voluptatem.</p>
+        <p>Brödtext Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consectetur debitis excepturi nemo
+            incidunt repellendus ullam quos architecto cum corrupti hic quam aspernatur maxime facilis suscipit enim
+            libero magnam, eos dolorem placeat. Et.</p>
+        <h2>Mellanrubrik</h2>
+        <p>Brödtext Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consectetur debitis excepturi nemo
+            incidunt repellendus ullam quos architecto cum corrupti hic quam aspernatur maxime facilis suscipit enim
+            libero magnam, eos dolorem placeat. Et.</p>
+        <p>– Citat Lorem ipsum dolor sit amet consectetur adipisicing elit, sa Namn Efternamn</p>
+    </div>
+    <div class="info flex wrap gap">
+        <p>Tecken (inklusive mellanrum): <span id="char-count">0</span></p>
+        <p>Tecken (exklusive mellanrum): <span id="char-count-no-ws">0</span></p>
+        <p>Ord: <span id="word-count">0</span></p>
     </div>
 </div>
 {% endblock main %}
@@ -30,11 +47,14 @@
 <div class="side-content">
     <h1>Guide</h1>
     <div>
-        <p><i>*Kursivt*</i></p>
-        <p><b>**Fetstil**</b></p>
-        <h1># Rubrik 1</h1>
-        <h2>## Rubrik 2</h2>
-        <h3>### Rubrik 3</h3>
+        <p>
+        <ul>
+            <li>Det första stycket du skriver kommer automatiskt att bli fetstilt, alltså ingressen.</li>
+            <li>Använd knapparna för att göra din text fetstilt/kursiv/annat där det behövs.</li>
+            <li>Du ska <strong>endast</strong> ha en <code>H1</code>, alltså rubrik.</li>
+            <li>Du får ha hur många <code>H2</code>, alltså mellanrubriker, du vill/behöver.</li>
+        </ul>
+        </p>
     </div>
 </div>
 {% endblock aside %}
