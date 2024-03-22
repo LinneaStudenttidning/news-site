@@ -31,6 +31,15 @@
         }
     }
 
+    .type {
+        font-size: .85em;
+        font-weight: 400;
+        padding: .25em .5em;
+        margin-right: .5em;
+        color: palette.$primary400;
+        background-color: palette.$primary100;
+    }
+
     .news-meta-data {
         color: palette.$grey400;
     }

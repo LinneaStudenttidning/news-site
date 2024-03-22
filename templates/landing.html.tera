@@ -6,23 +6,35 @@
     <a href="#" class="news-item">
         <img src="https://source.unsplash.com/random/600x200?a" alt="Random image (GG)">
         <h1>Åkte med en eka över Atlanten</h1>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore iusto, temporibus, fugit totam nostrum optio
+        <p><span class="type">Reportage</span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore iusto,
+            temporibus, fugit totam nostrum optio
             quibusdam molestias quas quia perspiciatis commodi atque consequuntur aliquid facere dolorum sint corporis
             expedita unde dolor obcaecati.</p>
         <p class="news-meta-data">Leif E, 19:07</p>
     </a>
     <a href="#" class="news-item">
         <img src="https://source.unsplash.com/random/600x200?b" alt="Random image (GG)">
+        <h1>Den oknäckbara koden – inte längre oknäckbar</h1>
+        <p><span class="type">Nyhet</span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore iusto,
+            temporibus, fugit totam nostrum optio
+            quibusdam molestias quas quia perspiciatis commodi atque consequuntur aliquid facere dolorum sint corporis
+            expedita unde dolor obcaecati.</p>
+        <p class="news-meta-data">Joan C, 19:07</p>
+    </a>
+    <a href="#" class="news-item">
+        <img src="https://source.unsplash.com/random/600x200?c" alt="Random image (GG)">
         <h1>De bästa nya sångerna i år</h1>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore iusto, temporibus, fugit totam nostrum optio
+        <p><span class="type">Opinion</span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore iusto,
+            temporibus, fugit totam nostrum optio
             quibusdam molestias quas quia perspiciatis commodi atque consequuntur aliquid facere dolorum sint corporis
             expedita unde dolor obcaecati.</p>
         <p class="news-meta-data">Bob D, 19:07</p>
     </a>
     <a href="#" class="news-item">
-        <img src="https://source.unsplash.com/random/600x200?c" alt="Random image (GG)">
+        <img src="https://source.unsplash.com/random/600x200?d" alt="Random image (GG)">
         <h1>Kaffe eller te – detta ska du tänka på</h1>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore iusto, temporibus, fugit totam nostrum optio
+        <p><span class="type">Annat</span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore iusto,
+            temporibus, fugit totam nostrum optio
             quibusdam molestias quas quia perspiciatis commodi atque consequuntur aliquid facere dolorum sint corporis
             expedita unde dolor obcaecati.</p>
         <p class="news-meta-data">Alice A, 19:07</p>

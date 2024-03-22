@@ -38,5 +38,18 @@ strong {
 img {
     width: 100%;
     aspect-ratio: 3 / 1;
-    background-color: red;
+    background: linear-gradient(to left, palette.$grey100, palette.$white, palette.$grey100);
+    background-repeat: no-repeat;
+    background-size: 20%;
+    animation: imageLoadShimmer 1s ease 0s 5 alternate forwards;
+}
+
+@keyframes imageLoadShimmer {
+    from {
+        background-position-x: -100%;
+    }
+
+    to {
+        background-position-x: 100%;
+    }
 }
