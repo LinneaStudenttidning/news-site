@@ -11,7 +11,12 @@ pub mod token;
 use app::get_all_routes;
 use database::DatabaseHandler;
 use rocket::fs::FileServer;
-use rocket_dyn_templates::Template;
+use rocket_dyn_templates::{context, Template};
+
+#[catch(404)]
+fn not_found() -> Template {
+    Template::render("errors/404", context! {})
+}
 
 #[rocket::main]
 async fn main() {
@@ -30,6 +35,7 @@ async fn main() {
         .manage(database)
         .mount("/", get_all_routes())
         .mount("/static", FileServer::from("./static"))
+        .register("/", catchers![not_found])
         .launch()
         .await
     {

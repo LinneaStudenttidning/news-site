@@ -1,4 +1,5 @@
 @use "palette";
+@use "settings";
 
 .news-item,
 .news-item:visited {
@@ -18,6 +19,10 @@
     > h1,
     > p {
         margin: 1rem;
+    }
+
+    > p {
+        font-family: settings.$font-family-default
     }
 
     &:hover {

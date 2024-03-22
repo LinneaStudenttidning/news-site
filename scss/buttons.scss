@@ -1,7 +1,7 @@
 @use "palette";
 
-.pill,
-.pill:visited {
+.btn,
+.btn:visited {
     background-color: palette.$primary100;
     color: palette.$primary400;
     text-decoration: none;

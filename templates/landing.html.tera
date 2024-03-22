@@ -29,30 +29,3 @@
     </a>
 </div>
 {% endblock main %}
-
-{% block aside %}
-<div class="side-content">
-    <h1>Populära taggar</h1>
-    <div class="flex wrap gap" id="popular-tags">
-        <a class="pill" icon="tag" href="#">lokalt</a>
-        <a class="pill" icon="tag" href="#">älg</a>
-        <a class="pill" icon="tag" href="#">klimat</a>
-        <a class="pill" icon="tag" href="#">jakt</a>
-        <a class="pill" icon="tag" href="#">topplista</a>
-        <a class="pill" icon="tag" href="#">katter</a>
-        <a class="pill" icon="tag" href="#">te</a>
-        <a class="pill" icon="tag" href="#">kaffe</a>
-        <a class="pill" icon="tag" href="#">is</a>
-    </div>
-</div>
-
-<div class="side-content">
-    <h1>Skribenter</h1>
-    <div class="flex wrap gap" id="writers">
-        <a class="pill" icon="person" href="#">Leif E.</a>
-        <a class="pill" icon="person" href="#">Alice A.</a>
-        <a class="pill" icon="person" href="#">Bob D.</a>
-        <a class="pill" icon="person" href="#">Joan C.</a>
-    </div>
-</div>
-{% endblock aside %}

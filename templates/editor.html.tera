@@ -9,18 +9,18 @@
 <h1>Textredigerare</h1>
 <div class="editor">
     <div class="actions flex wrap gap">
-        <button class="pill icon-only" icon="undo"></button>
-        <button class="pill icon-only" icon="redo"></button>
-        <button class="pill icon-only" icon="format_clear"></button>
-        <button class="pill icon-only" icon="format_h1"></button>
-        <button class="pill icon-only" icon="format_h2"></button>
-        <button class="pill icon-only" icon="format_paragraph"></button>
-        <button class="pill icon-only" icon="format_bold"></button>
-        <button class="pill icon-only" icon="format_italic"></button>
-        <button class="pill icon-only" icon="format_list_bulleted"></button>
-        <button class="pill icon-only" icon="format_list_numbered"></button>
-        <button class="pill icon-only" icon="add_photo_alternate"></button>
-        <button class="pill icon-only" icon="chat"></button>
+        <button class="btn icon-only" icon="undo"></button>
+        <button class="btn icon-only" icon="redo"></button>
+        <button class="btn icon-only" icon="format_clear"></button>
+        <button class="btn icon-only" icon="format_h1"></button>
+        <button class="btn icon-only" icon="format_h2"></button>
+        <button class="btn icon-only" icon="format_paragraph"></button>
+        <button class="btn icon-only" icon="format_bold"></button>
+        <button class="btn icon-only" icon="format_italic"></button>
+        <button class="btn icon-only" icon="format_list_bulleted"></button>
+        <button class="btn icon-only" icon="format_list_numbered"></button>
+        <button class="btn icon-only" icon="add_photo_alternate"></button>
+        <button class="btn icon-only" icon="chat"></button>
     </div>
     <div role="textbox" class="textbox" contenteditable>
         <h1>Rubrik</h1>
