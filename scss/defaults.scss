@@ -34,14 +34,15 @@ strong {
     font-weight: bold;
 }
 
-// TODO: REMOVE THIS!!
+// Image loading animation
 img {
     width: 100%;
     aspect-ratio: 3 / 1;
     background: linear-gradient(to left, palette.$grey100, palette.$white, palette.$grey100);
     background-repeat: no-repeat;
     background-size: 20%;
-    animation: imageLoadShimmer 1s ease 0s 5 alternate forwards;
+    // Unsure if the "infinite" affects performance in a bad way...
+    animation: imageLoadShimmer 1s ease 0s infinite alternate forwards;
 }
 
 @keyframes imageLoadShimmer {
