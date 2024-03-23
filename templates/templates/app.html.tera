@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <nav>
+    <nav class="flex wrap">
         <a href="/">LOGGA</a>
         <a href="/type/news">Nyheter</a>
         <a href="/type/covarages">Reportage</a>
