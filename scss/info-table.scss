@@ -1,0 +1,22 @@
+@use "settings";
+
+.info-table {
+    font-family: settings.$font-family-forms;
+    width: 100%;
+    display: grid;
+    grid-template-columns: max-content auto;
+    gap: .25rem 1rem;
+
+    > * {
+        font-family: inherit;
+    }
+
+    .prop {
+        grid-column: 1;
+        font-weight: 500;
+    }
+
+    .value {
+        grid-column: 2;
+    }
+}

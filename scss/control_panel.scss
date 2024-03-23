@@ -1,0 +1,51 @@
+@use "palette";
+
+.toolbox {
+    box-shadow: 0 .5rem .75rem palette.$shadow200;
+    background-color: palette.$standout;
+    padding: 1rem;
+
+    > :not(:last-child) {
+        margin-bottom: 1rem;
+    }
+
+    > h2 {
+        margin-top: 0;
+
+        &[icon]::before {
+            vertical-align: -10%;
+            color: palette.$primary400;
+            content: attr(icon);
+            margin-right: .35em;
+
+            font-size: 1.2em;
+            font-family: 'Material Symbols Outlined';
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 300,
+                'GRAD' 0,
+                'opsz' 24
+        }
+    }
+}
+
+// TODO: This might be useful somewhere else, so it might need
+// to be moved somewhere else.
+.profile {
+    display: grid;
+    grid-template-areas: 'pfp name' 'pfp info';
+    gap: 1rem;
+
+    > * {
+        margin: 0;
+    }
+
+    > img {
+        grid-area: pfp;
+        aspect-ratio: 1 / 1;
+    }
+
+    > .name {
+        grid-area: name;
+    }
+}

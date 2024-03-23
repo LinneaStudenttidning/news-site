@@ -1,0 +1,30 @@
+{% extends "templates/app" %}
+
+{% block main %}
+<h1>Kontrollpanelen</h1>
+<div class="toolbox">
+    <h2 icon="badge">Din profil</h2>
+    <div class="content profile">
+        <img src="https://source.unsplash.com/random/400x400" alt="Profilbild" class="pfp">
+        <h3 class="name">Ditt namn</h3>
+        <div class="info-table">
+            <p class="prop">Användarnamn</p>
+            <p class="value">dittnamn231</p>
+            <p class="prop">Beskrivning</p>
+            <p class="value">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat laudantium impedit
+                repudiandae amet sapiente porro architecto quam corrupti vitae, nam perspiciatis eligendi beatae
+                veritatis, mollitia est nisi, officia sequi. Dolor, ad odit.</p>
+            <p class="prop">Konto skapat</p>
+            <p class="value">13 februari 2024</p>
+            <p class="prop">Roll</p>
+            <p class="value">Ansvarig utgivare</p>
+        </div>
+    </div>
+    <div class="actions flex wrap gap">
+        <button class="btn" icon="person_edit">Ändra visningsnamn</button>
+        <button class="btn" icon="edit_note">Ändra beskrivning</button>
+        <button class="btn" icon="password">Ändra lösenord</button>
+        <button class="btn" icon="image">Ändra profilbild</button>
+    </div>
+</div>
+{% endblock main %}
