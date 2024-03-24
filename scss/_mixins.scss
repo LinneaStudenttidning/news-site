@@ -1,0 +1,20 @@
+/*
+ * `$opsz_mult` is used if the icon should be placed where it isn't 1rem.
+ *      In such a case, it should be the the value of rem, without the unit.
+ *      E.g. `2rem` would be `2`.
+ */
+@mixin icon($opsz_mult: 1) {
+    max-width: 1.15ch;
+    overflow-x: hidden;
+
+    content: attr(icon);
+    margin-right: .25em;
+
+    font-size: 1.5em;
+    font-family: 'Material Symbols Outlined';
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 300,
+        'GRAD' 0,
+        'opsz' 24 * $opsz_mult;
+}

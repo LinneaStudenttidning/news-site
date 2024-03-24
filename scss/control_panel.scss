@@ -1,9 +1,11 @@
 @use "palette";
+@use "mixins";
 
 .toolbox {
     box-shadow: 0 .5rem .75rem palette.$shadow200;
     background-color: palette.$standout;
     padding: 1rem;
+    container-type: inline-size;
 
     > :not(:last-child) {
         margin-bottom: 1rem;
@@ -11,20 +13,12 @@
 
     > h2 {
         margin-top: 0;
+        display: flex;
+        align-items: center;
 
         &[icon]::before {
-            vertical-align: -10%;
+            @include mixins.icon(2.4);
             color: palette.$primary400;
-            content: attr(icon);
-            margin-right: .35em;
-
-            font-size: 1.2em;
-            font-family: 'Material Symbols Outlined';
-            font-variation-settings:
-                'FILL' 0,
-                'wght' 300,
-                'GRAD' 0,
-                'opsz' 24
         }
     }
 }
@@ -34,6 +28,8 @@
 .profile {
     display: grid;
     grid-template-areas: 'pfp name' 'pfp info';
+    grid-template-columns: 1fr 45ch;
+    grid-template-rows: repeat(auto, 2);
     gap: 1rem;
 
     > * {
@@ -47,5 +43,18 @@
 
     > .name {
         grid-area: name;
+    }
+}
+
+@container (width < 60ch) {
+    .profile {
+        grid-template-areas: 'pfp' 'name' 'info';
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(auto, 3);
+
+        > img {
+            margin: 0 auto;
+            width: min(45ch, 100%);
+        }
     }
 }

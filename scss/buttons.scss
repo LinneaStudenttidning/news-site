@@ -1,19 +1,24 @@
 @use "palette";
+@use "settings";
+@use "mixins";
 
 .btn,
 .btn:visited {
-    background-color: palette.$primary100;
+    cursor: pointer;
     color: palette.$primary400;
+    background-color: palette.$primary100;
+    font-family: settings.$font-family-forms;
+    font-size: .9rem;
+    font-weight: 300;
+    line-height: 1;
     text-decoration: none;
-    padding: .5em 1em;
-    border: 0 none transparent;
-    border-radius: .5rem;
-    font-size: .95rem;
-    max-width: 100%;
     white-space: nowrap;
     text-overflow: ellipsis;
+    padding: .75em 1.5em;
+    max-width: 100%;
     overflow: hidden;
-    cursor: pointer;
+    border-radius: .5rem;
+    border: 0 none transparent;
 
     transition: border-radius .3s, background-color .2s;
 
@@ -27,22 +32,14 @@
     }
 
     &[icon] {
-        padding: .5em 1em .5em .75em;
+        display: flex;
+        padding-left: 1.25em;
+        align-items: center;
     }
 
     &[icon]::before {
-        vertical-align: -15%;
-        color: palette.$primary400;
-        content: attr(icon);
-        margin-right: .35em;
-
-        font-size: 1.2rem;
-        font-family: 'Material Symbols Outlined';
-        font-variation-settings:
-            'FILL' 0,
-            'wght' 400,
-            'GRAD' 0,
-            'opsz' 24
+        @include mixins.icon;
+        color: palette.$primary300;
     }
 
     &.icon-only {
