@@ -52,7 +52,7 @@
         </div>
     </aside>
     <footer class="flex wrap gap">
-        <p>ⓒ Något</p>
+        <p>&copy; Något</p>
         <p><a href="/control-panel">Inloggning för redaktionen</a></p>
     </footer>
 </body>
