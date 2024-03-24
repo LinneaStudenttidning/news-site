@@ -21,6 +21,7 @@ Cargo.lock
 
 # Added by project
 static/styles/*
+!static/styles/.gitkeep
 
 .env
 
