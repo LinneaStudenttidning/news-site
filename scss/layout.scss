@@ -107,6 +107,11 @@ main,
         grid-template-columns: 1fr;
         grid-template-rows: max-content max-content 1fr max-content;
 
+        > main,
+        > aside {
+            margin: 0;
+        }
+
         > aside {
             position: static;
         }
