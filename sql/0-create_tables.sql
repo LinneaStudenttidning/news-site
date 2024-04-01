@@ -46,12 +46,19 @@ CREATE TABLE IF NOT EXISTS articles (
     ) STORED
 );
 
+CREATE TABLE IF NOT EXISTS images (
+    id uuid NOT NULL PRIMARY KEY,
+    author text NOT NULL,
+    description text,
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    tags varchar(64) [] NOT NULL DEFAULT ARRAY[]::integer[]
+);
+
 CREATE INDEX IF NOT EXISTS idx_creators_username ON creators (username);
 
 CREATE INDEX IF NOT EXISTS idx_articles_id ON articles (id);
-
 CREATE INDEX IF NOT EXISTS idx_articles_title ON articles (title);
-
 CREATE INDEX IF NOT EXISTS idx_articles_tags ON articles USING GIN (tags);
-
 CREATE INDEX IF NOT EXISTS idx_articles_search ON articles USING GIN (search_vec);
+
+CREATE INDEX IF NOT EXISTS idx_images_tags ON images USING GIN (tags);
