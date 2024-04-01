@@ -20,3 +20,10 @@
         grid-column: 2;
     }
 }
+
+@container (width < 65ch) {
+    .info-table {
+        display: flex;
+        flex-direction: column;
+    }
+}

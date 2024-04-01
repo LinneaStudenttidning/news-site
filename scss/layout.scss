@@ -1,4 +1,5 @@
 @use "palette";
+@use "settings";
 
 html {
     background-color: palette.$surface;
@@ -11,7 +12,7 @@ body {
     grid-area: body;
     display: grid;
     min-height: 100vh;
-    grid-template-columns: 1fr 30ch;
+    grid-template-columns: 1fr 35ch;
     grid-template-rows: max-content 1fr max-content;
     grid-template-areas: 'nav nav' 'main aside' 'footer footer';
 
@@ -51,7 +52,7 @@ body {
 
     > aside {
         grid-area: aside;
-        margin: 1rem 0 1rem .5rem;
+        margin: 1rem 0 20vmin 1rem;
         height: max-content;
         position: sticky;
         top: 1rem;
@@ -59,6 +60,26 @@ body {
 
     > footer {
         grid-area: footer;
+        color: palette.$surface;
+        background-color: palette.$primary400;
+        margin-top: 5vmin;
+        padding: 2rem;
+        font-family: settings.$font-family-default;
+
+        > * {
+            font-family: inherit;
+        }
+
+        a,
+        a:visited {
+            color: inherit;
+            text-decoration: solid underline 1px palette.$grey400;
+            transition: text-decoration .3s;
+
+            &:hover {
+                text-decoration: solid underline 2px palette.$primary100;
+            }
+        }
     }
 }
 
@@ -77,6 +98,7 @@ main,
     box-shadow: 0 .5rem .75rem palette.$shadow200;
     background-color: palette.$standout;
     margin-bottom: 1rem;
+    container-type: inline-size;
 
     > div {
         padding: 0 1rem 1rem 1rem;
@@ -96,8 +118,20 @@ main,
         flex-direction: column;
     }
 
+    &.center {
+        align-items: center;
+        justify-content: center;
+    }
+
     &.gap {
         gap: .5rem;
+    }
+
+    > .sep {
+        background-color: palette.$grey200;
+        height: .1rem;
+        width: 90%;
+        margin: .5rem 5%;
     }
 }
 

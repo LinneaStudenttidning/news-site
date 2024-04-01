@@ -3,7 +3,108 @@
 {% block main %}
 <h1>Kontrollpanelen</h1>
 <div class="toolbox">
-    <h2 icon="badge">Din profil</h2>
+    <h2 icon="admin_panel_settings">Administrativa verktyg</h2>
+    <div class="content flex wrap gap">
+        <button class="btn" icon="person_add">Skapa ny användare</button>
+        <button class="btn" icon="person_edit">Byt lösenord för annan användare</button>
+        <button class="btn dangerous" icon="person_remove">Ta bort användare</button>
+        <button class="btn dangerous" icon="add_moderator">Lägg till ansvarig utgivare</button>
+        <button class="btn dangerous" icon="remove_moderator">Ta bort ansvarig utgivare</button>
+        <div class="sep"></div>
+        <button class="btn" icon="edit_note">Ändra "om oss"</button>
+        <button class="btn" icon="gallery_thumbnail">Bildgalleriet</button>
+        <button class="btn" icon="preview">Granska och godkänn nya artiklar</button>
+        <button class="btn" icon="edit_note">Redigera artikel</button>
+        <button class="btn dangerous" icon="unpublished">Avpublicera artikel</button>
+    </div>
+</div>
+
+<div class="toolbox">
+    <h2 icon="feed">Dina texter</h2>
+    <div class="content">
+        <h3>Opublicerade artiklar</h3>
+        <table class="content">
+            <thead>
+                <tr>
+                    <th>Namn</th>
+                    <th>Datum</th>
+                    <th>Funktioner</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Lorem ipsum dolor sit amet consectetur</td>
+                    <td>2024-03-23 15:06</td>
+                    <td class="flex wrap gap">
+                        <button class="btn icon-only" icon="edit_note"></button>
+                        <button class="btn icon-only dangerous" icon="delete"></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lorem ipsum dolor sit amet consectetur</td>
+                    <td>2024-03-23 15:06</td>
+                    <td class="flex wrap gap">
+                        <button class="btn icon-only" icon="edit_note"></button>
+                        <button class="btn icon-only dangerous" icon="delete"></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lorem ipsum dolor sit amet consectetur</td>
+                    <td>2024-03-23 15:06</td>
+                    <td class="flex wrap gap">
+                        <button class="btn icon-only" icon="edit_note"></button>
+                        <button class="btn icon-only dangerous" icon="delete"></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="flex wrap gap">
+            <button class="btn" icon="post_add">Skapa ny text</button>
+        </div>
+
+        <h3>Publicerade artiklar</h3>
+        <table class="content">
+            <thead>
+                <tr>
+                    <th>Namn</th>
+                    <th>Datum</th>
+                    <th>Funktioner</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Lorem ipsum dolor sit amet consectetur</td>
+                    <td>2024-03-23 15:06</td>
+                    <td class="flex wrap gap">
+                        <button class="btn icon-only" icon="share"></button>
+                        <button class="btn icon-only" icon="open_in_new"></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lorem ipsum dolor sit amet consectetur</td>
+                    <td>2024-03-23 15:06</td>
+                    <td class="flex wrap gap">
+                        <button class="btn icon-only" icon="share"></button>
+                        <button class="btn icon-only" icon="open_in_new"></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lorem ipsum dolor sit amet consectetur</td>
+                    <td>2024-03-23 15:06</td>
+                    <td class="flex wrap gap">
+                        <button class="btn icon-only" icon="share"></button>
+                        <button class="btn icon-only" icon="open_in_new"></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock main %}
+
+{% block aside %}
+<div class="side-content">
+    <h1>Din profil</h1>
     <div class="content profile">
         <img src="https://source.unsplash.com/random/400x400" alt="Profilbild" class="pfp">
         <h3 class="name">Ditt namn</h3>
@@ -20,11 +121,11 @@
             <p class="value">Ansvarig utgivare</p>
         </div>
     </div>
-    <div class="actions flex wrap gap">
+    <div class="flex wrap gap">
         <button class="btn" icon="person_edit">Ändra visningsnamn</button>
         <button class="btn" icon="edit_note">Ändra beskrivning</button>
         <button class="btn" icon="password">Ändra lösenord</button>
         <button class="btn" icon="image">Ändra profilbild</button>
     </div>
 </div>
-{% endblock main %}
+{% endblock aside %}

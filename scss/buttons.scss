@@ -49,4 +49,17 @@
             margin-right: 0;
         }
     }
+
+    &.dangerous {
+        background-color: palette.$red100;
+        color: palette.$red400;
+
+        &:active {
+            background-color: darken(palette.$red100, 5%);
+        }
+
+        &[icon]::before {
+            color: palette.$red300;
+        }
+    }
 }

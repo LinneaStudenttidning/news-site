@@ -1,0 +1,28 @@
+@use "palette";
+
+table {
+    margin: 1rem 0;
+    width: 100%;
+    display: table;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-collapse: collapse;
+}
+
+thead {
+    border-bottom: .1rem solid palette.$grey200;
+}
+
+tr {
+    background-color: palette.$surface;
+
+    &:nth-child(even) {
+        background-color: palette.$standout;
+    }
+}
+
+td,
+th {
+    text-align: left;
+    padding: .5rem 1rem;
+}

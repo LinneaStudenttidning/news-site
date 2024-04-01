@@ -26,6 +26,7 @@
         {% endblock main %}
     </main>
     <aside>
+        {% block aside %}
         <div class="side-content">
             <h1>Populära taggar</h1>
             <div class="flex wrap gap" id="popular-tags">
@@ -50,10 +51,12 @@
                 <a class="btn" icon="person" href="#">Joan C.</a>
             </div>
         </div>
+        {% endblock aside %}
     </aside>
-    <footer class="flex wrap gap">
-        <p>&copy; Något</p>
-        <p><a href="/control-panel">Inloggning för redaktionen</a></p>
+    <footer class="flex column center gap">
+        <a href="/">LOGGA</a>
+        <p>&copy; Redaktionen</p>
+        <a href="/control-panel">Inloggning för redaktionen</a>
     </footer>
 </body>
 

@@ -5,6 +5,7 @@
     box-shadow: 0 .5rem .75rem palette.$shadow200;
     background-color: palette.$standout;
     padding: 1rem;
+    margin-bottom: 2rem;
     container-type: inline-size;
 
     > :not(:last-child) {
@@ -43,6 +44,10 @@
 
     > .name {
         grid-area: name;
+    }
+
+    > .info {
+        grid-area: info;
     }
 }
 
