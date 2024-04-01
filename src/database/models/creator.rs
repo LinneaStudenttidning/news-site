@@ -30,6 +30,7 @@ pub enum CreatorRole {
 pub struct Creator {
     /// `display_name` may use any characters.
     pub display_name: String,
+    /// `username` should be match the regex /[\w\-\.]+/
     pub username: String,
     pub password: String,
     pub biography: String,
