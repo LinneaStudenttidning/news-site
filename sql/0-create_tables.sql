@@ -14,9 +14,9 @@ DO $$ BEGIN
 END $$;
 
 CREATE TABLE IF NOT EXISTS creators (
-    display_name varchar(128) NOT NULL,
-    username varchar(64) NOT NULL PRIMARY KEY,
-    password varchar(128) NOT NULL,
+    display_name text NOT NULL,
+    username text NOT NULL PRIMARY KEY,
+    password text NOT NULL,
     biography text NOT NULL,
     joined_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     role creator_role NOT NULL DEFAULT 'writer'
@@ -27,14 +27,14 @@ CREATE SEQUENCE IF NOT EXISTS articles_id_seq;
 CREATE TABLE IF NOT EXISTS articles (
     id serial NOT NULL PRIMARY KEY,
     is_published boolean NOT NULL DEFAULT false,
-    title varchar(256) NOT NULL,
+    title text NOT NULL,
     /* Reference to the username of the creator. */
-    author varchar(64) NOT NULL,
+    author text NOT NULL,
     content text NOT NULL,
     text_type text_type NOT NULL,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    tags varchar(64) [] NOT NULL DEFAULT ARRAY[]::integer[],
+    tags text [] NOT NULL DEFAULT ARRAY[]::integer[],
     -- Generate a search vector for title and content. It should prioritize Swedish over English.
     search_vec tsvector GENERATED ALWAYS AS (
         setweight(
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS images (
     author text NOT NULL,
     description text,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    tags varchar(64) [] NOT NULL DEFAULT ARRAY[]::integer[],
+    tags text [] NOT NULL DEFAULT ARRAY[]::integer[],
     -- Generate a search vector for title and content. It should prioritize Swedish over English.
     search_vec tsvector GENERATED ALWAYS AS (
         setweight(
