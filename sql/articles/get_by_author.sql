@@ -10,4 +10,4 @@ SELECT
 FROM
     articles
 WHERE
-    author = $1
+    author = $1 AND is_published = true

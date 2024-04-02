@@ -10,4 +10,4 @@ SELECT
 FROM
     articles
 WHERE
-    text_type = $1
+    text_type = $1 AND is_published = true

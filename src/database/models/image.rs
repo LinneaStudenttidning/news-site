@@ -37,6 +37,7 @@ impl Image {
         }
     }
 
+    /// Saves an instance of `Image` to the database.
     pub async fn save_to_db(&self, db: &DatabaseHandler) -> Result<PgQueryResult, Error> {
         sqlx::query_file!(
             "sql/images/insert.sql",
@@ -47,5 +48,22 @@ impl Image {
         )
         .execute(&db.pool)
         .await
+    }
+
+    /// Gets ALL `Image`s from the database with `tag`.
+    pub async fn get_by_tag(db: &DatabaseHandler, tag: &str) -> Result<Vec<Self>, Error> {
+        sqlx::query_file_as!(Self, "sql/images/get_by_tag.sql", tag)
+            .fetch_all(&db.pool)
+            .await
+    }
+
+    /// Gets ALL `Image`s from the database with any of `tags`.
+    pub async fn get_by_any_of_tags(
+        db: &DatabaseHandler,
+        tags: &[String],
+    ) -> Result<Vec<Self>, Error> {
+        sqlx::query_file_as!(Self, "sql/images/get_by_any_of_tags.sql", tags)
+            .fetch_all(&db.pool)
+            .await
     }
 }

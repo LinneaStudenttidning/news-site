@@ -1,6 +1,7 @@
 INSERT INTO
     articles (
         id,
+        is_published,
         title,
         author,
         content,
@@ -10,4 +11,4 @@ INSERT INTO
         tags
     )
 VALUES
-    (DEFAULT, $1, $2, $3, $4, DEFAULT, DEFAULT, $5)
+    (DEFAULT, DEFAULT, $1, $2, $3, $4, DEFAULT, DEFAULT, $5)

@@ -26,6 +26,7 @@ CREATE SEQUENCE IF NOT EXISTS articles_id_seq;
 
 CREATE TABLE IF NOT EXISTS articles (
     id serial NOT NULL PRIMARY KEY,
+    is_published boolean NOT NULL DEFAULT false,
     title varchar(256) NOT NULL,
     /* Reference to the username of the creator. */
     author varchar(64) NOT NULL,
@@ -51,7 +52,17 @@ CREATE TABLE IF NOT EXISTS images (
     author text NOT NULL,
     description text,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    tags varchar(64) [] NOT NULL DEFAULT ARRAY[]::integer[]
+    tags varchar(64) [] NOT NULL DEFAULT ARRAY[]::integer[],
+    -- Generate a search vector for title and content. It should prioritize Swedish over English.
+    search_vec tsvector GENERATED ALWAYS AS (
+        setweight(
+            to_tsvector('swedish', description),
+            'A'
+        ) || setweight(
+            to_tsvector('english', description),
+            'B'
+        )
+    ) STORED
 );
 
 CREATE INDEX IF NOT EXISTS idx_creators_username ON creators (username);
@@ -62,3 +73,4 @@ CREATE INDEX IF NOT EXISTS idx_articles_tags ON articles USING GIN (tags);
 CREATE INDEX IF NOT EXISTS idx_articles_search ON articles USING GIN (search_vec);
 
 CREATE INDEX IF NOT EXISTS idx_images_tags ON images USING GIN (tags);
+CREATE INDEX IF NOT EXISTS idx_images_search ON images USING GIN (search_vec);

@@ -10,4 +10,4 @@ SELECT
 FROM
     articles
 WHERE
-    to_tsquery($1) @@ search_vec
+    to_tsquery($1) @@ search_vec AND is_published = true

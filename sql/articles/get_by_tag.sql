@@ -10,4 +10,4 @@ SELECT
 FROM
     articles
 WHERE
-    id = $1 AND is_published = true
+    $1 = ANY(tags) AND is_published = true

@@ -1,6 +1,10 @@
 use chrono::{NaiveDateTime, Utc};
 use serde::{Deserialize, Serialize};
-use sqlx::{self, postgres::PgQueryResult, Error};
+use sqlx::{
+    self,
+    postgres::{PgQueryResult, PgRow},
+    Error,
+};
 
 use crate::database::DatabaseHandler;
 
@@ -96,9 +100,40 @@ impl Text {
             .await
     }
 
+    /// Gets ALL `Text`s from the database with `tag`.
+    pub async fn get_by_tag(db: &DatabaseHandler, tag: &str) -> Result<Vec<Self>, Error> {
+        sqlx::query_file_as!(Self, "sql/articles/get_by_tag.sql", tag)
+            .fetch_all(&db.pool)
+            .await
+    }
+
+    /// Gets ALL `Text`s from the database with any of `tags`.
+    pub async fn get_by_any_of_tags(
+        db: &DatabaseHandler,
+        tags: &[String],
+    ) -> Result<Vec<Self>, Error> {
+        sqlx::query_file_as!(Self, "sql/articles/get_by_any_of_tags.sql", tags)
+            .fetch_all(&db.pool)
+            .await
+    }
+
     /// Gets ALL `Text`s from the database matching the search query.
     pub async fn search(db: &DatabaseHandler, query: &str) -> Result<Vec<Self>, Error> {
         sqlx::query_file_as!(Self, "sql/articles/search.sql", query)
+            .fetch_all(&db.pool)
+            .await
+    }
+
+    /// Publishes a `Text`.
+    pub async fn publish(db: &DatabaseHandler, id: i32) -> Result<Vec<PgRow>, Error> {
+        sqlx::query!("UPDATE articles SET is_published = true WHERE id = $1", id)
+            .fetch_all(&db.pool)
+            .await
+    }
+
+    /// Unpublishes a `Text`.
+    pub async fn unpublish(db: &DatabaseHandler, id: i32) -> Result<Vec<PgRow>, Error> {
+        sqlx::query!("UPDATE articles SET is_published = false WHERE id = $1", id)
             .fetch_all(&db.pool)
             .await
     }
