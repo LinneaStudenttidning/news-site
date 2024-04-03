@@ -5,7 +5,7 @@
  */
 @mixin icon($opsz_mult: 1) {
     max-width: 1.15ch;
-    overflow-x: hidden;
+    overflow: hidden;
 
     content: attr(icon);
     margin-right: .25em;
