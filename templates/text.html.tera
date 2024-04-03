@@ -32,12 +32,12 @@
     <div class="info">
         <div itemprop="author" itemscope itemtype="https://schema.org/Person">
             <img itemprop="image" src="https://source.unsplash.com/random/400x400?b" alt="Bild på författaren">
-            <p class="byline"><span itemprop="givenName">Alice</span> <span itemprop="familyName">Alicedotter</span></p>
+            <p itemprop="name" class="byline"><span itemprop="givenName">Alice</span> <span itemprop="familyName">Alicedotter</span></p>
             <p class="byline" itemprop="email">alice.alicedotter@example.org</p>
+            <a itemprop="url" href="#">Se skribentens profil</a>
         </div>
-        <a href="#">Se skribentens profil</a>
-        <p class="published"><time datetime="2024-04-02 14:37" itemprop="datePublished">Publicerad 2 februari 2024, 14:37</time></p>
-        <p class="updated"><time datetime="2024-04-03 14:49" itemprop="dateModified">Uppdaterad 3 februari 2024, 14:49</time></p>
+        <p class="published"><time datetime="2024-04-02T14:37+0200" itemprop="datePublished">Publicerad 2 februari 2024, 14:37</time></p>
+        <p class="updated"><time datetime="2024-04-03T14:49+0200" itemprop="dateModified">Uppdaterad 3 februari 2024, 14:49</time></p>
         <div class="tags flex wrap gap">
             <a href="#" icon="tag" class="tag">lorem</a>
             <a href="#" icon="tag" class="tag">ipsum</a>
@@ -46,5 +46,10 @@
             <a href="#" icon="tag" class="tag">amet</a>
         </div>
     </div>
+    {#
+        TODO: It's possible to also add a publisher as a itemprop. Should probably be done in app.html.tera?
+        https://schema.org/Organization
+        https://schema.org/NewsArticle
+    #}
 </article>
 {% endblock main %}
