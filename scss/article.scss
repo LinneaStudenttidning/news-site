@@ -1,0 +1,123 @@
+@use "palette";
+@use "settings";
+@use "mixins";
+
+article {
+    background-color: palette.$grey100;
+    box-shadow: 0 .5rem .75rem palette.$shadow200;
+
+    // This is necessary for teh CSS to work correctly (at least in Firefox)...
+    // I don't know why, but it pisses me off too!
+    // Without it, the margin defined for `p` below, will not create "padding" on the `.news-item`-element...
+    padding-bottom: 1px;
+
+    > * {
+        margin: 1rem;
+    }
+
+    > img:first-child {
+        margin: 0;
+    }
+
+    > .lead-paragraph {
+        font-weight: bold;
+    }
+
+    > h2 {
+        font-size: 1rem;
+        font-weight: 400;
+        margin-bottom: 0;
+
+        + p {
+            margin-top: 0;
+        }
+    }
+
+    > .info * {
+        font-family: settings.$font-family-default;
+        font-size: .85rem;
+    }
+
+    .info {
+        display: grid;
+        grid-template-areas: 'img name' 'img link' 'img publish-date' 'img update-date' 'tags tags';
+        grid-template-columns: 6rem 1fr;
+        grid-template-rows: max-content max-content max-content 1fr max-content;
+        gap: 0 .75rem;
+        place-items: content;
+        padding-top: .5rem;
+        border-top: .15rem solid palette.$grey200;
+
+        > img {
+            grid-area: img;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+        }
+
+        > .byline {
+            grid-area: name;
+            font-size: 1.2em;
+            font-weight: 400;
+        }
+
+        > a {
+            grid-area: link;
+            width: max-content;
+            height: max-content;
+        }
+
+        .published {
+            grid-area: publish-date;
+        }
+
+
+        .updated {
+            grid-area: update-date;
+        }
+
+        .tags {
+            grid-area: tags;
+            margin-top: 1rem;
+        }
+    }
+
+    .tag {
+        cursor: pointer;
+        color: palette.$primary400;
+        background-color: palette.$primary100;
+        font-family: settings.$font-family-forms;
+        font-size: .75rem;
+        font-weight: 300;
+        line-height: 1;
+        text-decoration: none;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding: .75em 1.5em;
+        max-width: 100%;
+        overflow: hidden;
+        border-radius: 9999rem;
+        text-decoration: none;
+        background-color: palette.$primary100;
+        color: palette.$primary400;
+
+        &:hover,
+        &:focus {
+            background-color: darken(palette.$primary100, 5%);
+        }
+
+        &:active {
+            background-color: darken(palette.$primary100, 10%);
+        }
+
+        &[icon] {
+            display: flex;
+            padding-left: 1.25em;
+            align-items: center;
+        }
+
+        &[icon]::before {
+            @include mixins.icon;
+            color: palette.$primary300;
+        }
+    }
+}

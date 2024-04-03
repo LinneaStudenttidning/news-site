@@ -26,6 +26,11 @@ fn control_panel() -> Template {
     Template::render("control_panel", context! {})
 }
 
+#[get("/text")]
+fn text() -> Template {
+    Template::render("text", context! {})
+}
+
 pub fn get_all_routes() -> Vec<Route> {
-    routes![landing, about_us, editor, editor_v2, control_panel]
+    routes![landing, about_us, editor, editor_v2, control_panel, text]
 }
