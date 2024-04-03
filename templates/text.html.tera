@@ -1,38 +1,43 @@
 {% extends "templates/app" %}
 
 {% block main %}
-<article>
-    <img src="https://source.unsplash.com/random/1200x400?a" alt="Random image" loading="lazy">
-    <h1>Lorem ipsum dolor sit amet</h1>
-    <p class="lead-paragraph">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis quaerat ullam quas
+<article itemscope itemtype="https://schema.org/NewsArticle">
+    <img itemprop="image" src="https://source.unsplash.com/random/1200x400?a" alt="Random image" loading="lazy">
+    <h1 itemprop="headline">Lorem ipsum dolor sit amet</h1>
+    <p itemprop="description" class="lead-paragraph">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis quaerat ullam quas
         maiores, quod unde amet tempora perferendis eaque optio eligendi similique enim iusto possimus necessitatibus
         quae nihil, id molestiae labore beatae?</p>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente ullam, amet placeat, sunt ratione accusamus
-        totam in maiores quibusdam deleniti officiis. Reprehenderit corrupti dolores inventore nihil rerum similique
-        quis quam reiciendis laboriosam excepturi quia sit aut ipsam, debitis adipisci quasi, architecto suscipit sequi.
-        Hic quo minus fugit explicabo.</p>
-    <p>– Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla ad repudiandae suscipit, säger Mats Matsson.
-    </p>
-    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aspernatur, quam sed? Amet nisi nulla veniam inventore
-        quod aliquid incidunt deserunt totam, consequatur magnam quam ea ab error ducimus maiores ipsum quasi. Mollitia
-        dolorem expedita consequuntur id quasi fugiat, quisquam nam nulla officiis exercitationem, numquam maiores cum
-        rerum esse.</p>
-    <p>– Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla ad repudiandae suscipit, säger Mats Matsson.
-    </p>
-    <h2>Lorem ipsum dolor sit amet consectetur</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perspiciatis fuga cumque debitis a aliquam omnis,
-        beatae, laboriosam ab delectus quos est reprehenderit! Distinctio, rerum quod recusandae provident esse magni
-        fugit laudantium modi!</p>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, totam. Doloremque ipsam reprehenderit quod
-        architecto odit tempora debitis modi officia distinctio, amet deserunt? Quos inventore non saepe dolorum!
-        Repellendus excepturi fugiat, reprehenderit sed tempore iusto. Quo dicta dolores, tenetur cumque iure ipsa,
-        ratione vitae, minima perspiciatis totam hic maiores!</p>
+    <div itemprop="articleBody">
+        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente ullam, amet placeat, sunt ratione accusamus
+            totam in maiores quibusdam deleniti officiis. Reprehenderit corrupti dolores inventore nihil rerum similique
+            quis quam reiciendis laboriosam excepturi quia sit aut ipsam, debitis adipisci quasi, architecto suscipit sequi.
+            Hic quo minus fugit explicabo.</p>
+        <p>– Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla ad repudiandae suscipit, säger Mats Matsson.
+        </p>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aspernatur, quam sed? Amet nisi nulla veniam inventore
+            quod aliquid incidunt deserunt totam, consequatur magnam quam ea ab error ducimus maiores ipsum quasi. Mollitia
+            dolorem expedita consequuntur id quasi fugiat, quisquam nam nulla officiis exercitationem, numquam maiores cum
+            rerum esse.</p>
+        <p>– Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla ad repudiandae suscipit, säger Mats Matsson.
+        </p>
+        <h2>Lorem ipsum dolor sit amet consectetur</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perspiciatis fuga cumque debitis a aliquam omnis,
+            beatae, laboriosam ab delectus quos est reprehenderit! Distinctio, rerum quod recusandae provident esse magni
+            fugit laudantium modi!</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, totam. Doloremque ipsam reprehenderit quod
+            architecto odit tempora debitis modi officia distinctio, amet deserunt? Quos inventore non saepe dolorum!
+            Repellendus excepturi fugiat, reprehenderit sed tempore iusto. Quo dicta dolores, tenetur cumque iure ipsa,
+            ratione vitae, minima perspiciatis totam hic maiores!</p>
+    </div>
     <div class="info">
-        <img src="https://source.unsplash.com/random/400x400?b" alt="Bild på författaren">
-        <p class="byline">Alice Alicedotter</p>
+        <div itemprop="author" itemscope itemtype="https://schema.org/Person">
+            <img itemprop="image" src="https://source.unsplash.com/random/400x400?b" alt="Bild på författaren">
+            <p class="byline"><span itemprop="givenName">Alice</span> <span itemprop="familyName">Alicedotter</span></p>
+            <p class="byline" itemprop="email">alice.alicedotter@example.org</p>
+        </div>
         <a href="#">Se skribentens profil</a>
-        <p class="published">Publicerad 2 februari 2024, 14:37</p>
-        <p class="updated">Uppdaterad 3 februari 2024, 14:49</p>
+        <p class="published"><time datetime="2024-04-02 14:37" itemprop="datePublished">Publicerad 2 februari 2024, 14:37</time></p>
+        <p class="updated"><time datetime="2024-04-03 14:49" itemprop="dateModified">Uppdaterad 3 februari 2024, 14:49</time></p>
         <div class="tags flex wrap gap">
             <a href="#" icon="tag" class="tag">lorem</a>
             <a href="#" icon="tag" class="tag">ipsum</a>
