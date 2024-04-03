@@ -19,3 +19,4 @@ pub struct Claims {
     pub data: Creator,
     pub admin: bool,
 }
+

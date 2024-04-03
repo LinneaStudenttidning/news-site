@@ -24,3 +24,4 @@ fn control_panel() -> Template {
 pub fn get_all_routes() -> Vec<Route> {
     routes![landing, about_us, editor, control_panel]
 }
+

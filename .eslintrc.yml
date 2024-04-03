@@ -19,3 +19,4 @@ rules:
   semi:
     - error
     - never
+

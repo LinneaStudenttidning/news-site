@@ -43,3 +43,4 @@ async fn main() {
         Err(err) => println!("Encountered an error while starting rocket:\n{}", err),
     }
 }
+
