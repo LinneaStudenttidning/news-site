@@ -21,7 +21,8 @@ pub struct Text {
     pub id: i32,
     pub title: String,
     pub author: String,
-    pub content: String,
+    pub lead_paragraph: String,
+    pub text_body: String,
     pub text_type: TextType,
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,
@@ -34,7 +35,8 @@ impl Default for Text {
             id: 0,
             title: "Missing title!".into(),
             author: "NULL".into(),
-            content: "Missing content!".into(),
+            lead_paragraph: "Missing lead paragraph!".into(),
+            text_body: "Missing text body!".into(),
             text_type: TextType::Other,
             created_at: Utc::now().naive_utc(),
             updated_at: Utc::now().naive_utc(),
@@ -48,14 +50,16 @@ impl Text {
     pub fn create(
         title: &str,
         author: &str,
-        content: &str,
+        lead_paragraph: &str,
+        text_body: &str,
         text_type: TextType,
         tags: Vec<String>,
     ) -> Self {
         Self {
             title: title.into(),
             author: author.into(),
-            content: content.into(),
+            lead_paragraph: lead_paragraph.into(),
+            text_body: text_body.into(),
             text_type,
             tags,
             ..Default::default()
@@ -68,7 +72,8 @@ impl Text {
             "sql/articles/insert.sql",
             self.title,
             self.author,
-            self.content,
+            self.lead_paragraph,
+            self.text_body,
             &self.text_type as &TextType,
             &self.tags
         )
@@ -162,7 +167,8 @@ mod tests {
             let text = Text::create(
                 "Katter och hundar",
                 "author",
-                "content",
+                "Lead paragraph",
+                "Text body",
                 TextType::Article,
                 vec![],
             );
@@ -179,4 +185,3 @@ mod tests {
         tokio_test::block_on(test())
     }
 }
-

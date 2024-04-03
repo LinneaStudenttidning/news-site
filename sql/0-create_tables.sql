@@ -30,7 +30,8 @@ CREATE TABLE IF NOT EXISTS articles (
     title text NOT NULL,
     /* Reference to the username of the creator. */
     author text NOT NULL,
-    content text NOT NULL,
+    lead_paragraph text NOT NULL,
+    text_body text NOT NULL,
     text_type text_type NOT NULL,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -38,10 +39,10 @@ CREATE TABLE IF NOT EXISTS articles (
     -- Generate a search vector for title and content. It should prioritize Swedish over English.
     search_vec tsvector GENERATED ALWAYS AS (
         setweight(
-            to_tsvector('swedish', title || ' ' || content),
+            to_tsvector('swedish', title || ' ' || lead_paragraph || ' ' || text_body),
             'A'
         ) || setweight(
-            to_tsvector('english', title || ' ' || content),
+            to_tsvector('english', title || ' ' || lead_paragraph || ' ' || text_body),
             'B'
         )
     ) STORED
