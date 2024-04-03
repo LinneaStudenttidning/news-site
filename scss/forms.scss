@@ -1,0 +1,30 @@
+@use "palette";
+@use "settings";
+
+form {
+    display: flex;
+    flex-direction: column;
+    background-color: palette.$grey100;
+    padding: 1rem;
+    font-family: settings.$font-family-forms;
+
+    > input,
+    > textarea,
+    > select {
+        font-family: settings.$font-family-forms;
+        font-weight: unset;
+        font-size: 1rem;
+        background-color: palette.$surface;
+        border: 0 none transparent;
+        padding: .5em 1em;
+        margin-bottom: 1rem;
+    }
+
+    > label {
+        font-weight: 400;
+    }
+
+    > textarea {
+        resize: vertical;
+    }
+}

@@ -1,0 +1,53 @@
+{% extends "templates/app" %}
+
+{% block head %}
+<title>Textredigerare</title>
+<script type="module" src="/static/scripts/editor.js" async defer></script>
+{% endblock head %}
+
+{% block main %}
+<h1>Textredigerare</h1>
+<form action="#" method="post">
+    <label for="text-type">Texttyp:</label>
+    <select name="text-typpe" id="text-type">
+        <option value="Article">Artikel</option>
+        <option value="Covarage">Reportage</option>
+        <option value="Opinion">Opinion/Debatt</option>
+        <option value="Other">Annat/Övrigt</option>
+    </select>
+
+    <label for="title">Rubrik:</label>
+    <input type="text" name="title" id="title">
+
+    <label for="lead-paragraph">Ingress:</label>
+    <textarea name="lead-paragraph" id="lead-paragraph"></textarea>
+
+
+    <label for="text-body">Brödtext:</label>
+    <textarea name="text-body" id="text-body"></textarea>
+
+    <label for="tags">Taggar, separera med semikolon (;):</label>
+    <input type="text" name="tags" id="tags">
+
+    <div class="flex wrap gap">
+        <button class="btn" icon="save" type="submit">Spara</button>
+        <button class="btn" icon="check_circle" type="submit">Markera som klar</button>
+    </div>
+</form>
+{% endblock main %}
+
+{% block aside %}
+<div class="side-content">
+    <h1>Guide</h1>
+    <div>
+        <p>
+        <ul>
+            <li>Det första stycket du skriver kommer automatiskt att bli fetstilt, alltså ingressen.</li>
+            <li>Använd knapparna för att göra din text fetstilt/kursiv/annat där det behövs.</li>
+            <li>Du ska <strong>endast</strong> ha en <code>H1</code>, alltså rubrik.</li>
+            <li>Du får ha hur många <code>H2</code>, alltså mellanrubriker, du vill/behöver.</li>
+        </ul>
+        </p>
+    </div>
+</div>
+{% endblock aside %}
