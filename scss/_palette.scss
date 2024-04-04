@@ -49,7 +49,7 @@ $tertiary300: $red300;
 $tertiary400: $red400;
 $tertiary: $red;
 
-$surface: lighten($yellow100, 12%);
+$surface: desaturate(lighten($yellow100, 12%), 40%);
 $standout: $white;
 $text: $black;
 
