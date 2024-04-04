@@ -13,9 +13,9 @@
         <div class="sep"></div>
         <button class="btn" icon="edit_note">Ändra "om oss"</button>
         <button class="btn" icon="gallery_thumbnail">Bildgalleriet</button>
-        <button class="btn" icon="preview">Granska och godkänn nya artiklar</button>
-        <button class="btn" icon="edit_note">Redigera artikel</button>
-        <button class="btn dangerous" icon="unpublished">Avpublicera artikel</button>
+        <button class="btn" icon="preview">Granska och godkänn nya texter</button>
+        <button class="btn" icon="edit_note">Redigera text</button>
+        <button class="btn dangerous" icon="unpublished">Avpublicera text</button>
     </div>
 </div>
 
