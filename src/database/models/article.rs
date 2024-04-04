@@ -8,7 +8,7 @@ use sqlx::{
 
 use crate::database::DatabaseHandler;
 
-#[derive(Debug, Clone, Deserialize, Serialize, sqlx::Type)]
+#[derive(Debug, Clone, Copy, Deserialize, Serialize, sqlx::Type, FromFormField)]
 #[sqlx(type_name = "text_type", rename_all = "lowercase")]
 pub enum TextType {
     Article,
@@ -16,6 +16,7 @@ pub enum TextType {
     Opinion,
     Other,
 }
+
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Text {
     pub id: i32,
@@ -79,6 +80,13 @@ impl Text {
         )
         .execute(&db.pool)
         .await
+    }
+
+    /// Gets Oup to `n` latest `Text`s from the database.
+    pub async fn get_n_latest(db: &DatabaseHandler, n: i64) -> Result<Vec<Self>, Error> {
+        sqlx::query_file_as!(Self, "sql/articles/get_n_latest.sql", n)
+            .fetch_all(&db.pool)
+            .await
     }
 
     /// Gets ONE `Text` from the database by its id.

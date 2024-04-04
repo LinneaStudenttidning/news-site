@@ -8,9 +8,9 @@
 
 {% block main %}
 <h1>Textredigerare</h1>
-<form action="#" method="post">
+<form action="/publish-text" method="post">
     <label for="text-type">Texttyp:</label>
-    <select name="text-typpe" id="text-type">
+    <select name="text-type" id="text-type">
         <option value="Article">Artikel</option>
         <option value="Covarage">Reportage</option>
         <option value="Opinion">Opinion/Debatt</option>
@@ -20,13 +20,11 @@
     <label for="title">Rubrik:</label>
     <input type="text" name="title" id="title">
 
-    <label for="lead-paragraph">Ingress:</label>
-    <textarea name="lead-paragraph" id="lead-paragraph" rows="5"></textarea>
-
+    <label for="leading-paragraph">Ingress:</label>
+    <textarea name="leading-paragraph" id="leading-paragraph" rows="5"></textarea>
 
     <label for="text-body">Brödtext:</label>
-    {{ editor::wysiwyg(id="text-body") }}
-
+    <textarea name="text-body" id="text-body" rows="15"></textarea>
 
     <label for="tags">Taggar, separera med semikolon (;):</label>
     <input type="text" name="tags" id="tags">
