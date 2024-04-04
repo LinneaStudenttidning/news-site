@@ -22,7 +22,7 @@
 <div class="toolbox">
     <h2 icon="feed">Dina texter</h2>
     <div class="content">
-        <h3>Opublicerade artiklar</h3>
+        <h3>Opublicerade texter</h3>
         <table class="content">
             <thead>
                 <tr>
@@ -62,7 +62,7 @@
             <button class="btn" icon="post_add">Skapa ny text</button>
         </div>
 
-        <h3>Publicerade artiklar</h3>
+        <h3>Publicerade texter</h3>
         <table class="content">
             <thead>
                 <tr>
