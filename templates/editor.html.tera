@@ -1,4 +1,5 @@
 {% extends "templates/app" %}
+{% import "components/editor" as editor %}
 
 {% block head %}
 <title>Textredigerare</title>
@@ -7,40 +8,7 @@
 
 {% block main %}
 <h1>Textredigerare</h1>
-<div class="editor">
-    <div class="actions flex wrap gap">
-        <button class="btn icon-only" icon="undo" title="Ångra"></button>
-        <button class="btn icon-only" icon="redo" title="Gör om"></button>
-        <button class="btn icon-only" icon="format_clear" title="Ta bort formatering"></button>
-        <button class="btn icon-only" icon="format_h1" title="Rubrik 1"></button>
-        <button class="btn icon-only" icon="format_h2" title="Rubrik 2"></button>
-        <button class="btn icon-only" icon="format_paragraph" title="Paragraf"></button>
-        <button class="btn icon-only" icon="format_bold" title="Fet"></button>
-        <button class="btn icon-only" icon="format_italic" title="Kursiv"></button>
-        <button class="btn icon-only" icon="format_list_bulleted" title="Punktlista"></button>
-        <button class="btn icon-only" icon="format_list_numbered" title="Numrerad lista"></button>
-        <button class="btn icon-only" icon="add_photo_alternate" title="Lägg till bild"></button>
-        <button class="btn icon-only" icon="chat" title="Citat"></button>
-    </div>
-    <div role="textbox" class="textbox" contenteditable>
-        <h1>Rubrik</h1>
-        <p>Ingress Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit quam dicta molestias molestiae
-            ea error esse sit consectetur expedita, nesciunt odit cupiditate cum voluptatem.</p>
-        <p>Brödtext Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consectetur debitis excepturi nemo
-            incidunt repellendus ullam quos architecto cum corrupti hic quam aspernatur maxime facilis suscipit enim
-            libero magnam, eos dolorem placeat. Et.</p>
-        <h2>Mellanrubrik</h2>
-        <p>Brödtext Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consectetur debitis excepturi nemo
-            incidunt repellendus ullam quos architecto cum corrupti hic quam aspernatur maxime facilis suscipit enim
-            libero magnam, eos dolorem placeat. Et.</p>
-        <p>– Citat Lorem ipsum dolor sit amet consectetur adipisicing elit, sa Namn Efternamn</p>
-    </div>
-    <div class="info flex wrap gap">
-        <p>Tecken (inklusive mellanrum): <span id="char-count">0</span></p>
-        <p>Tecken (exklusive mellanrum): <span id="char-count-no-ws">0</span></p>
-        <p>Ord: <span id="word-count">0</span></p>
-    </div>
-</div>
+{{ editor::wysiwyg(id="editor")}}
 {% endblock main %}
 
 {% block aside %}
@@ -58,4 +26,3 @@
     </div>
 </div>
 {% endblock aside %}
-

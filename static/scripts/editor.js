@@ -9,7 +9,8 @@ editors.forEach(editor => {
     const wordCount = editor.querySelector("#word-count")
 
     function setupAction(htmlClass, commands) {
-        actions.querySelector(htmlClass)?.addEventListener("click", () => {
+        actions.querySelector(htmlClass)?.addEventListener("click", event => {
+            event.preventDefault()
             textbox?.focus()
             document.execCommand(...commands
                 .map(command =>
@@ -71,7 +72,7 @@ editors.forEach(editor => {
     textbox.addEventListener("input", () => {
         charCount.textContent = textbox.textContent.length
         charCountNoWs.textContent = textbox.textContent.replace(/\s+/g, "").length
-        wordCount.textContent = textbox.textContent.split(/\s+/).length
+        wordCount.textContent = textbox.textContent.split(/\s+/).filter(word => word !== "").length
     })
 
     textbox.dispatchEvent(new Event("input"))

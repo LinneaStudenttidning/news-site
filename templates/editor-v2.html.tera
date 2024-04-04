@@ -1,4 +1,5 @@
 {% extends "templates/app" %}
+{% import "components/editor" as editor %}
 
 {% block head %}
 <title>Textredigerare</title>
@@ -20,11 +21,12 @@
     <input type="text" name="title" id="title">
 
     <label for="lead-paragraph">Ingress:</label>
-    <textarea name="lead-paragraph" id="lead-paragraph"></textarea>
+    <textarea name="lead-paragraph" id="lead-paragraph" rows="5"></textarea>
 
 
     <label for="text-body">Brödtext:</label>
-    <textarea name="text-body" id="text-body"></textarea>
+    {{ editor::wysiwyg(id="text-body") }}
+
 
     <label for="tags">Taggar, separera med semikolon (;):</label>
     <input type="text" name="tags" id="tags">

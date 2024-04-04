@@ -5,7 +5,7 @@
     width: 100%;
     height: fit-content;
     padding: 1rem;
-    background-color: palette.$grey100;
+    background-color: palette.$surface;
 
     .actions {
         height: fit-content;
@@ -13,7 +13,7 @@
     }
 
     .textbox {
-        background-color: palette.$surface;
+        background-color: palette.$standout;
         height: fit-content;
         min-height: 60vh;
         padding: 1rem;
@@ -41,17 +41,12 @@
             font-family: settings.$font-family-paragraph;
         }
 
-        p:first-of-type {
-            font-weight: bold;
-        }
-
         ul,
         ol {
             margin-left: 2rem;
         }
     }
 
-    // FIXME: Import this font.
     .info {
         margin-top: 1rem;
 

@@ -4,7 +4,7 @@
 form {
     display: flex;
     flex-direction: column;
-    background-color: palette.$grey100;
+    background-color: palette.$standout;
     padding: 1rem;
     font-family: settings.$font-family-forms;
 
@@ -17,6 +17,10 @@ form {
         background-color: palette.$surface;
         border: 0 none transparent;
         padding: .5em 1em;
+        margin-bottom: 1rem;
+    }
+
+    > .editor {
         margin-bottom: 1rem;
     }
 
