@@ -3,7 +3,7 @@
 @use "mixins";
 
 article {
-    background-color: palette.$grey100;
+    background-color: palette.$standout;
     box-shadow: 0 .5rem .75rem palette.$shadow200;
 
     // This is necessary for teh CSS to work correctly (at least in Firefox)...

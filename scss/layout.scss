@@ -3,18 +3,19 @@
 
 html {
     background-color: palette.$surface;
-    display: grid;
-    grid-template-columns: 1fr min(90vw, 120ch) 1fr;
-    grid-template-areas: '. body .';
+    container-type: inline-size;
 }
 
 body {
     grid-area: body;
     display: grid;
     min-height: 100vh;
-    grid-template-columns: 1fr 35ch;
     grid-template-rows: max-content 1fr max-content;
-    grid-template-areas: 'nav nav' 'main aside' 'footer footer';
+    grid-template-columns: 1fr 70ch 35ch 1fr;
+    grid-template-areas:
+        '.      nav    nav    .'
+        '.      main   aside  .'
+        'footer footer footer footer';
 
     > nav {
         grid-area: nav;
@@ -135,7 +136,13 @@ main,
     }
 }
 
-@media screen and (max-width: 800px) {
+@container (width < 115ch) {
+    body {
+        grid-template-columns: 1fr 60ch 30ch 1fr;
+    }
+}
+
+@container (width < 95ch) {
     body {
         grid-template-areas: 'nav' 'main' 'aside' 'footer';
         grid-template-columns: 1fr;
@@ -143,7 +150,7 @@ main,
 
         > main,
         > aside {
-            margin: 0;
+            margin: 2rem 2rem 0 2rem;
         }
 
         > aside {

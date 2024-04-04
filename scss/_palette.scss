@@ -49,8 +49,8 @@ $tertiary300: $red300;
 $tertiary400: $red400;
 $tertiary: $red;
 
-$surface: $white;
-$standout: $grey100;
+$surface: lighten($yellow100, 12%);
+$standout: $white;
 $text: $black;
 
 $success: $green;
