@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS articles (
     id serial NOT NULL PRIMARY KEY,
     is_published boolean NOT NULL DEFAULT false,
     title text NOT NULL,
+    title_slug TEXT NOT NULL,
     /* Reference to the username of the creator. */
     author text NOT NULL,
     lead_paragraph text NOT NULL,

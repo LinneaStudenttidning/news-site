@@ -3,6 +3,7 @@ INSERT INTO
         id,
         is_published,
         title,
+        title_slug,
         author,
         lead_paragraph,
         text_body,
@@ -12,4 +13,4 @@ INSERT INTO
         tags
     )
 VALUES
-    (DEFAULT, DEFAULT, $1, $2, $3, $4, $5, DEFAULT, DEFAULT, $6)
+    (DEFAULT, DEFAULT, $1, $2, $3, $4, $5, $6, DEFAULT, DEFAULT, $7)

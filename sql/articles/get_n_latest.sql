@@ -1,6 +1,7 @@
 SELECT
     id,
     title,
+    title_slug,
     author,
     lead_paragraph,
     text_body,

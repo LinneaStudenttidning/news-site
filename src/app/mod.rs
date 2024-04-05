@@ -38,12 +38,13 @@ fn text() -> Template {
     Template::render("text", context! {})
 }
 
-#[get("/text/<id>")]
-async fn text_by_id(id: i32, db: &State<DatabaseHandler>) -> Result<Template, String> {
+#[get("/text/<id>/<_title_slug>")]
+async fn text_by_id(id: i32, _title_slug: String, db: &State<DatabaseHandler>) -> Result<Template, String> {
     Text::publish(db, id).await.map_err(|err| err.to_string())?;
     let text = Text::get_by_id(db, id)
         .await
         .map_err(|err| err.to_string())?;
+    // TODO: Redirect if the url slug is incorrect, but ID is correct.
     println!("{:?}", text);
     Ok(Template::render("text-by-id", context! { text }))
 }

@@ -4,7 +4,7 @@
 <h1>Senaste inom nyheter, reportage, & opinion</h1>
 <div>
     {% for text in texts %}
-    <a href="/text/{{ text.id }}" class="news-item">
+    <a href="/text/{{ text.id }}/{{ text.title_slug }}" class="news-item">
         <img src="https://source.unsplash.com/random/600x200?{{ text.id }}" alt="Random image" loading="lazy">
         <h1>{{ text.title }}</h1>
         <p><span class="type">{{ text.text_type }}</span>{{ text.lead_paragraph }}</p>

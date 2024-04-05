@@ -1,5 +1,6 @@
 use chrono::{NaiveDateTime, Utc};
 use serde::{Deserialize, Serialize};
+use slug::slugify;
 use sqlx::{
     self,
     postgres::{PgQueryResult, PgRow},
@@ -21,6 +22,7 @@ pub enum TextType {
 pub struct Text {
     pub id: i32,
     pub title: String,
+    pub title_slug: String,
     pub author: String,
     pub lead_paragraph: String,
     pub text_body: String,
@@ -35,6 +37,7 @@ impl Default for Text {
         Self {
             id: 0,
             title: "Missing title!".into(),
+            title_slug: "Missing title url!".into(),
             author: "NULL".into(),
             lead_paragraph: "Missing lead paragraph!".into(),
             text_body: "Missing text body!".into(),
@@ -72,6 +75,7 @@ impl Text {
         sqlx::query_file!(
             "sql/articles/insert.sql",
             self.title,
+            slugify(&self.title),
             self.author,
             self.lead_paragraph,
             self.text_body,
