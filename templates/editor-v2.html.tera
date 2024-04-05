@@ -8,7 +8,7 @@
 
 {% block main %}
 <h1>Textredigerare</h1>
-<form action="/publish-text" method="post">
+<form action="/control-panel/publish-text" method="post">
     <label for="text-type">Texttyp:</label>
     <select name="text-type" id="text-type">
         <option value="Article">Artikel</option>

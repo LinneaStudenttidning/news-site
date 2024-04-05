@@ -1,4 +1,7 @@
+use std::fmt::Debug;
+
 use chrono::{NaiveDateTime, Utc};
+use rocket::request::FromParam;
 use serde::{Deserialize, Serialize};
 use slug::slugify;
 use sqlx::{
@@ -16,6 +19,20 @@ pub enum TextType {
     Coverage,
     Opinion,
     Other,
+}
+
+impl<'a> FromParam<'a> for TextType {
+    type Error = String;
+
+    fn from_param(param: &'a str) -> Result<Self, Self::Error> {
+        match param {
+            "Article" | "article" => Ok(TextType::Article),
+            "Coverage" | "coverage" => Ok(TextType::Coverage),
+            "Opinion" | "opinion" => Ok(TextType::Opinion),
+            "Other" | "other" => Ok(TextType::Other),
+            _ => Err(format!("{} is not a valid TextType", param)),
+        }
+    }
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -140,6 +157,15 @@ impl Text {
         sqlx::query_file_as!(Self, "sql/articles/search.sql", query)
             .fetch_all(&db.pool)
             .await
+    }
+
+    /// Gets all the unique tags articles have been tagged with.
+    pub async fn get_all_tags(db: &DatabaseHandler) -> Result<Vec<String>, Error> {
+        sqlx::query_file_scalar!("sql/articles/get_all_tags.sql")
+            .fetch_one(&db.pool)
+            .await
+            // Result is an `Option<Vec<String>>`, so we have to safely unwrap the `Option`.
+            .map(|result| result.unwrap_or_default())
     }
 
     /// Publishes a `Text`.

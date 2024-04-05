@@ -13,10 +13,10 @@
 <body>
     <nav class="flex wrap">
         <a href="/">LOGGA</a>
-        <a href="/type/news">Nyheter</a>
-        <a href="/type/covarages">Reportage</a>
-        <a href="/type/opinion">Opinion</a>
-        <a href="/type/other">Annat</a>
+        <a href="/texts/type/article">Nyheter</a>
+        <a href="/texts/type/coverage">Reportage</a>
+        <a href="/texts/type/opinion">Opinion</a>
+        <a href="/texts/type/other">Annat</a>
         <a href="/about-us">Om oss</a>
         <a href="/search">Sök</a>
     </nav>
@@ -30,25 +30,19 @@
         <div class="side-content">
             <h1>Populära taggar</h1>
             <div class="flex wrap gap" id="popular-tags">
-                <a class="btn" icon="tag" href="#">lokalt</a>
-                <a class="btn" icon="tag" href="#">älg</a>
-                <a class="btn" icon="tag" href="#">klimat</a>
-                <a class="btn" icon="tag" href="#">jakt</a>
-                <a class="btn" icon="tag" href="#">topplista</a>
-                <a class="btn" icon="tag" href="#">katter</a>
-                <a class="btn" icon="tag" href="#">te</a>
-                <a class="btn" icon="tag" href="#">kaffe</a>
-                <a class="btn" icon="tag" href="#">is</a>
+                {% for tag in tags %}
+                <a class="btn" icon="tag" href="/texts/tag/{{ tag }}">{{ tag }}</a>
+                {% endfor %}
             </div>
         </div>
 
         <div class="side-content">
             <h1>Skribenter</h1>
             <div class="flex wrap gap" id="writers">
-                <a class="btn" icon="person" href="#">Leif E.</a>
-                <a class="btn" icon="person" href="#">Alice A.</a>
-                <a class="btn" icon="person" href="#">Bob D.</a>
-                <a class="btn" icon="person" href="#">Joan C.</a>
+                <a class="btn" icon="person" href="/texts/author/Leif.E.24">Leif E.</a>
+                <a class="btn" icon="person" href="/texts/author/Alice.A.20">Alice A.</a>
+                <a class="btn" icon="person" href="/texts/author/Bob.D.22">Bob D.</a>
+                <a class="btn" icon="person" href="/texts/author/Joan.C.21">Joan C.</a>
             </div>
         </div>
         {% endblock aside %}
