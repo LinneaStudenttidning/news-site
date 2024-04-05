@@ -39,7 +39,7 @@ fn text() -> Template {
 }
 
 #[get("/text/<id>/<_title_slug>")]
-async fn text_by_id(id: i32, _title_slug: String, db: &State<DatabaseHandler>) -> Result<Template, String> {
+async fn text_by_id(id: i32, _title_slug: &str, db: &State<DatabaseHandler>) -> Result<Template, String> {
     Text::publish(db, id).await.map_err(|err| err.to_string())?;
     let text = Text::get_by_id(db, id)
         .await
@@ -77,9 +77,10 @@ async fn publish_text(form: Form<PublishTextForm<'_>>, db: &State<DatabaseHandle
         form.text_type,
         tags,
     );
+    //Redirect::to(uri!(text_by_id(article. , text.title_slug)
 
     match text.save_to_db(db).await {
-        Ok(_) => Redirect::to("/"),
+        Ok(published_article) => Redirect::to(uri!(text_by_id(published_article.id , published_article.title_slug))),
         Err(e) => {
             println!("{:?}", e);
             Redirect::to("/not-found")

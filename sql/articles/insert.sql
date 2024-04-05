@@ -13,4 +13,14 @@ INSERT INTO
         tags
     )
 VALUES
-    (DEFAULT, DEFAULT, $1, $2, $3, $4, $5, $6, DEFAULT, DEFAULT, $7)
+    (DEFAULT, DEFAULT, $1, $2, $3, $4, $5, $6, DEFAULT, DEFAULT, $7) returning
+        id,
+        title, 
+        title_slug,
+        author,
+        lead_paragraph,
+        text_body,
+        text_type AS "text_type!: TextType",
+        created_at,
+        updated_at,
+        tags
