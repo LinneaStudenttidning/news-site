@@ -19,17 +19,13 @@
             <a class="link" itemprop="url" href="/by-author/{{ text.author }}">Se skribentens profil</a>
         </div>
         <p class="published"><time datetime="{{ text.created_at }}" itemprop="datePublished">Skapad
-                {{ text.created_at }}</time></p>
+                {{ text.created_at | date(format="%e %B %Y, %R") }}</time></p>
         <p class="updated"><time datetime="{{ text.updated_at }}" itemprop="dateModified">Uppdaterad
-                {{ text.updated_at }}</time></p>
+                {{ text.updated_at | date(format="%e %B %Y, %R") }}</time></p>
         <div class="tags flex wrap gap">
             {% for tag in text.tags %}
             <a href="/by-tag/{{ tag }}" icon="tag" class="tag">{{ tag }}</a>
             {% endfor %}
-            <a href="#" icon="tag" class="tag">trofasthet</a>
-            <a href="#" icon="tag" class="tag">intelligens</a>
-            <a href="#" icon="tag" class="tag">kärlek</a>
-            <a href="#" icon="tag" class="tag">relationen</a>
         </div>
     </div>
     {#

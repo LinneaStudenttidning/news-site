@@ -12,7 +12,7 @@
     <label for="text-type">Texttyp:</label>
     <select name="text-type" id="text-type">
         <option value="Article">Artikel</option>
-        <option value="Covarage">Reportage</option>
+        <option value="Coverage">Reportage</option>
         <option value="Opinion">Opinion/Debatt</option>
         <option value="Other">Annat/Övrigt</option>
     </select>

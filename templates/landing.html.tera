@@ -5,10 +5,10 @@
 <div>
     {% for text in texts %}
     <a href="/text/{{ text.id }}" class="news-item">
-        <img src="https://source.unsplash.com/random/600x200?a" alt="Random image" loading="lazy">
+        <img src="https://source.unsplash.com/random/600x200?{{ text.id }}" alt="Random image" loading="lazy">
         <h1>{{ text.title }}</h1>
         <p><span class="type">{{ text.text_type }}</span>{{ text.lead_paragraph }}</p>
-        <p class="news-meta-data">{{ text.author }}, {{ text.created_at }}</p>
+        <p class="news-meta-data">{{ text.author }}, {{ text.created_at | date(format="%R")  }}</p>
     </a>
     {% endfor %}
     <a href="#" class="news-item">
