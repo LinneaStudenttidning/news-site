@@ -6,7 +6,7 @@
     <h1 itemprop="headline">{{ text.title }}</h1>
     <p itemprop="description" class="lead-paragraph">{{ text.lead_paragraph }}</p>
     <div class="text-body" itemprop="articleBody">
-        <p>{{ text.text_body }}</p>
+        <p>{{ text.text_body | markdown | safe }}</p>
     </div>
     <div class="info">
         <div class="author" itemprop="author" itemscope itemtype="https://schema.org/Person">

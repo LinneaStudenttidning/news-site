@@ -10,7 +10,7 @@ pub mod token;
 
 use database::DatabaseHandler;
 use rocket::fs::FileServer;
-use rocket_dyn_templates::{context, Template};
+use rocket_dyn_templates::{context, tera, Template};
 
 #[catch(404)]
 async fn not_found() -> Template {
@@ -31,7 +31,17 @@ async fn main() {
 
     // Launch the application
     match rocket::build()
-        .attach(Template::fairing())
+        //.attach(Template::fairing())
+        .attach(Template::custom(|engines|{
+            engines.tera.register_filter(
+                "markdown",
+                |value: &tera::Value, _: &_| -> tera::Result<tera::Value> {
+                    let value = tera::from_value::<String>(value.clone())?;
+                    let value = markdown::to_html(&value);
+                    Ok(tera::to_value(value)?)
+                },
+            );
+        }))
         .manage(database)
         .mount("/", app::get_all_routes())
         .mount("/texts", app::texts::get_all_routes())
