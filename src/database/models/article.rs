@@ -37,7 +37,7 @@ impl Default for Text {
         Self {
             id: 0,
             title: "Missing title!".into(),
-            title_slug: "Missing title url!".into(),
+            title_slug: "Missing title slug!".into(),
             author: "NULL".into(),
             lead_paragraph: "Missing lead paragraph!".into(),
             text_body: "Missing text body!".into(),
