@@ -63,12 +63,14 @@ struct PublishTextForm<'a> {
 
 #[post("/publish-text", data = "<form>")]
 async fn publish_text(form: Form<PublishTextForm<'_>>, db: &State<DatabaseHandler>) -> Redirect {
-    let tags = form
-        .tags
-        .split(';')
-        .map(String::from)
-        .collect::<Vec<String>>();
-
+    let tags = match form.tags.len() > 0 {
+        true => form
+            .tags
+            .split(';')
+            .map(String::from)
+            .collect::<Vec<String>>(),
+        false => Vec::new(),
+    };
     let text = Text::create(
         form.title,
         "UNKNOWN",
@@ -77,8 +79,6 @@ async fn publish_text(form: Form<PublishTextForm<'_>>, db: &State<DatabaseHandle
         form.text_type,
         tags,
     );
-    //Redirect::to(uri!(text_by_id(article. , text.title_slug)
-
     match text.save_to_db(db).await {
         Ok(published_article) => Redirect::to(uri!(text_by_id(published_article.id , published_article.title_slug))),
         Err(e) => {
