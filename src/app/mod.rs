@@ -39,7 +39,11 @@ fn text() -> Template {
 }
 
 #[get("/text/<id>/<_title_slug>")]
-async fn text_by_id(id: i32, _title_slug: &str, db: &State<DatabaseHandler>) -> Result<Template, String> {
+async fn text_by_id(
+    id: i32,
+    _title_slug: &str,
+    db: &State<DatabaseHandler>,
+) -> Result<Template, String> {
     Text::publish(db, id).await.map_err(|err| err.to_string())?;
     let text = Text::get_by_id(db, id)
         .await
@@ -63,13 +67,13 @@ struct PublishTextForm<'a> {
 
 #[post("/publish-text", data = "<form>")]
 async fn publish_text(form: Form<PublishTextForm<'_>>, db: &State<DatabaseHandler>) -> Redirect {
-    let tags = match form.tags.len() > 0 {
-        true => form
+    let tags = match form.tags.is_empty() {
+        false => form
             .tags
             .split(';')
             .map(String::from)
             .collect::<Vec<String>>(),
-        false => Vec::new(),
+        true => Vec::new(),
     };
     let text = Text::create(
         form.title,
@@ -80,7 +84,10 @@ async fn publish_text(form: Form<PublishTextForm<'_>>, db: &State<DatabaseHandle
         tags,
     );
     match text.save_to_db(db).await {
-        Ok(published_article) => Redirect::to(uri!(text_by_id(published_article.id , published_article.title_slug))),
+        Ok(published_article) => Redirect::to(uri!(text_by_id(
+            published_article.id,
+            published_article.title_slug
+        ))),
         Err(e) => {
             println!("{:?}", e);
             Redirect::to("/not-found")

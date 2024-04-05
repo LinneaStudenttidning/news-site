@@ -72,7 +72,8 @@ impl Text {
 
     /// Saves an instance of `Text` to the database.
     pub async fn save_to_db(&self, db: &DatabaseHandler) -> Result<Text, Error> {
-        sqlx::query_file_as!(Self,
+        sqlx::query_file_as!(
+            Self,
             "sql/articles/insert.sql",
             self.title,
             slugify(&self.title),
