@@ -6,12 +6,12 @@
     <h1 itemprop="headline">{{ text.title }}</h1>
     <p itemprop="description" class="lead-paragraph">{{ text.lead_paragraph }}</p>
     <div class="text-body" itemprop="articleBody">
-        <p>{{ text.text_body | markdown | safe }}</p>
+        {{ text.text_body | markdown | safe }}
     </div>
     <div class="info">
         <div class="author" itemprop="author" itemscope itemtype="https://schema.org/Person">
             <img itemprop="image" src="https://source.unsplash.com/random/400x400?b" alt="Bild på författaren">
-            <p class="byline" itemprop="name" class="byline">
+            <p class="byline" itemprop="name">
                 {{ text.author }}
             </p>
             <a class="contact" itemprop="email"
