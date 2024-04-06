@@ -24,5 +24,9 @@ debug = false
 codegen-units = 1
 lto = true
 
+# From: https://github.com/launchbadge/sqlx?tab=readme-ov-file#compile-time-verification
+[profile.dev.package.sqlx-macros]
+opt-level = 3
+
 [build]
 rustflags = ["-C", "target-cpu=native"]
