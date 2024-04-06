@@ -1,5 +1,9 @@
 // Don't build with warnings.
 #![deny(warnings)]
+// This leads to false positives from clippy, if not allowed
+// See: https://github.com/rust-lang/rust-clippy/issues/12642
+// TL;DR: It breaks src/app/control_panel.rs at `struct PublishTextForm<'a>`
+#![allow(clippy::blocks_in_conditions)]
 // Forbid unsafe code; if, in the future, unsafe code is needed, then this may be removed.
 #![forbid(unsafe_code)]
 
