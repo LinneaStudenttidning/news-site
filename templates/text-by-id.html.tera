@@ -16,15 +16,17 @@
             </p>
             <a class="contact" itemprop="email"
                 href="mailto:{{ text.author }}@example.org">{{ text.author }}@example.org</a>
-            <a class="link" itemprop="url" href="/by-author/{{ text.author }}">Se skribentens profil</a>
+            <a class="link" itemprop="url" href="/texts/author/{{ text.author }}">Se skribentens profil</a>
         </div>
         <p class="published"><time datetime="{{ text.created_at }}" itemprop="datePublished">Skapad
                 {{ text.created_at | date(format="%e %B %Y, %R") }}</time></p>
+        {% if text.updated_at != text.created_at %}
         <p class="updated"><time datetime="{{ text.updated_at }}" itemprop="dateModified">Uppdaterad
                 {{ text.updated_at | date(format="%e %B %Y, %R") }}</time></p>
+        {% endif %}
         <div class="tags flex wrap gap">
             {% for tag in text.tags %}
-            <a href="/by-tag/{{ tag }}" icon="tag" class="tag">{{ tag }}</a>
+            <a href="/texts/tag/{{ tag }}" icon="tag" class="tag">{{ tag }}</a>
             {% endfor %}
         </div>
     </div>
