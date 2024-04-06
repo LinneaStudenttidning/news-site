@@ -49,7 +49,16 @@ async fn text_by_id(
     Ok(Template::render("text-by-id", context! { text, tags }))
 }
 
+#[get("/feed/atom.xml")]
+async fn feed_atom(db: &State<DatabaseHandler>) -> Result<Template, String> {
+    let texts = Text::get_n_latest(db, 50)
+        .await
+        .map_err(|err| err.to_string())?;
+
+    Ok(Template::render("atom", context! { texts }))
+}
+
 /// This should be mounted on `/`!
 pub fn get_all_routes() -> Vec<Route> {
-    routes![landing, about_us, text_by_id]
+    routes![landing, about_us, text_by_id, feed_atom]
 }

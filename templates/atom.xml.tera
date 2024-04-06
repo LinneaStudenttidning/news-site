@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>{{ get_env(name="SITE_URL") }}/</id>
+    <title>Klister Studenttidning</title>
+    <subtitle>De senaste artiklarna från Klister Studenttidning</subtitle>
+    <updated>{{ texts[0].updated_at | date(format="%+") }}</updated>
+    <rights>copyright something</rights>
+    <link rel="alternate" type="text/html" hreflang="sv" href="{{ get_env(name="SITE_URL") }}/"/>
+    <link rel="self" type="application/atom+xml" hreflang="sv" href="{{ get_env(name="SITE_URL") }}/feed/atom.xml"/>
+    {% for text in texts %}
+    <entry>
+        <title>{{ text.title }}</title>
+        <author>
+            <name>{{ text.author }}</name>
+            <email>{{ text.author }}@example.org</email>
+        </author>
+        <id>{{ get_env(name="SITE_URL") }}/t/{{ text.id }}/{{ text.title_slug }}</id>
+        <link href="{{ get_env(name="SITE_URL") }}/t/{{ text.id }}/{{ text.title_slug }}"/>
+        <published>{{ text.created_at | date(format="%+") }}</published>
+        <updated>{{ text.updated_at | date(format="%+") }}</updated>
+        <summary>{{ text.lead_paragraph }}</summary>
+        <content type="html"><![CDATA[<p><b>{{ text.lead_paragraph }}</b></p>{{ text.text_body | markdown | safe }}]]></content>
+        {% for tag in text.tags %}
+        <category term="{{ tag }}"/>
+        {% endfor %}
+    </entry>
+    {% endfor %}
+</feed>

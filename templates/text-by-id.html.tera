@@ -19,10 +19,10 @@
             <a class="link" itemprop="url" href="/texts/author/{{ text.author }}">Se skribentens profil</a>
         </div>
         <p class="published"><time datetime="{{ text.created_at }}" itemprop="datePublished">Skapad
-                {{ text.created_at | date(format="%e %B %Y, %R") }}</time></p>
+                {{ text.created_at | date(format="%d %B %Y, %R") }}</time></p>
         {% if text.updated_at != text.created_at %}
         <p class="updated"><time datetime="{{ text.updated_at }}" itemprop="dateModified">Uppdaterad
-                {{ text.updated_at | date(format="%e %B %Y, %R") }}</time></p>
+                {{ text.updated_at | date(format="%d %B %Y, %R") }}</time></p>
         {% endif %}
         <div class="tags flex wrap gap">
             {% for tag in text.tags %}
