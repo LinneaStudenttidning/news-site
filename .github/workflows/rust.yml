@@ -32,14 +32,14 @@ jobs:
     - name: Check code
       run: cargo check --verbose
       env:
-        DATABSE_URL: "postgres://news:news@localhost/news"
+        DATABASE_URL: "postgres://news:news@localhost/news"
     - name: Check format
       run: cargo fmt --check
     - name: Clippy
       run: cargo clippy --verbose
       env:
-        DATABSE_URL: "postgres://news:news@localhost/news"
+        DATABASE_URL: "postgres://news:news@localhost/news"
     - name: Run tests
       run: cargo test --verbose
       env:
-        DATABSE_URL: "postgres://news:news@localhost/news"
+        DATABASE_URL: "postgres://news:news@localhost/news"
