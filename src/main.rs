@@ -1,5 +1,7 @@
 // Don't build with warnings.
 #![deny(warnings)]
+// Forbid unsafe code; if, in the future, unsafe code is needed, then this may be removed.
+#![forbid(unsafe_code)]
 
 #[macro_use]
 extern crate rocket;
@@ -32,7 +34,7 @@ async fn main() {
     // Launch the application
     match rocket::build()
         //.attach(Template::fairing())
-        .attach(Template::custom(|engines|{
+        .attach(Template::custom(|engines| {
             engines.tera.register_filter(
                 "markdown",
                 |value: &tera::Value, _: &_| -> tera::Result<tera::Value> {
