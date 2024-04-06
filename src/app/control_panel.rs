@@ -1,5 +1,11 @@
-use crate::app::rocket_uri_macro_text_by_id;
-use rocket::{form::Form, response::Redirect, Route, State};
+use crate::{app::rocket_uri_macro_text_by_id, database::models::creator::Creator};
+use rocket::{
+    form::Form,
+    http::{Cookie, CookieJar},
+    response::Redirect,
+    time::Duration,
+    Route, State,
+};
 use rocket_dyn_templates::{context, Template};
 
 use crate::database::{
@@ -10,6 +16,43 @@ use crate::database::{
 #[get("/")]
 fn control_panel() -> Template {
     Template::render("control_panel", context! {})
+}
+
+#[get("/login")]
+fn login_page() -> Template {
+    Template::render("login", context! {})
+}
+
+#[derive(FromForm)]
+struct LoginForm<'a> {
+    username: &'a str,
+    password: &'a str,
+}
+
+#[post("/login", data = "<form>")]
+async fn login(
+    form: Form<LoginForm<'_>>,
+    db: &State<DatabaseHandler>,
+    jar: &CookieJar<'_>,
+) -> Result<Redirect, String> {
+    let creator = Creator::get_by_username(db, form.username)
+        .await
+        .map_err(|_| "User does not exist!".to_string())?;
+
+    let token = creator
+        .login(form.password)
+        .await
+        .map_err(|_| "Wrong password!".to_string())?;
+
+    let cookie = Cookie::build(("token", token))
+        .same_site(rocket::http::SameSite::Strict)
+        .secure(true)
+        .http_only(true)
+        .max_age(Duration::hours(4));
+
+    jar.add(cookie);
+
+    Ok(Redirect::to("/control-panel"))
 }
 
 #[get("/editor")]
@@ -62,5 +105,5 @@ async fn publish_text(form: Form<PublishTextForm<'_>>, db: &State<DatabaseHandle
 
 /// These should be mounted on `/control-panel`!
 pub fn get_all_routes() -> Vec<Route> {
-    routes![control_panel, editor, publish_text]
+    routes![control_panel, login_page, login, editor, publish_text]
 }

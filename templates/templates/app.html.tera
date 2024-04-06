@@ -51,7 +51,7 @@
     <footer class="flex column center gap">
         <a href="/">LOGGA</a>
         <p>&copy; Redaktionen</p>
-        <a href="/control-panel">Inloggning för redaktionen</a>
+        <a href="/control-panel/login">Inloggning för redaktionen</a>
     </footer>
 </body>
 

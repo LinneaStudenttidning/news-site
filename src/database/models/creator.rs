@@ -14,6 +14,7 @@ use crate::database::DatabaseHandler;
 use crate::token::get_encoding_key;
 use crate::token::Claims;
 
+const FOUR_HOURS_AS_SECS: usize = 60 * 60 * 4;
 type HashError = argon2::password_hash::Error;
 
 /// The type of creator.
@@ -155,7 +156,7 @@ impl Creator {
 
         let claims = Claims {
             // FIXME: This should probably be something like 4 hours into the future...
-            exp: 0,
+            exp: Utc::now().timestamp() as usize + FOUR_HOURS_AS_SECS,
             sub: self.username.clone(),
             admin: self.is_publisher(),
             data: self.clone(),

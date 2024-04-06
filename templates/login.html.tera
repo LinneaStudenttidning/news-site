@@ -1,0 +1,27 @@
+{% extends "templates/app" %}
+
+{% block main %}
+<h1>Logga in</h1>
+<form action="/control-panel/login" method="post">
+    <label for="username">Användarnamn:</label>
+    <input type="text" name="username" id="username">
+
+    <label for="password">Lösenord:</label>
+    <input type="password" name="password" id="password">
+
+    <button type="submit" icon="login" class="btn">Logga in!</button>
+</form>
+{% endblock main %}
+
+{% block aside %}
+<div class="side-content">
+    <h1>Hjälp</h1>
+    <div>
+        <p><b>För läsare:</b></p>
+        <p>Det här är endast inloggning för redaktionen. Om du är en "vanlig läsare", så behöver du inte logga in.</p>
+        <br>
+        <p><b>Glömt lösenordet?</b></p>
+        <p>Kontakta din ansvariga utgivare så hjälper den dig att skaffa ett nytt!</p>
+    </div>
+</div>
+{% endblock aside %}
