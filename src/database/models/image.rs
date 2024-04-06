@@ -67,4 +67,3 @@ impl Image {
             .await
     }
 }
-

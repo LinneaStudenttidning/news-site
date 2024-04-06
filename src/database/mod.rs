@@ -36,4 +36,3 @@ impl DatabaseHandler {
         Ok(DatabaseHandler { pool })
     }
 }
-

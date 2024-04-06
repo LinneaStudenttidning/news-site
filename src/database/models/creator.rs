@@ -165,4 +165,3 @@ impl Creator {
             .map_err(|_| "Failed to encode token!".into())
     }
 }
-
