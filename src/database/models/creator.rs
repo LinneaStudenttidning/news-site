@@ -3,6 +3,7 @@ use argon2::password_hash::SaltString;
 use argon2::Argon2;
 use argon2::PasswordHash;
 use argon2::PasswordHasher;
+use argon2::PasswordVerifier;
 use chrono::NaiveDateTime;
 use chrono::Utc;
 use jsonwebtoken::Header;
@@ -147,11 +148,16 @@ impl Creator {
     }
 
     pub async fn login(&self, password: &str) -> Result<String, String> {
+        let argon2 = Argon2::default();
         let password_hash =
-            PasswordHash::new(&self.password).map_err(|_| "Error parsing password hash!")?;
+            PasswordHash::parse(&self.password, argon2::password_hash::Encoding::default())
+                .map_err(|e| e.to_string())?;
 
-        if password_hash.to_string() != password {
-            return Err("Invalid password!".into());
+        if argon2
+            .verify_password(password.as_bytes(), &password_hash)
+            .is_err()
+        {
+            return Err("Invalid password or problem checking password!".to_string());
         }
 
         let claims = Claims {
