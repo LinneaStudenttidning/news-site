@@ -1,4 +1,4 @@
-use crate::{app::rocket_uri_macro_text_by_id, database::models::creator::Creator};
+use crate::{app::rocket_uri_macro_text_by_id, database::models::creator::Creator, token::Claims};
 use rocket::{
     form::Form,
     http::{Cookie, CookieJar},
@@ -14,8 +14,11 @@ use crate::database::{
 };
 
 #[get("/")]
-fn control_panel() -> Template {
-    Template::render("control_panel", context! {})
+async fn control_panel(db: &State<DatabaseHandler>, claims: Claims) -> Result<Template, String> {
+    let creator = Creator::get_by_username(db, &claims.data.username)
+        .await
+        .map_err(|e| e.to_string())?;
+    Ok(Template::render("control_panel", context! { creator }))
 }
 
 #[get("/login")]

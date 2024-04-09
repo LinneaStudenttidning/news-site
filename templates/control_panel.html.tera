@@ -107,18 +107,16 @@
     <h1>Din profil</h1>
     <div class="content profile">
         <img src="https://source.unsplash.com/random/400x400" alt="Profilbild" class="pfp">
-        <h3 class="name">Ditt namn</h3>
+        <h3 class="name">{{ creator.display_name }}</h3>
         <div class="info-table">
             <p class="prop">Användarnamn</p>
-            <p class="value">dittnamn231</p>
+            <p class="value">{{ creator.username }}</p>
             <p class="prop">Beskrivning</p>
-            <p class="value">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat laudantium impedit
-                repudiandae amet sapiente porro architecto quam corrupti vitae, nam perspiciatis eligendi beatae
-                veritatis, mollitia est nisi, officia sequi. Dolor, ad odit.</p>
+            <p class="value">{{ creator.biography }}</p>
             <p class="prop">Konto skapat</p>
-            <p class="value">13 februari 2024</p>
+            <p class="value">{{ creator.joined_at | date(format="%-d %B %Y, %R") }}</p>
             <p class="prop">Roll</p>
-            <p class="value">Ansvarig utgivare</p>
+            <p class="value">{{ creator.role }}</p>
         </div>
     </div>
     <div class="flex wrap gap">
