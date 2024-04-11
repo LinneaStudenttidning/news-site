@@ -12,14 +12,14 @@ pub mod texts;
 async fn landing(db: &State<DatabaseHandler>) -> Result<Template, Error> {
     let texts = Text::get_n_latest(db, 16).await?;
 
-    let tags = Text::get_all_tags(db).await?;
+    let tags = Text::get_all_tags(db, None).await?;
 
     Ok(Template::render("landing", context! { texts, tags }))
 }
 
 #[get("/about-us")]
 async fn about_us(db: &State<DatabaseHandler>) -> Result<Template, Error> {
-    let tags = Text::get_all_tags(db).await?;
+    let tags = Text::get_all_tags(db, None).await?;
 
     Ok(Template::render("about", context! { tags }))
 }
@@ -37,7 +37,7 @@ async fn text_by_id(
     // TODO: Redirect if the url slug is incorrect, but ID is correct.
     println!("{:?}", text);
 
-    let tags = Text::get_all_tags(db).await?;
+    let tags = Text::get_all_tags(db, None).await?;
 
     Ok(Template::render("text-by-id", context! { text, tags }))
 }

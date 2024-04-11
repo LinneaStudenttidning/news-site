@@ -13,7 +13,7 @@ use crate::{
 async fn texts_by_tag(tag: &str, db: &State<DatabaseHandler>) -> Result<Template, Error> {
     let texts = Text::get_by_tag(db, tag).await?;
 
-    let tags = Text::get_all_tags(db).await?;
+    let tags = Text::get_all_tags(db, None).await?;
 
     Ok(Template::render("landing", context! { texts, tags }))
 }
@@ -25,7 +25,7 @@ async fn texts_by_type(
 ) -> Result<Template, Error> {
     let texts = Text::get_by_type(db, text_type).await?;
 
-    let tags = Text::get_all_tags(db).await?;
+    let tags = Text::get_all_tags(db, None).await?;
 
     Ok(Template::render("landing", context! { texts, tags }))
 }
@@ -34,7 +34,7 @@ async fn texts_by_type(
 async fn texts_by_author(author: &str, db: &State<DatabaseHandler>) -> Result<Template, Error> {
     let texts = Text::get_by_author(db, author).await?;
 
-    let tags = Text::get_all_tags(db).await?;
+    let tags = Text::get_all_tags(db, None).await?;
 
     Ok(Template::render("landing", context! { texts, tags }))
 }
