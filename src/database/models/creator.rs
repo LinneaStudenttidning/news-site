@@ -54,7 +54,7 @@ impl Default for Creator {
 }
 
 impl Creator {
-    fn hash_password(password: &str) -> Result<String, Error> {
+    pub fn hash_password(password: &str) -> Result<String, Error> {
         let salt = SaltString::generate(&mut OsRng);
         let argon2 = Argon2::default();
 
@@ -63,6 +63,19 @@ impl Creator {
             .to_string();
 
         Ok(hashed_password)
+    }
+
+    pub fn verify_password(password: &str, password_hash: &str) -> Result<bool, Error> {
+        let argon2 = Argon2::default();
+
+        let password_parsed =
+            PasswordHash::parse(password_hash, argon2::password_hash::Encoding::default())?;
+
+        if (argon2.verify_password(password.as_bytes(), &password_parsed)).is_err() {
+            return Ok(false);
+        }
+
+        return Ok(true);
     }
 
     /// Create a new `Creator` that is a regular Publisher; this should be prefered over manually creating a new `Creator`.
@@ -130,12 +143,14 @@ impl Creator {
         username: &str,
         display_name: &str,
         biography: &str,
+        password: &str,
     ) -> Result<Self, Error> {
         sqlx::query_file_as!(
             Self,
             "sql/creators/update.sql",
             display_name,
             biography,
+            password,
             username
         )
         .fetch_one(&db.pool)
@@ -170,14 +185,7 @@ impl Creator {
     }
 
     pub async fn login(&self, password: &str) -> Result<String, Error> {
-        let argon2 = Argon2::default();
-        let password_hash =
-            PasswordHash::parse(&self.password, argon2::password_hash::Encoding::default())?;
-
-        if argon2
-            .verify_password(password.as_bytes(), &password_hash)
-            .is_err()
-        {
+        if !Creator::verify_password(password, &self.password)? {
             return Err(Error::create(
                 "Password check",
                 "Invalid password or problem checking password!",

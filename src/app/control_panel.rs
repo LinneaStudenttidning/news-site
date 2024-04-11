@@ -4,7 +4,7 @@ use crate::{
 };
 use rocket::{
     form::Form,
-    http::{Cookie, CookieJar},
+    http::{Cookie, CookieJar, Status},
     response::Redirect,
     time::Duration,
     Route, State,
@@ -43,6 +43,13 @@ struct EditBiographyForm<'a> {
     biography: &'a str,
 }
 
+#[derive(FromForm)]
+struct EditPasswordForm<'a> {
+    current_password: &'a str,
+    new_password: &'a str,
+    confirm_new_password: &'a str,
+}
+
 #[post("/login", data = "<form>")]
 async fn login(
     form: Form<LoginForm<'_>>,
@@ -79,6 +86,7 @@ async fn change_display_name(
         &claims.data.username,
         form.display_name,
         &creator.biography,
+        &creator.password,
     )
     .await
     .map_err(|e| e.to_string())?;
@@ -101,9 +109,49 @@ async fn change_biography(
         &claims.data.username,
         &creator.display_name,
         form.biography,
+        &creator.password,
     )
     .await
     .map_err(|e| e.to_string())?;
+
+    Ok(Redirect::to("/control-panel"))
+}
+
+#[post("/change-password", data = "<form>")]
+async fn change_password(
+    form: Form<EditPasswordForm<'_>>,
+    db: &State<DatabaseHandler>,
+    claims: Claims,
+) -> Result<Redirect, Error> {
+    let creator = Creator::get_by_username(db, &claims.data.username)
+        .await
+        .map_err(|e| e)?;
+
+    if form.new_password != form.confirm_new_password {
+        return Err(Error::create(
+            "Password check",
+            "Password does not match!",
+            Status::BadRequest,
+        ));
+    }
+
+    if !Creator::verify_password(form.current_password, &creator.password).unwrap_or(false) {
+        return Err(Error::create(
+            "Password check",
+            "Password is incorrect!",
+            Status::BadRequest,
+        ));
+    }
+
+    let _updated_creator = Creator::update_by_username(
+        db,
+        &claims.data.username,
+        &creator.display_name,
+        &creator.biography,
+        &Creator::hash_password(&form.new_password)?,
+    )
+    .await
+    .map_err(|e| e)?;
 
     Ok(Redirect::to("/control-panel"))
 }
@@ -164,6 +212,7 @@ pub fn get_all_routes() -> Vec<Route> {
         login,
         change_display_name,
         change_biography,
+        change_password,
         editor,
         publish_text
     ]

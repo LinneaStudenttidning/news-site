@@ -126,14 +126,14 @@
     <div class="flex wrap gap">
         <button class="btn show-dialog" icon="person_edit" id="edit-display-name">Ändra visningsnamn</button>
         <button class="btn show-dialog" icon="edit_note" id="edit-biography">Ändra beskrivning</button>
-        <button class="btn" icon="password">Ändra lösenord</button>
+        <button class="btn show-dialog" icon="password" id="change-password">Ändra lösenord</button>
         <button class="btn" icon="image">Ändra profilbild</button>
     </div>
 </div>
 
 <dialog id="dialog-edit-display-name">
     <form action="/control-panel/change-display-name" method="post">
-        <label>Display name:</label>
+        <label>Visningsnamn</label>
         <input name="display_name" value="{{ creator.display_name }}" type="text" required>
 
         <div class="flex wrap gap">
@@ -145,7 +145,7 @@
 
 <dialog id="dialog-edit-biography">
     <form action="/control-panel/change-biography" method="post">
-        <label>Beskrivning:</label>
+        <label>Beskrivning</label>
         <input name="biography" value="{{ creator.biography }}" type="text" required>
 
         <div class="flex wrap gap">
@@ -155,5 +155,22 @@
     </form>
 </dialog>
 
+<dialog id="dialog-change-password">
+    <form action="/control-panel/change-password" method="post">
+        <label>Nuvarande lösenord</label>
+        <input name="current_password" value="" type="password" required>
+
+        <label>Nytt lösenord</label>
+        <input name="new_password" value="" type="password" required>
+
+        <label>Upprepa nytt lösenord</label>
+        <input name="confirm_new_password" value="" type="password" required>
+
+        <div class="flex wrap gap">
+            <button class="btn" icon="person_edit" type="submit">Ändra lösenord</button>
+            <button class="btn dangerous" icon="cancel" id="close-change-password">Avbryt</button>
+        </div>
+    </form>
+</dialog>
 
 {% endblock aside %}
