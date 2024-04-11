@@ -1,17 +1,28 @@
+use std::{env, fs};
+
+use dotenvy::dotenv;
 use jsonwebtoken::{DecodingKey, EncodingKey, Validation};
 use rocket::http::Status;
 use rocket::request::{FromRequest, Outcome, Request};
 use serde::{Deserialize, Serialize};
 
 use crate::database::models::creator::Creator;
+use crate::defaults::DATA_DIR;
 
-// FIXME: THSE MUST BE SET BETTER THAN THIS! THIS IS NOT SAFE.
-pub const SECRET: &[u8] = "SECRET".as_bytes();
+fn read_token_secret() -> Vec<u8> {
+    dotenv().ok();
+    let data_dir = env::var("DATA_DIR").unwrap_or(DATA_DIR.into());
+    let token_path = format!("{data_dir}/token_key");
+    let token_key = fs::read_to_string(&token_path)
+        .unwrap_or_else(|_| panic!("Could not read token key!\nFile: {0}\nGenerate via: mkdir -p {1} && openssl rand -hex 32 > {0}", &token_path, &data_dir));
+    token_key.as_bytes().into()
+}
+
 pub fn get_encoding_key() -> EncodingKey {
-    EncodingKey::from_secret(SECRET)
+    EncodingKey::from_secret(&read_token_secret())
 }
 pub fn get_decoding_key() -> DecodingKey {
-    DecodingKey::from_secret(SECRET)
+    DecodingKey::from_secret(&read_token_secret())
 }
 
 #[derive(Debug, Serialize, Deserialize)]

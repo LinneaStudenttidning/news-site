@@ -12,6 +12,7 @@ extern crate rocket;
 
 pub mod app;
 pub mod database;
+pub mod defaults;
 pub mod error;
 pub mod token;
 
