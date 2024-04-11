@@ -140,6 +140,7 @@ impl Creator {
         )
         .fetch_one(&db.pool)
         .await
+        .map_err(Error::from)
     }
 
     /// Changes the display name of a `Creator`.
