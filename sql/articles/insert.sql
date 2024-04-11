@@ -13,7 +13,7 @@ INSERT INTO
         tags
     )
 VALUES
-    (DEFAULT, DEFAULT, $1, $2, $3, $4, $5, $6, DEFAULT, DEFAULT, $7) returning
+    (DEFAULT, DEFAULT, $1, $2, $3, $4, $5, $6, DEFAULT, DEFAULT, $7) RETURNING
         id,
         title, 
         title_slug,
