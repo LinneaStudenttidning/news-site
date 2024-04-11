@@ -171,8 +171,11 @@ impl Text {
     }
 
     /// Gets all the unique tags articles have been tagged with.
-    pub async fn get_all_tags(db: &DatabaseHandler) -> Result<Vec<String>, Error> {
-        sqlx::query_file_scalar!("sql/articles/get_all_tags.sql")
+    pub async fn get_all_tags(
+        db: &DatabaseHandler,
+        limit: Option<i64>,
+    ) -> Result<Vec<String>, Error> {
+        sqlx::query_file_scalar!("sql/articles/get_all_tags.sql", limit.unwrap_or(10))
             .fetch_one(&db.pool)
             .await
             // Result is an `Option<Vec<String>>`, so we have to safely unwrap the `Option`.
