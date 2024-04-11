@@ -186,7 +186,6 @@ impl Creator {
         }
 
         let claims = Claims {
-            // FIXME: This should probably be something like 4 hours into the future...
             exp: Utc::now().timestamp() as usize + FOUR_HOURS_AS_SECS,
             sub: self.username.clone(),
             admin: self.is_publisher(),
