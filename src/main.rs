@@ -23,9 +23,10 @@ fn custom_tera(engines: &mut Engines) {
     engines.tera.register_filter(
         "markdown",
         |value: &tera::Value, _: &_| -> tera::Result<tera::Value> {
-            let value = tera::from_value::<String>(value.clone())?;
-            let value = markdown::to_html(&value);
-            Ok(tera::to_value(value)?)
+            let markdown = tera::from_value::<String>(value.clone())?;
+            let raw_html = markdown::to_html(&markdown);
+            let sanitized_html = ammonia::clean(&raw_html);
+            Ok(tera::to_value(sanitized_html)?)
         },
     );
 }
