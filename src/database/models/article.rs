@@ -171,6 +171,7 @@ impl Text {
     }
 
     /// Gets all the unique tags articles have been tagged with.
+    /// The `limit` defaults to `10` if `Ǹone`.
     pub async fn get_all_tags(
         db: &DatabaseHandler,
         limit: Option<i64>,
