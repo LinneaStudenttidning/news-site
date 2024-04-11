@@ -15,6 +15,7 @@ pub mod database;
 pub mod error;
 pub mod token;
 
+use comrak::{markdown_to_html, Options};
 use database::DatabaseHandler;
 use rocket::{fs::FileServer, http::Status, Request};
 use rocket_dyn_templates::{context, tera, Engines, Template};
@@ -24,7 +25,7 @@ fn custom_tera(engines: &mut Engines) {
         "markdown",
         |value: &tera::Value, _: &_| -> tera::Result<tera::Value> {
             let markdown = tera::from_value::<String>(value.clone())?;
-            let raw_html = markdown::to_html(&markdown);
+            let raw_html = markdown_to_html(&markdown, &Options::default());
             let sanitized_html = ammonia::clean(&raw_html);
             Ok(tera::to_value(sanitized_html)?)
         },
