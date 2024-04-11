@@ -1,3 +1,4 @@
+use crate::error::Error;
 use argon2::password_hash::rand_core::OsRng;
 use argon2::password_hash::SaltString;
 use argon2::Argon2;
@@ -7,16 +8,15 @@ use argon2::PasswordVerifier;
 use chrono::NaiveDateTime;
 use chrono::Utc;
 use jsonwebtoken::Header;
+use rocket::http::Status;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgQueryResult;
-use sqlx::Error;
 
 use crate::database::DatabaseHandler;
 use crate::token::get_encoding_key;
 use crate::token::Claims;
 
 const FOUR_HOURS_AS_SECS: usize = 60 * 60 * 4;
-type HashError = argon2::password_hash::Error;
 
 /// The type of creator.
 /// `Writer` is a "normal" creator, while `Publisher` is more like an admin.
@@ -54,7 +54,7 @@ impl Default for Creator {
 }
 
 impl Creator {
-    fn hash_password(password: &str) -> Result<String, HashError> {
+    fn hash_password(password: &str) -> Result<String, Error> {
         let salt = SaltString::generate(&mut OsRng);
         let argon2 = Argon2::default();
 
@@ -75,7 +75,7 @@ impl Creator {
         display_name: &str,
         password: &str,
         as_publisher: bool,
-    ) -> Result<Self, HashError> {
+    ) -> Result<Self, Error> {
         Ok(Self {
             username: username.to_string(),
             display_name: display_name.to_string(),
@@ -105,6 +105,7 @@ impl Creator {
         )
         .execute(&db.pool)
         .await
+        .map_err(Error::from)
     }
 
     /// Gets ALL creators from the database.
@@ -112,6 +113,7 @@ impl Creator {
         sqlx::query_file_as!(Self, "sql/creators/get_all.sql")
             .fetch_all(&db.pool)
             .await
+            .map_err(Error::from)
     }
 
     /// Gets ONE creator from the database by its `username`.
@@ -119,6 +121,7 @@ impl Creator {
         sqlx::query_file_as!(Self, "sql/creators/get_by_username.sql", username)
             .fetch_one(&db.pool)
             .await
+            .map_err(Error::from)
     }
 
     /// Updates ONE creator from the data by its `username`.
@@ -165,17 +168,20 @@ impl Creator {
         })
     }
 
-    pub async fn login(&self, password: &str) -> Result<String, String> {
+    pub async fn login(&self, password: &str) -> Result<String, Error> {
         let argon2 = Argon2::default();
         let password_hash =
-            PasswordHash::parse(&self.password, argon2::password_hash::Encoding::default())
-                .map_err(|e| e.to_string())?;
+            PasswordHash::parse(&self.password, argon2::password_hash::Encoding::default())?;
 
         if argon2
             .verify_password(password.as_bytes(), &password_hash)
             .is_err()
         {
-            return Err("Invalid password or problem checking password!".to_string());
+            return Err(Error::create(
+                "Password check",
+                "Invalid password or problem checking password!",
+                Status::BadRequest,
+            ));
         }
 
         let claims = Claims {
@@ -186,7 +192,14 @@ impl Creator {
             data: self.clone(),
         };
 
-        jsonwebtoken::encode::<Claims>(&Header::default(), &claims, &get_encoding_key())
-            .map_err(|_| "Failed to encode token!".into())
+        jsonwebtoken::encode::<Claims>(&Header::default(), &claims, &get_encoding_key()).map_err(
+            |_| {
+                Error::create(
+                    "Token creation",
+                    "Failed to encode token!",
+                    Status::InternalServerError,
+                )
+            },
+        )
     }
 }

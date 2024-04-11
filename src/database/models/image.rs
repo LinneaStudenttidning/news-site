@@ -1,9 +1,9 @@
 use chrono::{NaiveDateTime, Utc};
 use serde::{Deserialize, Serialize};
-use sqlx::{postgres::PgQueryResult, Error};
+use sqlx::postgres::PgQueryResult;
 use uuid::Uuid;
 
-use crate::database::DatabaseHandler;
+use crate::{database::DatabaseHandler, error::Error};
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Image {
@@ -48,6 +48,7 @@ impl Image {
         )
         .execute(&db.pool)
         .await
+        .map_err(Error::from)
     }
 
     /// Gets ALL `Image`s from the database with `tag`.
@@ -55,6 +56,7 @@ impl Image {
         sqlx::query_file_as!(Self, "sql/images/get_by_tag.sql", tag)
             .fetch_all(&db.pool)
             .await
+            .map_err(Error::from)
     }
 
     /// Gets ALL `Image`s from the database with any of `tags`.
@@ -65,5 +67,6 @@ impl Image {
         sqlx::query_file_as!(Self, "sql/images/get_by_any_of_tags.sql", tags)
             .fetch_all(&db.pool)
             .await
+            .map_err(Error::from)
     }
 }

@@ -28,6 +28,7 @@
     </main>
     <aside>
         {% block aside %}
+        {% if tags %}
         <div class="side-content">
             <h1>Populära taggar</h1>
             <div class="flex wrap gap" id="popular-tags">
@@ -36,6 +37,7 @@
                 {% endfor %}
             </div>
         </div>
+        {% endif %}
 
         <div class="side-content">
             <h1>Skribenter</h1>

@@ -1,0 +1,22 @@
+{% extends "templates/app" %}
+
+{% block main %}
+<h1>Error {{ status }}</h1>
+<p>
+    Ajdå! Du har stött på oväntade problem.
+    <a href="/">Klicka här för att gå till start-sidan!</a>
+</p>
+<p>
+    <b>Felsökningsinformation:</b>
+</p>
+<p>
+    <a href="{{ uri }}">{{ uri }}</a>
+</p>
+<p><code>req</code></p>
+<pre><code>{{ req }}</code></pre>
+{% if error %}
+<p><code>error</code></p>
+<pre><code>{{ error }}</code></pre>
+{% endif %}
+
+{% endblock main %}

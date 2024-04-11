@@ -1,4 +1,7 @@
-use crate::{app::rocket_uri_macro_text_by_id, database::models::creator::Creator, token::Claims};
+use crate::{
+    app::rocket_uri_macro_text_by_id, database::models::creator::Creator, error::Error,
+    token::Claims,
+};
 use rocket::{
     form::Form,
     http::{Cookie, CookieJar},
@@ -14,10 +17,8 @@ use crate::database::{
 };
 
 #[get("/")]
-async fn control_panel(db: &State<DatabaseHandler>, claims: Claims) -> Result<Template, String> {
-    let creator = Creator::get_by_username(db, &claims.data.username)
-        .await
-        .map_err(|e| e.to_string())?;
+async fn control_panel(db: &State<DatabaseHandler>, claims: Claims) -> Result<Template, Error> {
+    let creator = Creator::get_by_username(db, &claims.data.username).await?;
     Ok(Template::render("control_panel", context! { creator }))
 }
 
@@ -47,15 +48,10 @@ async fn login(
     form: Form<LoginForm<'_>>,
     db: &State<DatabaseHandler>,
     jar: &CookieJar<'_>,
-) -> Result<Redirect, String> {
-    let creator = Creator::get_by_username(db, form.username)
-        .await
-        .map_err(|_| "User does not exist!".to_string())?;
+) -> Result<Redirect, Error> {
+    let creator = Creator::get_by_username(db, form.username).await?;
 
-    let token = creator
-        .login(form.password)
-        .await
-        .map_err(|_| "Wrong password!".to_string())?;
+    let token = creator.login(form.password).await?;
 
     let cookie = Cookie::build(("token", token))
         .same_site(rocket::http::SameSite::Strict)

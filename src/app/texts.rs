@@ -1,20 +1,19 @@
 use rocket::{Route, State};
 use rocket_dyn_templates::{context, Template};
 
-use crate::database::{
-    models::article::{Text, TextType},
-    DatabaseHandler,
+use crate::{
+    database::{
+        models::article::{Text, TextType},
+        DatabaseHandler,
+    },
+    error::Error,
 };
 
 #[get("/tag/<tag>")]
-async fn texts_by_tag(tag: &str, db: &State<DatabaseHandler>) -> Result<Template, String> {
-    let texts = Text::get_by_tag(db, tag)
-        .await
-        .map_err(|err| err.to_string())?;
+async fn texts_by_tag(tag: &str, db: &State<DatabaseHandler>) -> Result<Template, Error> {
+    let texts = Text::get_by_tag(db, tag).await?;
 
-    let tags = Text::get_all_tags(db)
-        .await
-        .map_err(|err| err.to_string())?;
+    let tags = Text::get_all_tags(db).await?;
 
     Ok(Template::render("landing", context! { texts, tags }))
 }
@@ -23,27 +22,19 @@ async fn texts_by_tag(tag: &str, db: &State<DatabaseHandler>) -> Result<Template
 async fn texts_by_type(
     text_type: TextType,
     db: &State<DatabaseHandler>,
-) -> Result<Template, String> {
-    let texts = Text::get_by_type(db, text_type)
-        .await
-        .map_err(|err| err.to_string())?;
+) -> Result<Template, Error> {
+    let texts = Text::get_by_type(db, text_type).await?;
 
-    let tags = Text::get_all_tags(db)
-        .await
-        .map_err(|err| err.to_string())?;
+    let tags = Text::get_all_tags(db).await?;
 
     Ok(Template::render("landing", context! { texts, tags }))
 }
 
 #[get("/author/<author>")]
-async fn texts_by_author(author: &str, db: &State<DatabaseHandler>) -> Result<Template, String> {
-    let texts = Text::get_by_author(db, author)
-        .await
-        .map_err(|err| err.to_string())?;
+async fn texts_by_author(author: &str, db: &State<DatabaseHandler>) -> Result<Template, Error> {
+    let texts = Text::get_by_author(db, author).await?;
 
-    let tags = Text::get_all_tags(db)
-        .await
-        .map_err(|err| err.to_string())?;
+    let tags = Text::get_all_tags(db).await?;
 
     Ok(Template::render("landing", context! { texts, tags }))
 }

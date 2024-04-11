@@ -1,16 +1,15 @@
 use std::fmt::Debug;
 
 use chrono::{NaiveDateTime, Utc};
-use rocket::request::FromParam;
+use rocket::{http::Status, request::FromParam};
 use serde::{Deserialize, Serialize};
 use slug::slugify;
 use sqlx::{
     self,
     postgres::{PgQueryResult, PgRow},
-    Error,
 };
 
-use crate::database::DatabaseHandler;
+use crate::{database::DatabaseHandler, error::Error};
 
 #[derive(Debug, Clone, Copy, Deserialize, Serialize, sqlx::Type, FromFormField)]
 #[sqlx(type_name = "text_type", rename_all = "lowercase")]
@@ -22,7 +21,7 @@ pub enum TextType {
 }
 
 impl<'a> FromParam<'a> for TextType {
-    type Error = String;
+    type Error = crate::error::Error;
 
     fn from_param(param: &'a str) -> Result<Self, Self::Error> {
         match param {
@@ -30,7 +29,11 @@ impl<'a> FromParam<'a> for TextType {
             "Coverage" | "coverage" => Ok(TextType::Coverage),
             "Opinion" | "opinion" => Ok(TextType::Opinion),
             "Other" | "other" => Ok(TextType::Other),
-            _ => Err(format!("{} is not a valid TextType", param)),
+            _ => Err(Self::Error::create(
+                "FromParam for Textformat",
+                &format!("{} is not a valid TextType", param),
+                Status::BadRequest,
+            )),
         }
     }
 }
@@ -102,6 +105,7 @@ impl Text {
         )
         .fetch_one(&db.pool)
         .await
+        .map_err(Error::from)
     }
 
     /// Gets Oup to `n` latest `Text`s from the database.
@@ -109,6 +113,7 @@ impl Text {
         sqlx::query_file_as!(Self, "sql/articles/get_n_latest.sql", n)
             .fetch_all(&db.pool)
             .await
+            .map_err(Error::from)
     }
 
     /// Gets ONE `Text` from the database by its id.
@@ -116,6 +121,7 @@ impl Text {
         sqlx::query_file_as!(Self, "sql/articles/get_by_id.sql", id)
             .fetch_one(&db.pool)
             .await
+            .map_err(Error::from)
     }
 
     /// Gets ALL `Text`s from the database by `author`.
@@ -123,6 +129,7 @@ impl Text {
         sqlx::query_file_as!(Self, "sql/articles/get_by_author.sql", author)
             .fetch_all(&db.pool)
             .await
+            .map_err(Error::from)
     }
 
     /// Gets ALL `Text`s from the database by `type`.
@@ -133,6 +140,7 @@ impl Text {
         sqlx::query_file_as!(Self, "sql/articles/get_by_type.sql", text_type as TextType)
             .fetch_all(&db.pool)
             .await
+            .map_err(Error::from)
     }
 
     /// Gets ALL `Text`s from the database with `tag`.
@@ -140,6 +148,7 @@ impl Text {
         sqlx::query_file_as!(Self, "sql/articles/get_by_tag.sql", tag)
             .fetch_all(&db.pool)
             .await
+            .map_err(Error::from)
     }
 
     /// Gets ALL `Text`s from the database with any of `tags`.
@@ -150,6 +159,7 @@ impl Text {
         sqlx::query_file_as!(Self, "sql/articles/get_by_any_of_tags.sql", tags)
             .fetch_all(&db.pool)
             .await
+            .map_err(Error::from)
     }
 
     /// Gets ALL `Text`s from the database matching the search query.
@@ -157,6 +167,7 @@ impl Text {
         sqlx::query_file_as!(Self, "sql/articles/search.sql", query)
             .fetch_all(&db.pool)
             .await
+            .map_err(Error::from)
     }
 
     /// Gets all the unique tags articles have been tagged with.
@@ -166,6 +177,7 @@ impl Text {
             .await
             // Result is an `Option<Vec<String>>`, so we have to safely unwrap the `Option`.
             .map(|result| result.unwrap_or_default())
+            .map_err(Error::from)
     }
 
     /// Publishes a `Text`.
@@ -173,6 +185,7 @@ impl Text {
         sqlx::query!("UPDATE articles SET is_published = true WHERE id = $1", id)
             .fetch_all(&db.pool)
             .await
+            .map_err(Error::from)
     }
 
     /// Unpublishes a `Text`.
@@ -180,6 +193,7 @@ impl Text {
         sqlx::query!("UPDATE articles SET is_published = false WHERE id = $1", id)
             .fetch_all(&db.pool)
             .await
+            .map_err(Error::from)
     }
 
     /// Deletes ONE `Text` from the database by its id.
@@ -187,6 +201,7 @@ impl Text {
         sqlx::query!("DELETE FROM articles WHERE id = $1", id)
             .execute(&db.pool)
             .await
+            .map_err(Error::from)
     }
 }
 

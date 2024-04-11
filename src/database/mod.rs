@@ -1,6 +1,8 @@
 use dotenvy::dotenv;
 use sqlx::{postgres::PgPoolOptions, PgPool};
-use std::{env, error::Error};
+use std::env;
+
+use crate::error::Error;
 
 pub mod models;
 
@@ -13,7 +15,7 @@ pub struct DatabaseHandler {
 
 impl DatabaseHandler {
     /// Creates a new `DatabaseHandler`; this should be prefered over manual initialization.
-    pub async fn create() -> Result<Self, Box<dyn Error>> {
+    pub async fn create() -> Result<Self, Error> {
         // Load environment variables
         dotenv().ok();
 
