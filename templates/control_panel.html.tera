@@ -136,8 +136,10 @@
         <label>Display name:</label>
         <input name="display_name" value="{{ creator.display_name }}" type="text" required>
 
-        <button class="btn" icon="person_edit" type="submit">Ändra visningsnamn</button>
-        <button class="btn" icon="cancel" id="close-edit-display-name">Avbryt</button>
+        <div class="flex wrap gap">
+            <button class="btn" icon="person_edit" type="submit">Ändra visningsnamn</button>
+            <button class="btn dangerous" icon="cancel" id="close-edit-display-name">Avbryt</button>
+        </div>
     </form>
 </dialog>
 
@@ -146,8 +148,10 @@
         <label>Beskrivning:</label>
         <input name="biography" value="{{ creator.biography }}" type="text" required>
 
-        <button class="btn" icon="person_edit" type="submit">Ändra beskrivning</button>
-        <button class="btn" icon="cancel" id="close-edit-biography">Avbryt</button>
+        <div class="flex wrap gap">
+            <button class="btn" icon="person_edit" type="submit">Ändra beskrivning</button>
+            <button class="btn dangerous" icon="cancel" id="close-edit-biography">Avbryt</button>
+        </div>
     </form>
 </dialog>
 

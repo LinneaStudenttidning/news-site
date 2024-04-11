@@ -1,0 +1,16 @@
+@use "palette";
+
+dialog {
+    width: min(65ch, 90vw);
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    border: 0 none transparent;
+    background-color: palette.$standout;
+
+    &::backdrop {
+        background-color: rgba(palette.$black, 0.2);
+        backdrop-filter: blur(8px);
+    }
+}
