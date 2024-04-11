@@ -78,9 +78,14 @@ async fn change_display_name(
         .await
         .map_err(|_| "User does not exist!".to_string())?;
 
-    let _updated_creator = Creator::update_by_username(db, &claims.data.username, form.display_name, &creator.biography)
-        .await
-        .map_err(|e| e.to_string())?;
+    let _updated_creator = Creator::update_by_username(
+        db,
+        &claims.data.username,
+        form.display_name,
+        &creator.biography,
+    )
+    .await
+    .map_err(|e| e.to_string())?;
 
     Ok(Redirect::to("/control-panel"))
 }
@@ -95,9 +100,14 @@ async fn change_biography(
         .await
         .map_err(|_| "User does not exist!".to_string())?;
 
-    let _updated_creator = Creator::update_by_username(db, &claims.data.username, &creator.display_name, form.biography)
-        .await
-        .map_err(|e| e.to_string())?;
+    let _updated_creator = Creator::update_by_username(
+        db,
+        &claims.data.username,
+        &creator.display_name,
+        form.biography,
+    )
+    .await
+    .map_err(|e| e.to_string())?;
 
     Ok(Redirect::to("/control-panel"))
 }
@@ -152,5 +162,13 @@ async fn publish_text(form: Form<PublishTextForm<'_>>, db: &State<DatabaseHandle
 
 /// These should be mounted on `/control-panel`!
 pub fn get_all_routes() -> Vec<Route> {
-    routes![control_panel, login_page, login, change_display_name, change_biography, editor, publish_text]
+    routes![
+        control_panel,
+        login_page,
+        login,
+        change_display_name,
+        change_biography,
+        editor,
+        publish_text
+    ]
 }

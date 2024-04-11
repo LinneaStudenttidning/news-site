@@ -29,3 +29,6 @@ static/styles/*
 # Node -- this is because `eslint --init` needs it to work...
 node_modules
 pnpm-lock.yaml
+
+# Code editors
+.vscode

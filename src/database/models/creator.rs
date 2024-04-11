@@ -122,10 +122,21 @@ impl Creator {
     }
 
     /// Updates ONE creator from the data by its `username`.
-    pub async fn update_by_username(db: &DatabaseHandler, username: &str, display_name: &str, biography: &str) -> Result<Self, Error> {
-        sqlx::query_file_as!(Self, "sql/creators/update.sql", display_name, biography, username)
-            .fetch_one(&db.pool)
-            .await
+    pub async fn update_by_username(
+        db: &DatabaseHandler,
+        username: &str,
+        display_name: &str,
+        biography: &str,
+    ) -> Result<Self, Error> {
+        sqlx::query_file_as!(
+            Self,
+            "sql/creators/update.sql",
+            display_name,
+            biography,
+            username
+        )
+        .fetch_one(&db.pool)
+        .await
     }
 
     /// Changes the display name of a `Creator`.
