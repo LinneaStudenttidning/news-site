@@ -50,6 +50,7 @@ pub struct Text {
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,
     pub tags: Vec<String>,
+    pub is_published: bool,
 }
 
 impl Default for Text {
@@ -65,6 +66,7 @@ impl Default for Text {
             created_at: Utc::now().naive_utc(),
             updated_at: Utc::now().naive_utc(),
             tags: Vec::new(),
+            is_published: false,
         }
     }
 }
@@ -78,6 +80,7 @@ impl Text {
         text_body: &str,
         text_type: TextType,
         tags: Vec<String>,
+        is_published: bool,
     ) -> Self {
         Self {
             title: title.into(),
@@ -86,6 +89,7 @@ impl Text {
             text_body: text_body.into(),
             text_type,
             tags,
+            is_published,
             ..Default::default()
         }
     }
@@ -101,7 +105,8 @@ impl Text {
             self.lead_paragraph,
             self.text_body,
             &self.text_type as &TextType,
-            &self.tags
+            &self.tags,
+            self.is_published
         )
         .fetch_one(&db.pool)
         .await
@@ -116,6 +121,7 @@ impl Text {
         lead_paragraph: &str,
         text_body: &str,
         tags: &Vec<String>,
+        is_published: bool,
     ) -> Result<Text, Error> {
         sqlx::query_file_as!(
             Self,
@@ -125,7 +131,8 @@ impl Text {
             lead_paragraph,
             text_body,
             tags,
-            id
+            is_published,
+            id,
         )
         .fetch_one(&db.pool)
         .await
@@ -137,12 +144,12 @@ impl Text {
     pub async fn get_n_latest(
         db: &DatabaseHandler,
         n: i64,
-        is_publised: Option<bool>,
+        is_published: Option<bool>,
     ) -> Result<Vec<Self>, Error> {
         sqlx::query_file_as!(
             Self,
             "sql/articles/get_n_latest.sql",
-            is_publised.unwrap_or(true),
+            is_published.unwrap_or(true),
             n,
         )
         .fetch_all(&db.pool)

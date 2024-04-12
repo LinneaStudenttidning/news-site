@@ -4,9 +4,10 @@ UPDATE articles SET
     lead_paragraph = $3,
     text_body = $4,
     updated_at = NOW(),
-    tags = $5
+    tags = $5,
+    is_published = $6
 WHERE
-    id = $6
+    id = $7
 RETURNING
     id,
     title, 
@@ -17,4 +18,5 @@ RETURNING
     text_type AS "text_type!: TextType",
     created_at,
     updated_at,
-    tags
+    tags,
+    is_published

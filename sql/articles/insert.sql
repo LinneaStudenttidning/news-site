@@ -1,7 +1,6 @@
 INSERT INTO
     articles (
         id,
-        is_published,
         title,
         title_slug,
         author,
@@ -10,10 +9,11 @@ INSERT INTO
         text_type,
         created_at,
         updated_at,
-        tags
+        tags,
+        is_published
     )
 VALUES
-    (DEFAULT, DEFAULT, $1, $2, $3, $4, $5, $6, DEFAULT, DEFAULT, $7) RETURNING
+    (DEFAULT, $1, $2, $3, $4, $5, $6, DEFAULT, DEFAULT, $7, $8) RETURNING
         id,
         title, 
         title_slug,
@@ -23,4 +23,5 @@ VALUES
         text_type AS "text_type!: TextType",
         created_at,
         updated_at,
-        tags
+        tags,
+        is_published

@@ -8,7 +8,8 @@ SELECT
     text_type AS "text_type!: TextType",
     created_at,
     updated_at,
-    tags
+    tags,
+    is_published
 FROM
     articles
 WHERE

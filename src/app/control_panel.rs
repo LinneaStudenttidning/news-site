@@ -211,6 +211,7 @@ async fn publish_text(form: Form<PublishTextForm<'_>>, db: &State<DatabaseHandle
         form.text_body,
         form.text_type,
         tags,
+        true, // is_published
     );
     match text.save_to_db(db).await {
         Ok(published_article) => Redirect::to(uri!(text_by_id(
@@ -242,6 +243,7 @@ async fn edit_text(form: Form<EditTextForm<'_>>, db: &State<DatabaseHandler>) ->
         form.leading_paragraph,
         form.text_body,
         &tags,
+        true, // is_published
     )
     .await
     {
