@@ -12,4 +12,4 @@ SELECT
 FROM
     articles
 WHERE
-    id = $1 AND is_published = true
+    id = $1 AND is_published IN (true, $2)

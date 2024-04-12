@@ -8,7 +8,8 @@
 
 {% block main %}
 <h1>Textredigerare</h1>
-<form action="/control-panel/publish-text" method="post">
+<form action="{% if text %}/control-panel/edit-text{% else %}/control-panel/publish-text{% endif %}" method="post">
+    {% if not text %}
     <label for="text-type">Texttyp:</label>
     <select name="text-type" id="text-type">
         <option value="Article">Artikel</option>
@@ -16,18 +17,23 @@
         <option value="Opinion">Opinion/Debatt</option>
         <option value="Other">Annat/Övrigt</option>
     </select>
+    {% endif %}
+
+    {% if text %}
+    <input type="hidden" id="text_id" name="text_id" value="{{ text.id }}">
+    {% endif %}
 
     <label for="title">Rubrik:</label>
-    <input type="text" name="title" id="title" required>
+    <input type="text" name="title" id="title" value="{% if text.title %}{{ text.title }}{% endif %}" required>
 
     <label for="leading-paragraph">Ingress:</label>
-    <textarea name="leading-paragraph" id="leading-paragraph" rows="5" required></textarea>
+    <textarea name="leading-paragraph" id="leading-paragraph" rows="5" value="" required>{% if text.lead_paragraph %}{{ text.lead_paragraph }}{% endif %}</textarea>
 
     <label for="text-body">Brödtext:</label>
-    <textarea name="text-body" id="text-body" rows="15" required></textarea>
+    <textarea name="text-body" id="text-body" rows="15" required>{% if text.text_body %}{{ text.text_body }}{% endif %}</textarea>
 
     <label for="tags">Taggar, separera med semikolon (;):</label>
-    <input type="text" name="tags" id="tags">
+    <input type="text" name="tags" value="{% if text.tags %}{{ text.tags | join(sep=";") }}{% endif %}" id="tags">
 
     <div class="flex wrap gap">
         <button class="btn" icon="save" type="submit">Spara</button>

@@ -30,10 +30,7 @@ async fn text_by_id(
     _title_slug: &str,
     db: &State<DatabaseHandler>,
 ) -> Result<Template, Error> {
-    // FIXME: THIS MUST BE REMOVED IN PRODUCTION!
-    Text::publish(db, id).await?;
-
-    let text = Text::get_by_id(db, id).await?;
+    let text = Text::get_by_id(db, id, None).await?;
     // TODO: Redirect if the url slug is incorrect, but ID is correct.
     println!("{:?}", text);
 

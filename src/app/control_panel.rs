@@ -163,10 +163,28 @@ fn editor() -> Template {
     Template::render("editor-v2", context! {})
 }
 
+#[get("/edit/<text_id>")]
+async fn editor_text_id(text_id: i32, db: &State<DatabaseHandler>) -> Result<Template, Error> {
+    let text = Text::get_by_id(db, text_id, Some(false)).await?;
+
+    Ok(Template::render("editor-v2", context! { text }))
+}
+
 #[derive(FromForm)]
 struct PublishTextForm<'a> {
     #[field(name = "text-type")]
     text_type: TextType,
+    title: &'a str,
+    #[field(name = "leading-paragraph")]
+    leading_paragraph: &'a str,
+    #[field(name = "text-body")]
+    text_body: &'a str,
+    tags: &'a str,
+}
+
+#[derive(FromForm)]
+struct EditTextForm<'a> {
+    text_id: i32,
     title: &'a str,
     #[field(name = "leading-paragraph")]
     leading_paragraph: &'a str,
@@ -206,6 +224,38 @@ async fn publish_text(form: Form<PublishTextForm<'_>>, db: &State<DatabaseHandle
     }
 }
 
+#[post("/edit-text", data = "<form>")]
+async fn edit_text(form: Form<EditTextForm<'_>>, db: &State<DatabaseHandler>) -> Redirect {
+    let tags = match form.tags.is_empty() {
+        false => form
+            .tags
+            .split(';')
+            .map(String::from)
+            .collect::<Vec<String>>(),
+        true => Vec::new(),
+    };
+
+    match Text::update_by_id(
+        db,
+        form.text_id,
+        form.title,
+        form.leading_paragraph,
+        form.text_body,
+        &tags,
+    )
+    .await
+    {
+        Ok(updated_article) => Redirect::to(uri!(text_by_id(
+            updated_article.id,
+            updated_article.title_slug
+        ))),
+        Err(e) => {
+            println!("{:?}", e);
+            Redirect::to("/not-found")
+        }
+    }
+}
+
 /// These should be mounted on `/control-panel`!
 pub fn get_all_routes() -> Vec<Route> {
     routes![
@@ -216,6 +266,8 @@ pub fn get_all_routes() -> Vec<Route> {
         change_biography,
         change_password,
         editor,
-        publish_text
+        editor_text_id,
+        publish_text,
+        edit_text
     ]
 }

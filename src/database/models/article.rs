@@ -108,6 +108,30 @@ impl Text {
         .map_err(Error::from)
     }
 
+    /// Updates ONE text from the data by its `id`.
+    pub async fn update_by_id(
+        db: &DatabaseHandler,
+        id: i32,
+        title: &str,
+        lead_paragraph: &str,
+        text_body: &str,
+        tags: &Vec<String>,
+    ) -> Result<Text, Error> {
+        sqlx::query_file_as!(
+            Self,
+            "sql/articles/update.sql",
+            title,
+            slugify(title),
+            lead_paragraph,
+            text_body,
+            tags,
+            id
+        )
+        .fetch_one(&db.pool)
+        .await
+        .map_err(Error::from)
+    }
+
     /// Gets Oup to `n` latest `Text`s from the database.
     /// The `is_published` defaults to `true` if `None`.
     pub async fn get_n_latest(
@@ -127,11 +151,21 @@ impl Text {
     }
 
     /// Gets ONE `Text` from the database by its id.
-    pub async fn get_by_id(db: &DatabaseHandler, id: i32) -> Result<Self, Error> {
-        sqlx::query_file_as!(Self, "sql/articles/get_by_id.sql", id)
-            .fetch_one(&db.pool)
-            .await
-            .map_err(Error::from)
+    /// `check_if_published` defaults to `true` if `None`
+    pub async fn get_by_id(
+        db: &DatabaseHandler,
+        id: i32,
+        check_if_published: Option<bool>,
+    ) -> Result<Self, Error> {
+        sqlx::query_file_as!(
+            Self,
+            "sql/articles/get_by_id.sql",
+            id,
+            check_if_published.unwrap_or(true)
+        )
+        .fetch_one(&db.pool)
+        .await
+        .map_err(Error::from)
     }
 
     /// Gets ALL `Text`s from the database by `author`.

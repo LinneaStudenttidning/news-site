@@ -41,7 +41,9 @@
                     <td>{{ text.title }} </td>
                     <td>{{ text.created_at | date(format="%F %T") }}</td>
                     <td class="flex wrap gap">
-                        <button class="btn icon-only" icon="edit_note"></button>
+                        <a href="/control-panel/edit/{{ text.id }}">
+                            <button class="btn icon-only" icon="edit_note"></button>
+                        </a>
                         <button class="btn icon-only dangerous show-dialog" icon="delete"></button>
                     </td>
                 </tr>
@@ -69,6 +71,9 @@
                     <td>{{ text.title }} </td>
                     <td>{{ text.created_at | date(format="%F %T") }}</td>
                     <td class="flex wrap gap">
+                        <a href="/control-panel/edit/{{ text.id }}">
+                            <button class="btn icon-only" icon="edit_note"></button>
+                        </a>
                         <button class="btn icon-only share" 
                             data-url="{{ get_env(name="SITE_URL") }}/t/{{ text.id }}/{{ text.title_slug }}" 
                             data-title="{{ text.title }}" icon="share">
