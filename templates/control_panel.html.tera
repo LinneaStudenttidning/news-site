@@ -1,7 +1,7 @@
 {% extends "templates/app" %}
 
 {% block head %}
-<script type="module" src="/static/scripts/dialog.js" async defer></script>
+<script type="module" src="/static/scripts/control-panel.js" async defer></script>
 {% endblock head %}
 
 {% block main %}
@@ -36,34 +36,22 @@
                 </tr>
             </thead>
             <tbody>
+                {% for text in unpublished_texts %}
                 <tr>
-                    <td>Lorem ipsum dolor sit amet consectetur</td>
-                    <td>2024-03-23 15:06</td>
+                    <td>{{ text.title }} </td>
+                    <td>{{ text.created_at | date(format="%F %T") }}</td>
                     <td class="flex wrap gap">
                         <button class="btn icon-only" icon="edit_note"></button>
-                        <button class="btn icon-only dangerous" icon="delete"></button>
+                        <button class="btn icon-only dangerous show-dialog" icon="delete"></button>
                     </td>
                 </tr>
-                <tr>
-                    <td>Lorem ipsum dolor sit amet consectetur</td>
-                    <td>2024-03-23 15:06</td>
-                    <td class="flex wrap gap">
-                        <button class="btn icon-only" icon="edit_note"></button>
-                        <button class="btn icon-only dangerous" icon="delete"></button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Lorem ipsum dolor sit amet consectetur</td>
-                    <td>2024-03-23 15:06</td>
-                    <td class="flex wrap gap">
-                        <button class="btn icon-only" icon="edit_note"></button>
-                        <button class="btn icon-only dangerous" icon="delete"></button>
-                    </td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
         <div class="flex wrap gap">
-            <button class="btn" icon="post_add">Skapa ny text</button>
+            <a href="/control-panel/editor">
+                <button class="btn" icon="post_add">Skapa ny text</button>
+            </a>
         </div>
 
         <h3>Publicerade texter</h3>
@@ -76,30 +64,21 @@
                 </tr>
             </thead>
             <tbody>
+                {% for text in published_texts %}
                 <tr>
-                    <td>Lorem ipsum dolor sit amet consectetur</td>
-                    <td>2024-03-23 15:06</td>
+                    <td>{{ text.title }} </td>
+                    <td>{{ text.created_at | date(format="%F %T") }}</td>
                     <td class="flex wrap gap">
-                        <button class="btn icon-only" icon="share"></button>
-                        <button class="btn icon-only" icon="open_in_new"></button>
+                        <button class="btn icon-only share" 
+                            data-url="{{ get_env(name="SITE_URL") }}/t/{{ text.id }}/{{ text.title_slug }}" 
+                            data-title="{{ text.title }}" icon="share">
+                        </button>
+                        <a href="/t/{{ text.id }}/{{ text.title_slug }}">
+                            <button class="btn icon-only" icon="open_in_new"></button>
+                        </a>
                     </td>
                 </tr>
-                <tr>
-                    <td>Lorem ipsum dolor sit amet consectetur</td>
-                    <td>2024-03-23 15:06</td>
-                    <td class="flex wrap gap">
-                        <button class="btn icon-only" icon="share"></button>
-                        <button class="btn icon-only" icon="open_in_new"></button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Lorem ipsum dolor sit amet consectetur</td>
-                    <td>2024-03-23 15:06</td>
-                    <td class="flex wrap gap">
-                        <button class="btn icon-only" icon="share"></button>
-                        <button class="btn icon-only" icon="open_in_new"></button>
-                    </td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
@@ -124,33 +103,33 @@
         </div>
     </div>
     <div class="flex wrap gap">
-        <button class="btn show-dialog" icon="person_edit" id="edit-display-name">Ändra visningsnamn</button>
-        <button class="btn show-dialog" icon="edit_note" id="edit-biography">Ändra beskrivning</button>
+        <button class="btn show-dialog" icon="person_edit" id="change-display-name">Ändra visningsnamn</button>
+        <button class="btn show-dialog" icon="edit_note" id="change-biography">Ändra beskrivning</button>
         <button class="btn show-dialog" icon="password" id="change-password">Ändra lösenord</button>
         <button class="btn" icon="image">Ändra profilbild</button>
     </div>
 </div>
 
-<dialog id="dialog-edit-display-name">
+<dialog id="dialog-change-display-name">
     <form action="/control-panel/change-display-name" method="post">
         <label>Visningsnamn</label>
         <input name="display_name" value="{{ creator.display_name }}" type="text" required>
 
         <div class="flex wrap gap">
             <button class="btn" icon="person_edit" type="submit">Ändra visningsnamn</button>
-            <button class="btn dangerous" icon="cancel" id="close-edit-display-name">Avbryt</button>
+            <button class="btn dangerous" icon="cancel" id="close-change-display-name">Avbryt</button>
         </div>
     </form>
 </dialog>
 
-<dialog id="dialog-edit-biography">
+<dialog id="dialog-change-biography">
     <form action="/control-panel/change-biography" method="post">
         <label>Beskrivning</label>
         <input name="biography" value="{{ creator.biography }}" type="text" required>
 
         <div class="flex wrap gap">
             <button class="btn" icon="person_edit" type="submit">Ändra beskrivning</button>
-            <button class="btn dangerous" icon="cancel" id="close-edit-biography">Avbryt</button>
+            <button class="btn dangerous" icon="cancel" id="close-change-biography">Avbryt</button>
         </div>
     </form>
 </dialog>

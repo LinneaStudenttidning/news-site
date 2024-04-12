@@ -11,7 +11,8 @@ SELECT
     tags
 FROM
     articles
+WHERE is_published = $1
 ORDER BY
     created_at DESC
 LIMIT
-    $1
+    $2

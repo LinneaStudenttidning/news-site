@@ -10,7 +10,7 @@ pub mod texts;
 
 #[get("/")]
 async fn landing(db: &State<DatabaseHandler>) -> Result<Template, Error> {
-    let texts = Text::get_n_latest(db, 16).await?;
+    let texts = Text::get_n_latest(db, 16, Some(true)).await?;
 
     let tags = Text::get_all_tags(db, None).await?;
 
@@ -44,7 +44,7 @@ async fn text_by_id(
 
 #[get("/feed/atom.xml")]
 async fn feed_atom(db: &State<DatabaseHandler>) -> Result<Template, Error> {
-    let texts = Text::get_n_latest(db, 50).await?;
+    let texts = Text::get_n_latest(db, 50, Some(true)).await?;
 
     Ok(Template::render("atom", context! { texts }))
 }

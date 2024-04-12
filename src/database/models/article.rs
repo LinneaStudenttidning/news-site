@@ -109,11 +109,21 @@ impl Text {
     }
 
     /// Gets Oup to `n` latest `Text`s from the database.
-    pub async fn get_n_latest(db: &DatabaseHandler, n: i64) -> Result<Vec<Self>, Error> {
-        sqlx::query_file_as!(Self, "sql/articles/get_n_latest.sql", n)
-            .fetch_all(&db.pool)
-            .await
-            .map_err(Error::from)
+    /// The `is_published` defaults to `true` if `None`.
+    pub async fn get_n_latest(
+        db: &DatabaseHandler,
+        n: i64,
+        is_publised: Option<bool>,
+    ) -> Result<Vec<Self>, Error> {
+        sqlx::query_file_as!(
+            Self,
+            "sql/articles/get_n_latest.sql",
+            is_publised.unwrap_or(true),
+            n,
+        )
+        .fetch_all(&db.pool)
+        .await
+        .map_err(Error::from)
     }
 
     /// Gets ONE `Text` from the database by its id.
@@ -171,7 +181,7 @@ impl Text {
     }
 
     /// Gets all the unique tags articles have been tagged with.
-    /// The `limit` defaults to `10` if `Ǹone`.
+    /// The `limit` defaults to `10` if `None`.
     pub async fn get_all_tags(
         db: &DatabaseHandler,
         limit: Option<i64>,

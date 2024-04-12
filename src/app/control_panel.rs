@@ -19,7 +19,12 @@ use crate::database::{
 #[get("/")]
 async fn control_panel(db: &State<DatabaseHandler>, claims: Claims) -> Result<Template, Error> {
     let creator = Creator::get_by_username(db, &claims.data.username).await?;
-    Ok(Template::render("control_panel", context! { creator }))
+    let published_texts = Text::get_n_latest(db, 50, Some(true)).await?;
+    let unpublished_texts = Text::get_n_latest(db, 50, Some(false)).await?;
+    Ok(Template::render(
+        "control_panel",
+        context! { creator, published_texts, unpublished_texts },
+    ))
 }
 
 #[get("/login")]
