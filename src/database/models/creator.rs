@@ -75,7 +75,7 @@ impl Creator {
             return Ok(false);
         }
 
-        return Ok(true);
+        Ok(true)
     }
 
     /// Create a new `Creator` that is a regular Publisher; this should be prefered over manually creating a new `Creator`.

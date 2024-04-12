@@ -128,9 +128,7 @@ async fn change_password(
     db: &State<DatabaseHandler>,
     claims: Claims,
 ) -> Result<Redirect, Error> {
-    let creator = Creator::get_by_username(db, &claims.data.username)
-        .await
-        .map_err(|e| e)?;
+    let creator = Creator::get_by_username(db, &claims.data.username).await?;
 
     if form.new_password != form.confirm_new_password {
         return Err(Error::create(
@@ -153,10 +151,9 @@ async fn change_password(
         &claims.data.username,
         &creator.display_name,
         &creator.biography,
-        &Creator::hash_password(&form.new_password)?,
+        &Creator::hash_password(form.new_password)?,
     )
-    .await
-    .map_err(|e| e)?;
+    .await?;
 
     Ok(Redirect::to("/control-panel"))
 }
