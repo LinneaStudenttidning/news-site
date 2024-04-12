@@ -1,6 +1,6 @@
 use std::{env::VarError, fmt};
 
-use rocket::{http::Status, Response};
+use rocket::{http::Status, Request, Response};
 use rocket_dyn_templates::{context, Template};
 use serde::{Deserialize, Serialize};
 
@@ -61,11 +61,17 @@ impl From<VarError> for Error {
 }
 
 impl<'a> rocket::response::Responder<'a, 'static> for Error {
-    fn respond_to(self, request: &'a rocket::Request<'_>) -> rocket::response::Result<'static> {
+    fn respond_to(self, request: &'a Request<'_>) -> rocket::response::Result<'static> {
+        // let headers = request
+        //     .headers()
+        //     .iter()
+        //     .map(|h| (h.name().to_string(), h.value().to_string()))
+        //     .collect::<Vec<(String, String)>>();
+
         Response::build_from(
             Template::render(
                 "errors/generic",
-                context! { error: self.to_string(), req: request.to_string(), uri: request.uri() },
+                context! { error: self.to_string(), status: self.status, uri: request.uri()},
             )
             .respond_to(request)?,
         )

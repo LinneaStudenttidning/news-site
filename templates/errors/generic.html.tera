@@ -6,17 +6,14 @@
     Ajdå! Du har stött på oväntade problem.
     <a href="/">Klicka här för att gå till start-sidan!</a>
 </p>
-<p>
-    <b>Felsökningsinformation:</b>
-</p>
-<p>
-    <a href="{{ uri }}">{{ uri }}</a>
-</p>
-<p><code>req</code></p>
-<pre><code>{{ req }}</code></pre>
-{% if error %}
-<p><code>error</code></p>
-<pre><code>{{ error }}</code></pre>
-{% endif %}
-
+<h2>Felsökningsinformation:</h2>
+<h3>Error:</h3>
+<code class="error">{{ error }}</code>
+<h3>URL:</h3>
+<a href="{{ uri }}">{{ uri }}</a>
+{# <h3>Headers details:</h3>
+{% for header in headers %}
+<p>{{ header.0 }}</p>
+<code class="error">{{ header.1 }}</code>
+{% endfor %} #}
 {% endblock main %}

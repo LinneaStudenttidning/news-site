@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::database::models::creator::Creator;
 use crate::defaults::DATA_DIR;
+use crate::error::Error;
 
 fn read_token_secret() -> Vec<u8> {
     dotenv().ok();
@@ -35,7 +36,7 @@ pub struct Claims {
 
 #[rocket::async_trait]
 impl<'a> FromRequest<'a> for Claims {
-    type Error = String;
+    type Error = Error;
 
     async fn from_request(request: &'a Request<'_>) -> Outcome<Self, Self::Error> {
         let cookie = request.cookies().get("token").map(|cookie| cookie.value());
@@ -45,12 +46,20 @@ impl<'a> FromRequest<'a> for Claims {
                 jsonwebtoken::decode::<Claims>(token, &get_decoding_key(), &Validation::default())
                     .map(|token| token.claims)
             }
-            None => return Outcome::Error((Status::BadRequest, "No 'token' cookie!".to_string())),
+            None => {
+                return Outcome::Error((
+                    Status::BadRequest,
+                    Error::create("Claims Guard", "No 'token' cookie!", Status::BadRequest),
+                ))
+            }
         };
 
         match token {
             Ok(valid_token) => Outcome::Success(valid_token),
-            Err(_) => Outcome::Error((Status::Unauthorized, "Invalid token!".to_string())),
+            Err(_) => Outcome::Error((
+                Status::Unauthorized,
+                Error::create("Claims Guard", "Invalid token!", Status::Unauthorized),
+            )),
         }
     }
 }
