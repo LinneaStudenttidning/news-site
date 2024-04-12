@@ -78,7 +78,7 @@
                             data-url="{{ get_env(name="SITE_URL") }}/t/{{ text.id }}/{{ text.title_slug }}" 
                             data-title="{{ text.title }}" icon="share">
                         </button>
-                        <a href="/t/{{ text.id }}/{{ text.title_slug }}">
+                        <a href="/t/{{ text.id }}/{{ text.title_slug }}" target="_blank">
                             <button class="btn icon-only" icon="open_in_new"></button>
                         </a>
                     </td>
