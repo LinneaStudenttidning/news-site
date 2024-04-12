@@ -2,7 +2,7 @@ use crate::{
     database::{models::article::Text, DatabaseHandler},
     error::Error,
 };
-use rocket::{Route, State};
+use rocket::{response::Redirect, Route, State};
 use rocket_dyn_templates::{context, Template};
 
 pub mod control_panel;
@@ -24,19 +24,36 @@ async fn about_us(db: &State<DatabaseHandler>) -> Result<Template, Error> {
     Ok(Template::render("about", context! { tags }))
 }
 
-#[get("/t/<id>/<_title_slug>")]
+#[derive(Debug, Responder)]
+enum TempRedirResult {
+    Template(Box<Template>),
+    Redirect(Box<Redirect>),
+}
+
+// FIXME: Refactor this mess...
+#[get("/t/<id>/<title_slug>")]
 async fn text_by_id(
     id: i32,
-    _title_slug: &str,
+    title_slug: &str,
     db: &State<DatabaseHandler>,
-) -> Result<Template, Error> {
+) -> Result<TempRedirResult, Error> {
     let text = Text::get_by_id(db, id, None).await?;
-    // TODO: Redirect if the url slug is incorrect, but ID is correct.
-    println!("{:?}", text);
+
+    if title_slug != text.title_slug {
+        let redirect = TempRedirResult::Redirect(Box::new(Redirect::found(uri!(text_by_id(
+            id,
+            text.title_slug
+        )))));
+        return Ok(redirect);
+    }
 
     let tags = Text::get_all_tags(db, None).await?;
 
-    Ok(Template::render("text-by-id", context! { text, tags }))
+    let template = TempRedirResult::Template(Box::new(Template::render(
+        "text-by-id",
+        context! { text, tags },
+    )));
+    Ok(template)
 }
 
 #[get("/feed/atom.xml")]
