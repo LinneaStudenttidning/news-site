@@ -280,6 +280,7 @@ mod tests {
                 "Text body",
                 TextType::Article,
                 vec![],
+                true, // is_published
             );
 
             text.save_to_db(&db).await.expect("SAVING FAILED");
