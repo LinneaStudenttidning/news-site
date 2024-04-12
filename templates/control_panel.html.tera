@@ -41,9 +41,7 @@
                     <td>{{ text.title }} </td>
                     <td>{{ text.created_at | date(format="%F %T") }}</td>
                     <td class="flex wrap gap">
-                        <a href="/control-panel/edit/{{ text.id }}">
-                            <button class="btn icon-only" icon="edit_note"></button>
-                        </a>
+                        <a class="btn icon-only" icon="edit_note" href="/control-panel/edit/{{ text.id }}"></a>
                         <button class="btn icon-only dangerous show-dialog" icon="delete"></button>
                     </td>
                 </tr>
@@ -51,9 +49,7 @@
             </tbody>
         </table>
         <div class="flex wrap gap">
-            <a href="/control-panel/editor">
-                <button class="btn" icon="post_add">Skapa ny text</button>
-            </a>
+            <a class="btn" icon="post_add" href="/control-panel/editor">Skapa ny text</a>
         </div>
 
         <h3>Publicerade texter</h3>
@@ -71,16 +67,13 @@
                     <td>{{ text.title }} </td>
                     <td>{{ text.created_at | date(format="%F %T") }}</td>
                     <td class="flex wrap gap">
-                        <a href="/control-panel/edit/{{ text.id }}">
-                            <button class="btn icon-only" icon="edit_note"></button>
-                        </a>
-                        <button class="btn icon-only share" 
-                            data-url="{{ get_env(name="SITE_URL") }}/t/{{ text.id }}/{{ text.title_slug }}" 
+                        <a class="btn icon-only" icon="edit_note" href="/control-panel/edit/{{ text.id }}"></a>
+                        <button class="btn icon-only share"
+                            data-url="{{ get_env(name="SITE_URL") }}/t/{{ text.id }}/{{ text.title_slug }}"
                             data-title="{{ text.title }}" icon="share">
                         </button>
-                        <a href="/t/{{ text.id }}/{{ text.title_slug }}" target="_blank">
-                            <button class="btn icon-only" icon="open_in_new"></button>
-                        </a>
+                        <a class="btn icon-only" icon="open_in_new" href="/t/{{ text.id }}/{{ text.title_slug }}"
+                            target="_blank"></a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -108,38 +101,40 @@
         </div>
     </div>
     <div class="flex wrap gap">
-        <button class="btn show-dialog" icon="person_edit" id="change-display-name">Ändra visningsnamn</button>
-        <button class="btn show-dialog" icon="edit_note" id="change-biography">Ändra beskrivning</button>
-        <button class="btn show-dialog" icon="password" id="change-password">Ändra lösenord</button>
+        <button class="btn" icon="person_edit" data-dialog-button="change-display-name">Ändra
+            visningsnamn</button>
+        <button class="btn" icon="edit_note" data-dialog-button="change-biography">Ändra
+            beskrivning</button>
+        <button class="btn" icon="password" data-dialog-button="change-password">Ändra lösenord</button>
         <button class="btn" icon="image">Ändra profilbild</button>
     </div>
 </div>
 
-<dialog id="dialog-change-display-name">
+<dialog data-dialog-box="change-display-name">
     <form action="/control-panel/change-display-name" method="post">
         <label>Visningsnamn</label>
         <input name="display_name" value="{{ creator.display_name }}" type="text" required>
 
         <div class="flex wrap gap">
             <button class="btn" icon="person_edit" type="submit">Ändra visningsnamn</button>
-            <button class="btn dangerous" icon="cancel" id="close-change-display-name">Avbryt</button>
+            <button class="btn dangerous close-dialog" icon="cancel" i>Avbryt</button>
         </div>
     </form>
 </dialog>
 
-<dialog id="dialog-change-biography">
+<dialog data-dialog-box="change-biography">
     <form action="/control-panel/change-biography" method="post">
         <label>Beskrivning</label>
         <input name="biography" value="{{ creator.biography }}" type="text" required>
 
         <div class="flex wrap gap">
             <button class="btn" icon="person_edit" type="submit">Ändra beskrivning</button>
-            <button class="btn dangerous" icon="cancel" id="close-change-biography">Avbryt</button>
+            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
         </div>
     </form>
 </dialog>
 
-<dialog id="dialog-change-password">
+<dialog data-dialog-box="change-password">
     <form action="/control-panel/change-password" method="post">
         <label>Nuvarande lösenord</label>
         <input name="current_password" value="" type="password" required>
@@ -152,7 +147,7 @@
 
         <div class="flex wrap gap">
             <button class="btn" icon="person_edit" type="submit">Ändra lösenord</button>
-            <button class="btn dangerous" icon="cancel" id="close-change-password">Avbryt</button>
+            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
         </div>
     </form>
 </dialog>

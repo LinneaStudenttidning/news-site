@@ -1,36 +1,33 @@
+const dialogButtons = document.querySelectorAll("[data-dialog-button]")
 
-const dialogs = document.querySelectorAll('.show-dialog');
+dialogButtons.forEach(dialogButton => {
+    const dialogId = dialogButton.getAttribute("data-dialog-button")
+    const dialog = document.querySelector(`[data-dialog-box="${dialogId}"]`)
+    const closeButton = dialog.querySelector(".btn.close-dialog")
 
-dialogs.forEach(el => {
-    if(el.id) {
-        const dialog = document.getElementById(`dialog-${el.id}`);
+    dialogButton.addEventListener("click", () => dialog.showModal())
+    closeButton.addEventListener("click", event => {
+        event.preventDefault()
+        dialog.close()
+    })
+})
 
-        el.addEventListener('click', _event => {
-            dialog.showModal();
-        })
-        const closeDialogButton = document.getElementById(`close-${el.id}`);
-        closeDialogButton.addEventListener("click", (e) => {
-            e.preventDefault();
-            dialog.close();
-        });
-    }
-});
+const shareButtons = document.querySelectorAll(".share")
 
-const shareButtons = document.querySelectorAll('.share');
+shareButtons.forEach(shareButton => {
+    if (shareButton.attributes["data-url"]) {
+        const url = shareButton.getAttribute("data-url")
+        const title = shareButton.getAttribute("data-title")
 
-shareButtons.forEach(el => {
-    if(el.attributes['data-url']) {
-        const url = el.attributes['data-url'].value
-        const title = el.attributes['data-title'].value
-
-        el.addEventListener('click', _event => {
+        shareButton.addEventListener("click", () => {
             if (typeof navigator.share === "function") {
                 navigator.share({ "url": url, "title": title })
             }
             else {
-                navigator.clipboard.writeText(url);
+                navigator.clipboard.writeText(url)
+                alert("Copied link to clipboard!")
             }
-            
+
         })
     }
-});
+})
