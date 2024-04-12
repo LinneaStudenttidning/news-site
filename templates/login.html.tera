@@ -2,12 +2,17 @@
 
 {% block main %}
 <h1>Logga in</h1>
+
 <form action="/control-panel/login" method="post">
+    {% if flash %}
+    <code class="error">{{ flash }}</code>
+    {% endif %}
+
     <label for="username">Användarnamn:</label>
-    <input type="text" name="username" id="username">
+    <input type="text" name="username" id="username" required autofocus>
 
     <label for="password">Lösenord:</label>
-    <input type="password" name="password" id="password">
+    <input type="password" name="password" id="password" required>
 
     <button type="submit" icon="login" class="btn">Logga in!</button>
 </form>

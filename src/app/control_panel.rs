@@ -5,7 +5,8 @@ use crate::{
 use rocket::{
     form::Form,
     http::{Cookie, CookieJar, Status},
-    response::Redirect,
+    request::FlashMessage,
+    response::{Flash, Redirect},
     time::Duration,
     Route, State,
 };
@@ -28,8 +29,11 @@ async fn control_panel(db: &State<DatabaseHandler>, claims: Claims) -> Result<Te
 }
 
 #[get("/login")]
-fn login_page() -> Template {
-    Template::render("login", context! {})
+fn login_page(flash: Option<FlashMessage>) -> Template {
+    Template::render(
+        "login",
+        context! { flash: flash.map(|msg| msg.message().to_string())},
+    )
 }
 
 #[derive(FromForm)]
@@ -60,10 +64,26 @@ async fn login(
     form: Form<LoginForm<'_>>,
     db: &State<DatabaseHandler>,
     jar: &CookieJar<'_>,
-) -> Result<Redirect, Error> {
-    let creator = Creator::get_by_username(db, form.username).await?;
+) -> Result<Flash<Redirect>, Error> {
+    let creator = match Creator::get_by_username(db, form.username).await {
+        Ok(creator) => creator,
+        Err(_) => {
+            return Ok(Flash::error(
+                Redirect::to(uri!("/control-panel/login")),
+                "Användaren finns inte!",
+            ))
+        }
+    };
 
-    let token = creator.login(form.password).await?;
+    let token = match creator.login(form.password).await {
+        Ok(token) => token,
+        Err(_) => {
+            return Ok(Flash::error(
+                Redirect::to(uri!("/control-panel/login")),
+                "Fel lösenord",
+            ))
+        }
+    };
 
     let cookie = Cookie::build(("token", token))
         .same_site(rocket::http::SameSite::Strict)
@@ -73,7 +93,7 @@ async fn login(
 
     jar.add(cookie);
 
-    Ok(Redirect::to("/control-panel"))
+    Ok(Flash::success(Redirect::to("/control-panel"), ""))
 }
 
 #[post("/change-display-name", data = "<form>")]
