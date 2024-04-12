@@ -30,16 +30,16 @@ jobs:
     - name: Setup tables
       run: psql "postgres://news:news@localhost/news" -a -f "sql/0-create_tables.sql"
     - name: Check code
-      run: cargo check --verbose
+      run: cargo check --quiet
       env:
         DATABASE_URL: "postgres://news:news@localhost/news"
     - name: Check format
       run: cargo fmt --check
     - name: Clippy
-      run: cargo clippy --verbose
+      run: cargo clippy --quiet
       env:
         DATABASE_URL: "postgres://news:news@localhost/news"
     - name: Run tests
-      run: cargo test --verbose
+      run: cargo test --quiet
       env:
         DATABASE_URL: "postgres://news:news@localhost/news"
