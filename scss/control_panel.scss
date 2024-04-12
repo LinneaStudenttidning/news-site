@@ -1,4 +1,5 @@
 @use "palette";
+@use "settings";
 @use "mixins";
 
 .toolbox {
@@ -53,6 +54,34 @@
 
     > .info {
         grid-area: info;
+    }
+}
+
+.article-box {
+    display: grid;
+    grid-template-areas: 'title actions' 'date actions';
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    place-items: start;
+    background-color: palette.$surface;
+    padding: 1rem;
+    margin-bottom: 1rem;
+
+    .title {
+        grid-area: title;
+        font-family: settings.$font-family-default;
+        font-weight: 300;
+    }
+
+    .date {
+        grid-area: date;
+        font-family: settings.$font-family-default;
+        font-size: .85em;
+        color: palette.$grey400;
+    }
+
+    .actions {
+        grid-area: actions;
     }
 }
 

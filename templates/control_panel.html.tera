@@ -27,58 +27,49 @@
     <h2 icon="feed">Dina texter</h2>
     <div class="content">
         <h3>Opublicerade texter</h3>
-        <table class="content">
-            <thead>
-                <tr>
-                    <th>Namn</th>
-                    <th>Datum</th>
-                    <th>Funktioner</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for text in unpublished_texts %}
-                <tr>
-                    <td>{{ text.title }} </td>
-                    <td>{{ text.created_at | date(format="%F %T") }}</td>
-                    <td class="flex wrap gap">
-                        <a class="btn icon-only" icon="edit_note" href="/control-panel/edit/{{ text.id }}"></a>
-                        <button class="btn icon-only dangerous show-dialog" icon="delete"></button>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        {% if unpublished_texts | length > 0 %}
+        {% for text in unpublished_texts %}
+        <div class="article-box">
+            <p class="title">{{ text.title }} </p>
+            <p class="date">{{ text.created_at | date(format="%F %T") }}</p>
+            <div class="flex wrap gap actions">
+                <a class="btn icon-only" icon="edit_note" href="/control-panel/edit/{{ text.id }}"></a>
+                <button class="btn icon-only share"
+                    data-url="{{ get_env(name="SITE_URL") }}/t/{{ text.id }}/{{ text.title_slug }}"
+                    data-title="{{ text.title }}" icon="share">
+                </button>
+                <a class="btn icon-only" icon="open_in_new" href="/t/{{ text.id }}/{{ text.title_slug }}"
+                    target="_blank"></a>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>Du har inga opublicerade artiklar.</p>
+        {% endif %}
         <div class="flex wrap gap">
             <a class="btn" icon="post_add" href="/control-panel/editor">Skapa ny text</a>
         </div>
 
         <h3>Publicerade texter</h3>
-        <table class="content">
-            <thead>
-                <tr>
-                    <th>Namn</th>
-                    <th>Datum</th>
-                    <th>Funktioner</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for text in published_texts %}
-                <tr>
-                    <td>{{ text.title }} </td>
-                    <td>{{ text.created_at | date(format="%F %T") }}</td>
-                    <td class="flex wrap gap">
-                        <a class="btn icon-only" icon="edit_note" href="/control-panel/edit/{{ text.id }}"></a>
-                        <button class="btn icon-only share"
-                            data-url="{{ get_env(name="SITE_URL") }}/t/{{ text.id }}/{{ text.title_slug }}"
-                            data-title="{{ text.title }}" icon="share">
-                        </button>
-                        <a class="btn icon-only" icon="open_in_new" href="/t/{{ text.id }}/{{ text.title_slug }}"
-                            target="_blank"></a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        {% if published_texts | length > 0 %}
+        {% for text in published_texts %}
+        <div class="article-box">
+            <p class="title">{{ text.title }} </p>
+            <p class="date">{{ text.created_at | date(format="%F %T") }}</p>
+            <div class="flex wrap gap actions">
+                <a class="btn icon-only" icon="edit_note" href="/control-panel/edit/{{ text.id }}"></a>
+                <button class="btn icon-only share"
+                    data-url="{{ get_env(name="SITE_URL") }}/t/{{ text.id }}/{{ text.title_slug }}"
+                    data-title="{{ text.title }}" icon="share">
+                </button>
+                <a class="btn icon-only" icon="open_in_new" href="/t/{{ text.id }}/{{ text.title_slug }}"
+                    target="_blank"></a>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>Du har inga publicerade artiklar.</p>
+        {% endif %}
     </div>
 </div>
 {% endblock main %}
