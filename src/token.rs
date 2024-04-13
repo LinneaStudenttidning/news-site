@@ -91,7 +91,7 @@ impl<'a> FromRequest<'a> for Claims {
 
         // This check is performed so that an old (but not expired)
         // token is invalidated on password change.
-        if claims.data.password == creator.password {
+        if claims.data.password != creator.password {
             return Outcome::Error((
                 Status::BadRequest,
                 Error::create(
