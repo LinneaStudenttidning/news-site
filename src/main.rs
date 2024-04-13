@@ -18,7 +18,7 @@ pub mod token;
 
 use comrak::{markdown_to_html, Options};
 use database::DatabaseHandler;
-use rocket::{fs::FileServer, http::Status, Request};
+use rocket::fs::FileServer;
 use rocket_dyn_templates::{context, tera, Engines, Template};
 
 fn custom_tera(engines: &mut Engines) {
@@ -31,15 +31,6 @@ fn custom_tera(engines: &mut Engines) {
             Ok(tera::to_value(sanitized_html)?)
         },
     );
-}
-
-#[catch(default)]
-async fn default_error(status: Status, req: &Request<'_>) -> Template {
-    let tags: Vec<String> = Vec::new();
-    Template::render(
-        "errors/generic",
-        context! { tags, status, uri: req.uri(), req: req.to_string() },
-    )
 }
 
 #[catch(404)]
@@ -68,7 +59,7 @@ async fn main() {
         .mount("/texts", app::texts::get_all_routes())
         .mount("/control-panel", app::control_panel::get_all_routes())
         .mount("/static", FileServer::from("./static"))
-        .register("/", catchers![default_error, not_found])
+        .register("/", catchers![not_found])
         .launch()
         .await
     {
