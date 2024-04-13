@@ -7,6 +7,7 @@ use rocket::request::{FromRequest, Outcome, Request};
 use serde::{Deserialize, Serialize};
 
 use crate::database::models::creator::Creator;
+use crate::database::DatabaseHandler;
 use crate::defaults::DATA_DIR;
 use crate::error::Error;
 
@@ -54,12 +55,53 @@ impl<'a> FromRequest<'a> for Claims {
             }
         };
 
-        match token {
-            Ok(valid_token) => Outcome::Success(valid_token),
-            Err(_) => Outcome::Error((
-                Status::Unauthorized,
-                Error::create("Claims Guard", "Invalid token!", Status::Unauthorized),
-            )),
+        let claims = match token {
+            Ok(valid_token) => valid_token,
+            Err(_) => {
+                return Outcome::Error((
+                    Status::Unauthorized,
+                    Error::create("Claims Guard", "Invalid token!", Status::Unauthorized),
+                ))
+            }
+        };
+
+        let db = match request.rocket().state::<DatabaseHandler>() {
+            Some(db) => db,
+            None => {
+                return Outcome::Error((
+                    Status::InternalServerError,
+                    Error::create(
+                        "Claims Guard",
+                        "Could not connect to database!",
+                        Status::InternalServerError,
+                    ),
+                ))
+            }
+        };
+
+        let creator = match Creator::get_by_username(db, &claims.sub).await {
+            Ok(creator) => creator,
+            Err(e) => {
+                return Outcome::Error((
+                    Status::InternalServerError,
+                    Error::create("Claims Guard", &e.to_string(), Status::InternalServerError),
+                ))
+            }
+        };
+
+        // This check is performed so that an old (but not expired)
+        // token is invalidated on password change.
+        if claims.data.password == creator.password {
+            return Outcome::Error((
+                Status::BadRequest,
+                Error::create(
+                    "Claims Guard",
+                    "Password hashes do not match!",
+                    Status::BadRequest,
+                ),
+            ));
         }
+
+        Outcome::Success(claims)
     }
 }
