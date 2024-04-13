@@ -215,7 +215,11 @@ struct EditTextForm<'a> {
 
 /// FIXME: THIS IS TEPORARY. MUST BE REMOVED / CHANGED BEFORE PRODUCTION.
 #[post("/publish-text", data = "<form>")]
-async fn publish_text(form: Form<PublishTextForm<'_>>, db: &State<DatabaseHandler>) -> Redirect {
+async fn publish_text(
+    form: Form<PublishTextForm<'_>>,
+    db: &State<DatabaseHandler>,
+    claims: Claims,
+) -> Redirect {
     let tags = match form.tags.is_empty() {
         false => form
             .tags
@@ -226,7 +230,7 @@ async fn publish_text(form: Form<PublishTextForm<'_>>, db: &State<DatabaseHandle
     };
     let text = Text::create(
         form.title,
-        "UNKNOWN",
+        &claims.data.username,
         form.leading_paragraph,
         form.text_body,
         form.text_type,
