@@ -1,4 +1,5 @@
 use crate::{
+    anyresponder::AnyResponder,
     database::{models::article::Text, DatabaseHandler},
     error::Error,
 };
@@ -24,23 +25,17 @@ async fn about_us(db: &State<DatabaseHandler>) -> Result<Template, Error> {
     Ok(Template::render("about", context! { tags }))
 }
 
-#[derive(Debug, Responder)]
-enum TempRedirResult {
-    Template(Box<Template>),
-    Redirect(Box<Redirect>),
-}
-
 // FIXME: Refactor this mess...
 #[get("/t/<id>/<title_slug>")]
 async fn text_by_id(
     id: i32,
     title_slug: &str,
     db: &State<DatabaseHandler>,
-) -> Result<TempRedirResult, Error> {
+) -> Result<AnyResponder, Error> {
     let text = Text::get_by_id(db, id, None).await?;
 
     if title_slug != text.title_slug {
-        let redirect = TempRedirResult::Redirect(Box::new(Redirect::found(uri!(text_by_id(
+        let redirect = AnyResponder::Redirect(Box::new(Redirect::found(uri!(text_by_id(
             id,
             text.title_slug
         )))));
@@ -49,7 +44,7 @@ async fn text_by_id(
 
     let tags = Text::get_all_tags(db, None).await?;
 
-    let template = TempRedirResult::Template(Box::new(Template::render(
+    let template = AnyResponder::Template(Box::new(Template::render(
         "text-by-id",
         context! { text, tags },
     )));

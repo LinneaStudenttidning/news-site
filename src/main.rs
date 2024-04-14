@@ -10,6 +10,7 @@
 #[macro_use]
 extern crate rocket;
 
+pub mod anyresponder;
 pub mod app;
 pub mod database;
 pub mod defaults;
