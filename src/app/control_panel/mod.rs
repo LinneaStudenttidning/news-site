@@ -1,3 +1,4 @@
+use crate::database::{models::article::Text, DatabaseHandler};
 use crate::{
     app::rocket_uri_macro_text_by_id, database::models::creator::Creator, error::Error,
     token::Claims,
@@ -12,10 +13,12 @@ use rocket::{
 };
 use rocket_dyn_templates::{context, Template};
 
-use crate::database::{
-    models::article::{Text, TextType},
-    DatabaseHandler,
+use self::form_structs::{
+    EditBiographyForm, EditDisplayNameForm, EditPasswordForm, EditTextForm, LoginForm,
+    PublishTextForm,
 };
+
+pub mod form_structs;
 
 #[get("/")]
 async fn control_panel(db: &State<DatabaseHandler>, claims: Claims) -> Result<Template, Error> {
@@ -34,29 +37,6 @@ fn login_page(flash: Option<FlashMessage>) -> Template {
         "login",
         context! { flash: flash.map(|msg| msg.message().to_string())},
     )
-}
-
-#[derive(FromForm)]
-struct LoginForm<'a> {
-    username: &'a str,
-    password: &'a str,
-}
-
-#[derive(FromForm)]
-struct EditDisplayNameForm<'a> {
-    display_name: &'a str,
-}
-
-#[derive(FromForm)]
-struct EditBiographyForm<'a> {
-    biography: &'a str,
-}
-
-#[derive(FromForm)]
-struct EditPasswordForm<'a> {
-    current_password: &'a str,
-    new_password: &'a str,
-    confirm_new_password: &'a str,
 }
 
 #[post("/login", data = "<form>")]
@@ -188,29 +168,6 @@ async fn editor_text_id(text_id: i32, db: &State<DatabaseHandler>) -> Result<Tem
     let text = Text::get_by_id(db, text_id, Some(false)).await?;
 
     Ok(Template::render("editor-v2", context! { text }))
-}
-
-#[derive(FromForm)]
-struct PublishTextForm<'a> {
-    #[field(name = "text-type")]
-    text_type: TextType,
-    title: &'a str,
-    #[field(name = "leading-paragraph")]
-    leading_paragraph: &'a str,
-    #[field(name = "text-body")]
-    text_body: &'a str,
-    tags: &'a str,
-}
-
-#[derive(FromForm)]
-struct EditTextForm<'a> {
-    text_id: i32,
-    title: &'a str,
-    #[field(name = "leading-paragraph")]
-    leading_paragraph: &'a str,
-    #[field(name = "text-body")]
-    text_body: &'a str,
-    tags: &'a str,
 }
 
 /// FIXME: THIS IS TEPORARY. MUST BE REMOVED / CHANGED BEFORE PRODUCTION.
