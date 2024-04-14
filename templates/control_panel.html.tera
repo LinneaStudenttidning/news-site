@@ -1,6 +1,7 @@
 {% extends "templates/app" %}
 
 {% block head %}
+<title>Kontrollpanelen</title>
 <script type="module" src="/static/scripts/control-panel.js" async defer></script>
 {% endblock head %}
 
