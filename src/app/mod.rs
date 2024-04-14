@@ -25,7 +25,6 @@ async fn about_us(db: &State<DatabaseHandler>) -> Result<Template, Error> {
     Ok(Template::render("about", context! { tags }))
 }
 
-// FIXME: Refactor this mess...
 #[get("/t/<id>/<title_slug>")]
 async fn text_by_id(
     id: i32,
@@ -35,20 +34,14 @@ async fn text_by_id(
     let text = Text::get_by_id(db, id, None).await?;
 
     if title_slug != text.title_slug {
-        let redirect = AnyResponder::Redirect(Box::new(Redirect::found(uri!(text_by_id(
-            id,
-            text.title_slug
-        )))));
-        return Ok(redirect);
+        let redirect = Redirect::found(uri!(text_by_id(id, text.title_slug)));
+        return Ok(AnyResponder::from(redirect));
     }
 
     let tags = Text::get_all_tags(db, None).await?;
 
-    let template = AnyResponder::Template(Box::new(Template::render(
-        "text-by-id",
-        context! { text, tags },
-    )));
-    Ok(template)
+    let template = Template::render("text-by-id", context! { text, tags });
+    Ok(AnyResponder::from(template))
 }
 
 #[get("/feed/atom.xml")]
