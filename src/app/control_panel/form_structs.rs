@@ -55,3 +55,10 @@ pub struct CreateCreatorForm<'a> {
     #[field(name = "as-publisher")]
     pub as_publisher: bool,
 }
+
+#[derive(FromForm)]
+pub struct ChangePasswordAnyForm<'a> {
+    pub username: &'a str,
+    #[field(name = "new-password")]
+    pub new_password: &'a str,
+}

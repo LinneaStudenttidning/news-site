@@ -7,11 +7,13 @@
 
 {% block main %}
 <h1>Kontrollpanelen</h1>
+{% if creator.role == "Publisher" %}
 <div class="toolbox">
     <h2 icon="admin_panel_settings">Administrativa verktyg</h2>
     <div class="content flex wrap gap">
         <button class="btn" icon="person_add" data-dialog-button="create-user">Skapa ny användare</button>
-        <button class="btn" icon="person_edit">Byt lösenord för annan användare</button>
+        <button class="btn" icon="person_edit" data-dialog-button="change-password-any">Byt lösenord för annan
+            användare</button>
         <button class="btn dangerous" icon="person_remove">Ta bort användare</button>
         <button class="btn dangerous" icon="add_moderator">Lägg till ansvarig utgivare</button>
         <button class="btn dangerous" icon="remove_moderator">Ta bort ansvarig utgivare</button>
@@ -23,6 +25,7 @@
         <button class="btn dangerous" icon="unpublished">Avpublicera text</button>
     </div>
 </div>
+{% endif %}
 
 <div class="toolbox">
     <h2 icon="feed">Dina texter</h2>
@@ -73,6 +76,53 @@
         {% endif %}
     </div>
 </div>
+
+{% if creator.role == "Publisher" %}
+<dialog data-dialog-box="create-user">
+    <form action="/control-panel/create-creator" method="post">
+        <label>Användarnamn</label>
+        <input name="username" placeholder="bob_andersen" type="text" required>
+
+        <label>Namn (visningsnamn)</label>
+        <input name="display-name" placeholder="Bob Andersen" type="text" required>
+
+        <label>Lösenord</label>
+        <input name="password" placeholder="SuperSecret" type="password" required>
+
+        <label>Skapa som ansvarig utgivare</label>
+        <div>
+            <input name="as-publisher" type="checkbox">
+            Klicka i rutan för att skapa som ansvarig utgivare.
+        </div>
+
+        <div class="flex wrap gap">
+            <button class="btn" icon="person_add" type="submit">Skapa</button>
+            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
+        </div>
+    </form>
+</dialog>
+
+<dialog data-dialog-box="change-password-any">
+    <form action="/control-panel/change-password-any" method="post">
+        <label>Användare att ge nytt lösenord</label>
+        <input name="username" type="text" list="usernames" autocomplete="off">
+        <datalist id="usernames">
+            {% for username in all_creator_usernames %}
+            <option value="{{username}}"></option>
+            {% endfor %}
+        </datalist>
+
+        <label>Nytt lösenord</label>
+        <input name="new-password" placeholder="SuperSecret" type="text" autocomplete="off"
+            onfocus="this.type = 'password'" required>
+
+        <div class="flex wrap gap">
+            <button class="btn" icon="password" type="submit">Byt lösenord</button>
+            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
+        </div>
+    </form>
+</dialog>
+{% endif %}
 {% endblock main %}
 
 {% block aside %}
@@ -143,29 +193,4 @@
         </div>
     </form>
 </dialog>
-
-<dialog data-dialog-box="create-user">
-    <form action="/control-panel/create-creator" method="post">
-        <label>Användarnamn</label>
-        <input name="username" placeholder="bob_andersen" type="text" required>
-
-        <label>Namn (visningsnamn)</label>
-        <input name="display-name" placeholder="Bob Andersen" type="text" required>
-
-        <label>Lösenord</label>
-        <input name="password" placeholder="SuperSecret" type="password" required>
-
-        <label>Skapa som ansvarig utgivare</label>
-        <div>
-            <input name="as-publisher" type="checkbox">
-            Klicka i rutan för att skapa som ansvarig utgivare.
-        </div>
-
-        <div class="flex wrap gap">
-            <button class="btn" icon="person_add" type="submit">Skapa</button>
-            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
-        </div>
-    </form>
-</dialog>
-
 {% endblock aside %}

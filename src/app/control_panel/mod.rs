@@ -14,8 +14,8 @@ use rocket::{
 use rocket_dyn_templates::{context, Template};
 
 use self::form_structs::{
-    CreateCreatorForm, EditBiographyForm, EditDisplayNameForm, EditPasswordForm, EditTextForm,
-    LoginForm, PublishTextForm,
+    ChangePasswordAnyForm, CreateCreatorForm, EditBiographyForm, EditDisplayNameForm,
+    EditPasswordForm, EditTextForm, LoginForm, PublishTextForm,
 };
 
 pub mod form_structs;
@@ -25,9 +25,15 @@ async fn control_panel(db: &State<DatabaseHandler>, claims: Claims) -> Result<Te
     let creator = Creator::get_by_username(db, &claims.data.username).await?;
     let published_texts = Text::get_n_latest(db, 50, Some(true)).await?;
     let unpublished_texts = Text::get_n_latest(db, 50, Some(false)).await?;
+    let all_creator_usernames = Creator::get_all(db)
+        .await?
+        .into_iter()
+        .map(|creator| creator.username)
+        .collect::<Vec<String>>();
+
     Ok(Template::render(
         "control_panel",
-        context! { creator, published_texts, unpublished_texts },
+        context! { creator, published_texts, unpublished_texts, all_creator_usernames },
     ))
 }
 
@@ -266,6 +272,37 @@ async fn create_creator(
     Ok(format!("Created creator: {:?}", saved_creator))
 }
 
+#[post("/change-password-any", data = "<form>")]
+async fn change_password_any(
+    claims: Claims,
+    db: &State<DatabaseHandler>,
+    form: Form<ChangePasswordAnyForm<'_>>,
+) -> Result<String, Error> {
+    if !claims.admin {
+        return Err(Error::create(
+            "app::control_panel::create_creator",
+            "Sorry, the action you are performing requires admin access!",
+            Status::Forbidden,
+        ));
+    }
+
+    let creator = Creator::get_by_username(db, form.username).await?;
+    let new_password = Creator::hash_password(form.new_password)?;
+    let updated_creator = Creator::update_by_username(
+        db,
+        &creator.username,
+        &creator.display_name,
+        &creator.biography,
+        &new_password,
+    )
+    .await?;
+
+    Ok(format!(
+        "Updated password for creator: {:?}",
+        updated_creator
+    ))
+}
+
 /// These should be mounted on `/control-panel`!
 pub fn get_all_routes() -> Vec<Route> {
     routes![
@@ -279,6 +316,7 @@ pub fn get_all_routes() -> Vec<Route> {
         editor_text_id,
         publish_text,
         edit_text,
-        create_creator
+        create_creator,
+        change_password_any
     ]
 }
