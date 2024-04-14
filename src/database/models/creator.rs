@@ -10,7 +10,6 @@ use chrono::Utc;
 use jsonwebtoken::Header;
 use rocket::http::Status;
 use serde::{Deserialize, Serialize};
-use sqlx::postgres::PgQueryResult;
 
 use crate::database::DatabaseHandler;
 use crate::token::get_encoding_key;
@@ -107,8 +106,18 @@ impl Creator {
     }
 
     /// Saves an instance of `Creator` to the database.
-    pub async fn save_to_db(&self, db: &DatabaseHandler) -> Result<PgQueryResult, Error> {
-        sqlx::query_file!(
+    pub async fn save_to_db(&self, db: &DatabaseHandler) -> Result<Creator, Error> {
+        let user_exists = Self::get_by_username(db, &self.username).await.is_ok();
+        if user_exists {
+            return Err(Error::create(
+                "Creator::save_to_db",
+                "User already exists!",
+                Status::BadRequest,
+            ));
+        }
+
+        sqlx::query_file_as!(
+            Creator,
             "sql/creators/insert.sql",
             self.display_name,
             self.username,
@@ -116,7 +125,7 @@ impl Creator {
             self.biography,
             &self.role as &CreatorRole
         )
-        .execute(&db.pool)
+        .fetch_one(&db.pool)
         .await
         .map_err(Error::from)
     }

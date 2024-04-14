@@ -9,7 +9,7 @@
 <div class="toolbox">
     <h2 icon="admin_panel_settings">Administrativa verktyg</h2>
     <div class="content flex wrap gap">
-        <button class="btn" icon="person_add">Skapa ny användare</button>
+        <button class="btn" icon="person_add" data-dialog-button="create-user">Skapa ny användare</button>
         <button class="btn" icon="person_edit">Byt lösenord för annan användare</button>
         <button class="btn dangerous" icon="person_remove">Ta bort användare</button>
         <button class="btn dangerous" icon="add_moderator">Lägg till ansvarig utgivare</button>
@@ -138,6 +138,30 @@
 
         <div class="flex wrap gap">
             <button class="btn" icon="person_edit" type="submit">Ändra lösenord</button>
+            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
+        </div>
+    </form>
+</dialog>
+
+<dialog data-dialog-box="create-user">
+    <form action="/control-panel/create-creator" method="post">
+        <label>Användarnamn</label>
+        <input name="username" placeholder="bob_andersen" type="text" required>
+
+        <label>Namn (visningsnamn)</label>
+        <input name="display-name" placeholder="Bob Andersen" type="text" required>
+
+        <label>Lösenord</label>
+        <input name="password" placeholder="SuperSecret" type="password" required>
+
+        <label>Skapa som ansvarig utgivare</label>
+        <div>
+            <input name="as-publisher" type="checkbox">
+            Klicka i rutan för att skapa som ansvarig utgivare.
+        </div>
+
+        <div class="flex wrap gap">
+            <button class="btn" icon="person_add" type="submit">Skapa</button>
             <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
         </div>
     </form>

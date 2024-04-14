@@ -14,8 +14,8 @@ use rocket::{
 use rocket_dyn_templates::{context, Template};
 
 use self::form_structs::{
-    EditBiographyForm, EditDisplayNameForm, EditPasswordForm, EditTextForm, LoginForm,
-    PublishTextForm,
+    CreateCreatorForm, EditBiographyForm, EditDisplayNameForm, EditPasswordForm, EditTextForm,
+    LoginForm, PublishTextForm,
 };
 
 pub mod form_structs;
@@ -239,6 +239,33 @@ async fn edit_text(form: Form<EditTextForm<'_>>, db: &State<DatabaseHandler>) ->
     }
 }
 
+// FIXME: I don't think it is the best option to have this return a String...
+#[post("/create-creator", data = "<form>")]
+async fn create_creator(
+    claims: Claims,
+    db: &State<DatabaseHandler>,
+    form: Form<CreateCreatorForm<'_>>,
+) -> Result<String, Error> {
+    if !claims.admin {
+        return Err(Error::create(
+            "app::control_panel::create_creator",
+            "Sorry, the action you are performing requires admin access!",
+            Status::Forbidden,
+        ));
+    }
+
+    let creator = Creator::create(
+        form.username,
+        form.display_name,
+        form.password,
+        form.as_publisher,
+    )?;
+
+    let saved_creator = creator.save_to_db(db).await?;
+
+    Ok(format!("Created creator: {:?}", saved_creator))
+}
+
 /// These should be mounted on `/control-panel`!
 pub fn get_all_routes() -> Vec<Route> {
     routes![
@@ -251,6 +278,7 @@ pub fn get_all_routes() -> Vec<Route> {
         editor,
         editor_text_id,
         publish_text,
-        edit_text
+        edit_text,
+        create_creator
     ]
 }

@@ -45,3 +45,13 @@ pub struct EditPasswordForm<'a> {
 pub struct EditDisplayNameForm<'a> {
     pub display_name: &'a str,
 }
+
+#[derive(FromForm)]
+pub struct CreateCreatorForm<'a> {
+    pub username: &'a str,
+    #[field(name = "display-name")]
+    pub display_name: &'a str,
+    pub password: &'a str,
+    #[field(name = "as-publisher")]
+    pub as_publisher: bool,
+}
