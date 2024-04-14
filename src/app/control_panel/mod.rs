@@ -170,7 +170,7 @@ async fn editor_text_id(text_id: i32, db: &State<DatabaseHandler>) -> Result<Tem
     Ok(Template::render("editor-v2", context! { text }))
 }
 
-/// FIXME: THIS IS TEPORARY. MUST BE REMOVED / CHANGED BEFORE PRODUCTION.
+/// FIXME: Only publishers ("admins") should be able to publish texts!
 #[post("/publish-text", data = "<form>")]
 async fn publish_text(
     form: Form<PublishTextForm<'_>>,
