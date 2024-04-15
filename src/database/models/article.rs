@@ -278,9 +278,14 @@ mod tests {
                 .await
                 .expect("FAILED TO CONNECT TO DATABASE");
 
+            let creator = Creator::create("sven.svensson", "Sven Svensson", "123", false)
+                .expect("CREATING USER FAILED");
+
+            creator.save_to_db(&db).await.expect("SAVING USER FAILED");
+
             let text = Text::create(
                 "Katter och hundar",
-                "author",
+                "sven.svensson",
                 "Lead paragraph",
                 "Text body",
                 TextType::Article,
@@ -288,7 +293,7 @@ mod tests {
                 true, // is_published
             );
 
-            text.save_to_db(&db).await.expect("SAVING FAILED");
+            text.save_to_db(&db).await.expect("SAVING ARTICLE FAILED");
 
             let results = Text::search(&db, "katt")
                 .await
