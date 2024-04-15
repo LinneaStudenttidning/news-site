@@ -181,8 +181,12 @@ impl Text {
     }
 
     /// Gets ALL `Text`s from the database by `author`.
-    pub async fn get_by_author(db: &DatabaseHandler, author: &str) -> Result<Vec<Self>, Error> {
-        sqlx::query_file_as!(Self, "sql/articles/get_by_author.sql", author)
+    pub async fn get_by_author(
+        db: &DatabaseHandler,
+        author: &str,
+        is_published: bool,
+    ) -> Result<Vec<Self>, Error> {
+        sqlx::query_file_as!(Self, "sql/articles/get_by_author.sql", author, is_published)
             .fetch_all(&db.pool)
             .await
             .map_err(Error::from)

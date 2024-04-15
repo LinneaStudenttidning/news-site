@@ -86,7 +86,7 @@
         {% endif %}
         {% endfor %}
         {% else %}
-        <p>Det finns inga färdiga texter att publicera.</p>
+        <p>Du har inga färdiga texter som inväntar publicering.</p>
         {% endif %}
 
         <h3>Publicerade texter</h3>

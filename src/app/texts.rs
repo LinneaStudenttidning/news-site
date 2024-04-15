@@ -46,7 +46,7 @@ async fn texts_by_author(author: &str, db: &State<DatabaseHandler>) -> Result<Te
     let tags = Text::get_all_tags(db, None).await?;
     let authors = Creator::get_all_authors(db).await?;
 
-    let texts = Text::get_by_author(db, author).await?;
+    let texts = Text::get_by_author(db, author, true).await?;
     let creator = Creator::get_by_username(db, author).await?;
 
     Ok(Template::render(

@@ -17,4 +17,4 @@ FROM
 JOIN creators ON
     articles.author = creators.username
 WHERE
-    author = $1 AND is_published = true
+    author = $1 AND is_published = $2
