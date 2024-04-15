@@ -1,0 +1,37 @@
+@font-face {
+    font-family: 'Gentium Plus';
+    font-weight: normal;
+    font-style: normal;
+    src: url("/static/fonts/GentiumPlus/GentiumPlus-Regular.ttf") local('Gentium Plus');
+}
+
+@font-face {
+    font-family: 'Gentium Plus';
+    font-weight: normal;
+    font-style: italic;
+    src: url("/static/fonts/GentiumPlus/GentiumPlus-Italic.ttf") local('Gentium Plus');
+}
+
+@font-face {
+    font-family: 'Gentium Plus';
+    font-weight: bold;
+    font-style: normal;
+    src: url("/static/fonts/GentiumPlus/GentiumPlus-Bold.ttf") local('Gentium Plus');
+}
+
+@font-face {
+    font-family: 'Gentium Plus';
+    font-weight: bold;
+    font-style: italic;
+    src: url("/static/fonts/GentiumPlus/GentiumPlus-BoldItalic.ttf") local('Gentium Plus');
+}
+
+@font-face {
+    font-family: 'Readex Pro';
+    src: url("/static/fonts/ReadexPro/ReadexPro-VariableFont_HEXP_wght.ttf") local('Gentium Plus');
+}
+
+@font-face {
+    font-family: 'Material Symbols Outlined';
+    src: url("/static/fonts/MaterialSymbols/MaterialSymbolsOutlined.woff2") format("woff2");
+}
