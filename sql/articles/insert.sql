@@ -29,6 +29,6 @@ SELECT
     tags,
     is_published,
     creators AS "creator!: Creator"
-FROM articles
+FROM inserted_article
 JOIN creators ON
-    articles.author = creators.username
+    inserted_article.author = creators.username
