@@ -208,7 +208,7 @@ async fn publish_text(
     };
 
     // Only admins are allowed to publish on save.
-    let publish = !form.publish.unwrap_or(false) && claims.admin;
+    let publish = form.publish.unwrap_or(false) && claims.admin;
 
     let text = Text::create(
         form.title,
