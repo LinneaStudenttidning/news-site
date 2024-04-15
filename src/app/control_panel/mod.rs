@@ -288,7 +288,7 @@ async fn change_password_any(
     claims: Claims,
     db: &State<DatabaseHandler>,
     form: Form<ChangePasswordAnyForm<'_>>,
-) -> Result<String, Error> {
+) -> Result<Flash<Redirect>, Error> {
     if !claims.admin {
         return Err(Error::create(
             "app::control_panel::create_creator",
@@ -308,9 +308,12 @@ async fn change_password_any(
     )
     .await?;
 
-    Ok(format!(
-        "Updated password for creator: {:?}",
-        updated_creator
+    Ok(Flash::success(
+        Redirect::to("/control-panel"),
+        format!(
+            "Updaterad lösenordet för användaren: {} ({})",
+            updated_creator.username, updated_creator.display_name
+        ),
     ))
 }
 
