@@ -64,3 +64,25 @@ var {
     padding: .15em .5em;
     border-radius: .15em;
 }
+
+blockquote {
+    font-size: 2.5rem;
+    font-style: italic;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    margin: 0 10%;
+
+    &::before {
+        content: '”';
+        color: palette.$yellow100;
+        position: absolute;
+        top: -3rem;
+        left: 50%;
+        z-index: -1;
+        translate: -75%;
+        font-family: settings.$font-family-default;
+        font-size: 8rem;
+        text-align: center;
+    }
+}
