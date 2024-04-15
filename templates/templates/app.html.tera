@@ -39,6 +39,7 @@
         </div>
         {% endif %}
 
+        {% if authors %}
         <div class="side-content">
             <h1>Skribenter</h1>
             {% for author in authors %}
@@ -47,6 +48,7 @@
             </div>
             {% endfor %}
         </div>
+        {% endif %}
         {% endblock aside %}
     </aside>
     <footer class="flex column center gap">
