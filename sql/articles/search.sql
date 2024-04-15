@@ -13,4 +13,4 @@ SELECT
 FROM
     articles
 WHERE
-    to_tsquery($1) @@ search_vec AND is_published = true
+    to_tsquery(FORMAT('%s', ARRAY_TO_STRING(STRING_TO_ARRAY($1, ' '), ' & '))) @@ search_vec AND is_published = true

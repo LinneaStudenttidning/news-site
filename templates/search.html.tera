@@ -1,0 +1,25 @@
+{% extends "templates/app" %}
+
+{% block main %}
+<h1>Sök</h1>
+<div>
+    <form action="/search" method="get">
+            <input type="text" placeholder="Ange sökord" name="q" id="q" value="{% if q %}{{ q }}{% endif %}" required autofocus>
+            <button type="submit" icon="search" class="btn">Sök</button>
+    </form>
+
+    {% if q %}
+    {% for text in texts %}
+    <a href="/t/{{ text.id }}/{{ text.title_slug }}" class="news-item">
+        <img src="https://source.unsplash.com/random/600x200?{{ text.id }}" alt="Random image" loading="lazy">
+        <h1>{{ text.title }}</h1>
+        <p><span class="type">{{ text.text_type }}</span>{{ text.lead_paragraph }}</p>
+        <p class="news-meta-data">{{ text.author }}, {{ text.created_at | date(format="%R")  }}</p>
+    </a>
+    {% endfor %}
+    {% if texts | length == 0 %}
+    <p>Hittade ingenting! 😢</p>
+    {% endif %}
+    {% endif %}
+</div>
+{% endblock main %}

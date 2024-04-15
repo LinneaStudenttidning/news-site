@@ -25,6 +25,14 @@ async fn about_us(db: &State<DatabaseHandler>) -> Result<Template, Error> {
     Ok(Template::render("about", context! { tags }))
 }
 
+#[get("/search?<q>")]
+async fn search(q: Option<&str>, db: &State<DatabaseHandler>) -> Result<Template, Error> {
+    let tags = Text::get_all_tags(db, None).await?;
+    let texts = Text::search(db, q.unwrap_or("")).await?;
+
+    Ok(Template::render("search", context! { texts, tags, q }))
+}
+
 #[get("/t/<id>/<title_slug>")]
 async fn text_by_id(
     id: i32,
@@ -53,5 +61,5 @@ async fn feed_atom(db: &State<DatabaseHandler>) -> Result<Template, Error> {
 
 /// This should be mounted on `/`!
 pub fn get_all_routes() -> Vec<Route> {
-    routes![landing, about_us, text_by_id, feed_atom]
+    routes![landing, about_us, search, text_by_id, feed_atom]
 }
