@@ -1,5 +1,9 @@
 {% extends "templates/app" %}
 
+{% block head %}
+<title>Sök – Klister</title>
+{% endblock head %}
+
 {% block main %}
 <h1>Sök</h1>
 <div>

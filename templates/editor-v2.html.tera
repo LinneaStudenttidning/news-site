@@ -2,7 +2,7 @@
 {% import "components/editor" as editor %}
 
 {% block head %}
-<title>Textredigerare</title>
+<title>Textredigerare – Klister</title>
 <script type="module" src="/static/scripts/editor.js" async defer></script>
 {% endblock head %}
 

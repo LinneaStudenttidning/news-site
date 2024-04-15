@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="/static/styles/main.css">
     <link rel="alternate" title="Klister Studenttidning" type="application/atom+xml" href="/feed/atom.xml">
     {% block head %}
-    <title>Nyheter</title>
+    <title>Nyheter – Klister</title>
     {% endblock head %}
 </head>
 

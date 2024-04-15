@@ -1,5 +1,9 @@
 {% extends "templates/app" %}
 
+{% block head %}
+<title>Om oss – Klister</title>
+{% endblock head %}
+
 {% block main %}
 <h1>Journalistik av studenter, för studenter – och alla andra!</h1>
 <article>

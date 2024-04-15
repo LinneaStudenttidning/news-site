@@ -1,5 +1,13 @@
 {% extends "templates/app" %}
 
+{% block head %}
+{% if title %}
+<title>{{ title }} – Klister</title>
+{% else %}
+<title>Nyheter – Klister</title>
+{% endif %}
+{% endblock head %}
+
 {% block main %}
 <h1>Senaste inom nyheter, reportage, & opinion</h1>
 <div>

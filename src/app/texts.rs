@@ -21,7 +21,7 @@ async fn texts_by_tag(tag: &str, db: &State<DatabaseHandler>) -> Result<Template
 
     Ok(Template::render(
         "landing",
-        context! { texts, tags, authors },
+        context! { texts, tags, authors, title: tag },
     ))
 }
 
@@ -37,7 +37,7 @@ async fn texts_by_type(
 
     Ok(Template::render(
         "landing",
-        context! { texts, tags, authors },
+        context! { texts, tags, authors, title: text_type },
     ))
 }
 
@@ -47,10 +47,11 @@ async fn texts_by_author(author: &str, db: &State<DatabaseHandler>) -> Result<Te
     let authors = Creator::get_all_authors(db).await?;
 
     let texts = Text::get_by_author(db, author).await?;
+    let creator = Creator::get_by_username(db, author).await?;
 
     Ok(Template::render(
         "landing",
-        context! { texts, tags, authors },
+        context! { texts, tags, authors, title: creator.display_name },
     ))
 }
 
