@@ -11,6 +11,8 @@ use sqlx::{
 
 use crate::{database::DatabaseHandler, error::Error};
 
+use super::creator::Creator;
+
 #[derive(Debug, Clone, Copy, Deserialize, Serialize, sqlx::Type, FromFormField)]
 #[sqlx(type_name = "text_type", rename_all = "lowercase")]
 pub enum TextType {
@@ -51,6 +53,7 @@ pub struct Text {
     pub updated_at: NaiveDateTime,
     pub tags: Vec<String>,
     pub is_published: bool,
+    pub creator: Creator,
 }
 
 impl Default for Text {
@@ -67,6 +70,8 @@ impl Default for Text {
             updated_at: Utc::now().naive_utc(),
             tags: Vec::new(),
             is_published: false,
+            creator: Creator::create("Missing name", "Missing Display name", "password", false)
+                .unwrap(),
         }
     }
 }
@@ -106,7 +111,7 @@ impl Text {
             self.text_body,
             &self.text_type as &TextType,
             &self.tags,
-            self.is_published
+            self.is_published,
         )
         .fetch_one(&db.pool)
         .await

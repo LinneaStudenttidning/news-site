@@ -27,7 +27,7 @@ pub enum CreatorRole {
 }
 
 /// A `Creator` is someone who can write articles on the site.
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize, sqlx::Type)]
 pub struct Creator {
     /// `display_name` may use any characters.
     pub display_name: String,

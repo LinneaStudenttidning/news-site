@@ -9,9 +9,12 @@ SELECT
     created_at,
     updated_at,
     tags,
-    is_published
+    is_published,
+    creators AS "creator!: Creator"
 FROM
     articles
+JOIN creators ON
+    articles.author = creators.username
 WHERE is_published = $1
 ORDER BY
     created_at DESC

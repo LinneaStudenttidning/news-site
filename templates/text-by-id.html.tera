@@ -24,7 +24,7 @@
         <div class="author" itemprop="author" itemscope itemtype="https://schema.org/Person">
             <img itemprop="image" src="https://source.unsplash.com/random/400x400?b" alt="Bild på författaren">
             <p class="byline" itemprop="name">
-                {{ text.author }}
+                {{ text.creator.display_name }}
             </p>
             <a class="contact" itemprop="email"
                 href="mailto:{{ text.author }}@example.org">{{ text.author }}@example.org</a>

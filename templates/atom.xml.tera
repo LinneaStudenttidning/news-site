@@ -11,7 +11,7 @@
     <entry>
         <title>{{ text.title }}</title>
         <author>
-            <name>{{ text.author }}</name>
+            <name>{{ text.creator.display_name }}</name>
             <email>{{ text.author }}@example.org</email>
         </author>
         <id>{{ get_env(name="SITE_URL") }}/t/{{ text.id }}/{{ text.title_slug }}</id>

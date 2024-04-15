@@ -6,7 +6,10 @@ UPDATE articles SET
     updated_at = NOW(),
     tags = $5,
     is_published = $6
+FROM creators
 WHERE
+    articles.author = creators.username
+AND
     id = $7
 RETURNING
     id,
@@ -19,4 +22,5 @@ RETURNING
     created_at,
     updated_at,
     tags,
-    is_published
+    is_published,
+    creators AS "creator!: Creator"
