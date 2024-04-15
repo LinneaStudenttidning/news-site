@@ -1,7 +1,7 @@
 use crate::database::models::article::TextType;
 
 #[derive(FromForm)]
-pub struct PublishTextForm<'a> {
+pub struct SaveTextForm<'a> {
     #[field(name = "text-type")]
     pub text_type: TextType,
     pub title: &'a str,
@@ -10,6 +10,7 @@ pub struct PublishTextForm<'a> {
     #[field(name = "text-body")]
     pub text_body: &'a str,
     pub tags: &'a str,
+    pub publish: Option<bool>,
 }
 
 #[derive(FromForm)]
@@ -21,6 +22,7 @@ pub struct EditTextForm<'a> {
     #[field(name = "text-body")]
     pub text_body: &'a str,
     pub tags: &'a str,
+    pub publish: Option<bool>,
 }
 
 #[derive(FromForm)]

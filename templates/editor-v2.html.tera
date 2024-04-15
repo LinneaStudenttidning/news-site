@@ -8,7 +8,8 @@
 
 {% block main %}
 <h1>Textredigerare</h1>
-<form action="{% if text %}/control-panel/edit-text{% else %}/control-panel/publish-text{% endif %}" method="post">
+<form action="{% if text %}/control-panel/edit-text{% else %}/control-panel/save-text{% endif %}" method="post">
+    {# TODO: This should be editable? #}
     {% if not text %}
     <label for="text-type">Texttyp:</label>
     <select name="text-type" id="text-type">
@@ -34,6 +35,13 @@
 
     <label for="tags">Taggar, separera med semikolon (;):</label>
     <input type="text" name="tags" value="{% if text.tags %}{{ text.tags | join(sep=";") }}{% endif %}" id="tags">
+
+    {% if is_publisher %}
+    <div>
+        <input id="publish" name="publish" type="checkbox" {% if text.is_published %}checked{% endif %}>
+        <label for="publish">Publicera artikel.</label>
+    </div>
+    {% endif %}
 
     <div class="flex wrap gap">
         <button class="btn" icon="save" type="submit">Spara</button>

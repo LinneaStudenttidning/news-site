@@ -15,7 +15,7 @@ use rocket_dyn_templates::{context, Template};
 
 use self::form_structs::{
     ChangePasswordAnyForm, CreateCreatorForm, EditBiographyForm, EditDisplayNameForm,
-    EditPasswordForm, EditTextForm, LoginForm, PublishTextForm,
+    EditPasswordForm, EditTextForm, LoginForm, SaveTextForm,
 };
 
 pub mod form_structs;
@@ -171,21 +171,30 @@ async fn change_password(
 }
 
 #[get("/editor")]
-fn editor() -> Template {
-    Template::render("editor-v2", context! {})
+fn editor(claims: Claims) -> Template {
+    Template::render(
+        "editor-v2",
+        context! { is_publisher: claims.data.is_publisher() },
+    )
 }
 
 #[get("/edit/<text_id>")]
-async fn editor_text_id(text_id: i32, db: &State<DatabaseHandler>) -> Result<Template, Error> {
+async fn editor_text_id(
+    text_id: i32,
+    db: &State<DatabaseHandler>,
+    claims: Claims,
+) -> Result<Template, Error> {
     let text = Text::get_by_id(db, text_id, Some(false)).await?;
 
-    Ok(Template::render("editor-v2", context! { text }))
+    Ok(Template::render(
+        "editor-v2",
+        context! { text, is_publisher: claims.data.is_publisher() },
+    ))
 }
 
-/// FIXME: Only publishers ("admins") should be able to publish texts!
-#[post("/publish-text", data = "<form>")]
+#[post("/save-text", data = "<form>")]
 async fn publish_text(
-    form: Form<PublishTextForm<'_>>,
+    form: Form<SaveTextForm<'_>>,
     db: &State<DatabaseHandler>,
     claims: Claims,
 ) -> Redirect {
@@ -197,6 +206,10 @@ async fn publish_text(
             .collect::<Vec<String>>(),
         true => Vec::new(),
     };
+
+    // Only admins are allowed to publish on save.
+    let publish = !form.publish.unwrap_or(false) && claims.admin;
+
     let text = Text::create(
         form.title,
         &claims.data.username,
@@ -204,7 +217,7 @@ async fn publish_text(
         form.text_body,
         form.text_type,
         tags,
-        true, // is_published
+        publish,
     );
     match text.save_to_db(db).await {
         Ok(published_article) => Redirect::to(uri!(text_by_id(
@@ -219,7 +232,11 @@ async fn publish_text(
 }
 
 #[post("/edit-text", data = "<form>")]
-async fn edit_text(form: Form<EditTextForm<'_>>, db: &State<DatabaseHandler>) -> Redirect {
+async fn edit_text(
+    form: Form<EditTextForm<'_>>,
+    db: &State<DatabaseHandler>,
+    claims: Claims,
+) -> Result<Redirect, Error> {
     let tags = match form.tags.is_empty() {
         false => form
             .tags
@@ -229,26 +246,31 @@ async fn edit_text(form: Form<EditTextForm<'_>>, db: &State<DatabaseHandler>) ->
         true => Vec::new(),
     };
 
-    match Text::update_by_id(
+    let current_text = Text::get_by_id(db, form.text_id, Some(false)).await?;
+
+    // Only admins are allowed to change `is_published`.
+    let input_publish = form.publish.unwrap_or(current_text.is_published);
+    let publish = if claims.admin {
+        input_publish
+    } else {
+        current_text.is_published
+    };
+
+    let updated_article = Text::update_by_id(
         db,
         form.text_id,
         form.title,
         form.leading_paragraph,
         form.text_body,
         &tags,
-        true, // is_published
+        publish,
     )
-    .await
-    {
-        Ok(updated_article) => Redirect::to(uri!(text_by_id(
-            updated_article.id,
-            updated_article.title_slug
-        ))),
-        Err(e) => {
-            println!("{:?}", e);
-            Redirect::to("/not-found")
-        }
-    }
+    .await?;
+
+    Ok(Redirect::to(uri!(text_by_id(
+        updated_article.id,
+        updated_article.title_slug
+    ))))
 }
 
 #[post("/create-creator", data = "<form>")]

@@ -5,6 +5,7 @@ use crate::{
         DatabaseHandler,
     },
     error::Error,
+    token::Claims,
 };
 use rocket::{response::Redirect, Route, State};
 use rocket_dyn_templates::{context, Template};
@@ -51,18 +52,25 @@ async fn text_by_id(
     id: i32,
     title_slug: &str,
     db: &State<DatabaseHandler>,
+    claims: Option<Claims>,
 ) -> Result<AnyResponder, Error> {
     let tags = Text::get_all_tags(db, None).await?;
     let authors = Creator::get_all_authors(db).await?;
 
-    let text = Text::get_by_id(db, id, None).await?;
+    let is_logged_in = match claims {
+        Some(_creator) => true,
+        None => false,
+    };
+
+    // Logged in users can view unpublished texts
+    let text = Text::get_by_id(db, id, Some(!is_logged_in)).await?;
 
     if title_slug != text.title_slug {
         let redirect = Redirect::found(uri!(text_by_id(id, text.title_slug)));
         return Ok(AnyResponder::from(redirect));
     }
 
-    let template = Template::render("text-by-id", context! { text, tags, authors });
+    let template = Template::render("text-by-id", context! { text, tags, authors, is_logged_in });
     Ok(AnyResponder::from(template))
 }
 
