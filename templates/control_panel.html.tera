@@ -38,9 +38,10 @@
 <div class="toolbox">
     <h2 icon="feed">Dina texter</h2>
     <div class="content">
-        <h3>Opublicerade texter</h3>
+        <h3>Opublicerade texter (påbörjade)</h3>
         {% if unpublished_texts | length > 0 %}
         {% for text in unpublished_texts %}
+        {% if not text.marked_as_done %}
         <div class="article-box">
             <p class="title">{{ text.title }} </p>
             <p class="date">{{ text.created_at | date(format="%F %T") }}</p>
@@ -54,6 +55,7 @@
                     target="_blank"></a>
             </div>
         </div>
+        {% endif %}
         {% endfor %}
         {% else %}
         <p>Du har inga opublicerade texter.</p>
@@ -61,6 +63,29 @@
         <div class="flex wrap gap">
             <a class="btn" icon="post_add" href="/control-panel/editor">Skapa ny text</a>
         </div>
+
+        <h3>Opublicerade texter (färdiga)</h3>
+        {% if unpublished_texts | length > 0 %}
+        {% for text in unpublished_texts %}
+        {% if text.marked_as_done %}
+        <div class="article-box">
+            <p class="title">{{ text.title }} </p>
+            <p class="date">{{ text.created_at | date(format="%F %T") }}</p>
+            <div class="flex wrap gap actions">
+                <a class="btn icon-only" icon="edit_note" href="/control-panel/edit/{{ text.id }}"></a>
+                <button class="btn icon-only share"
+                    data-url="{{ get_env(name="SITE_URL") }}/t/{{ text.id }}/{{ text.title_slug }}"
+                    data-title="{{ text.title }}" icon="share">
+                </button>
+                <a class="btn icon-only" icon="open_in_new" href="/t/{{ text.id }}/{{ text.title_slug }}"
+                    target="_blank"></a>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        <p>Det finns inga färdiga texter att publicera.</p>
+        {% endif %}
 
         <h3>Publicerade texter</h3>
         {% if published_texts | length > 0 %}

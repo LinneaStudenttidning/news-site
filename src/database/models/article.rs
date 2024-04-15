@@ -53,6 +53,7 @@ pub struct Text {
     pub updated_at: DateTime<Local>,
     pub tags: Vec<String>,
     pub is_published: bool,
+    pub marked_as_done: bool,
     pub creator: Creator,
 }
 
@@ -70,6 +71,7 @@ impl Default for Text {
             updated_at: Local::now(),
             tags: Vec::new(),
             is_published: false,
+            marked_as_done: false,
             creator: Creator::create("Missing name", "Missing Display name", "password", false)
                 .unwrap(),
         }
@@ -86,6 +88,7 @@ impl Text {
         text_type: TextType,
         tags: Vec<String>,
         is_published: bool,
+        marked_as_done: bool,
     ) -> Self {
         Self {
             title: title.into(),
@@ -95,6 +98,7 @@ impl Text {
             text_type,
             tags,
             is_published,
+            marked_as_done,
             ..Default::default()
         }
     }
@@ -112,6 +116,7 @@ impl Text {
             &self.text_type as &TextType,
             &self.tags,
             self.is_published,
+            self.marked_as_done,
         )
         .fetch_one(&db.pool)
         .await
@@ -291,6 +296,7 @@ mod tests {
                 TextType::Article,
                 vec![],
                 true, // is_published
+                true, // marked as done
             );
 
             text.save_to_db(&db).await.expect("SAVING ARTICLE FAILED");

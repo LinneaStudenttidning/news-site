@@ -218,6 +218,7 @@ async fn publish_text(
         form.text_type,
         tags,
         publish,
+        form.marked_as_done,
     );
     match text.save_to_db(db).await {
         Ok(published_article) => Redirect::to(uri!(text_by_id(

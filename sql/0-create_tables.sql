@@ -27,6 +27,7 @@ CREATE SEQUENCE IF NOT EXISTS articles_id_seq;
 CREATE TABLE IF NOT EXISTS articles (
     id serial NOT NULL PRIMARY KEY,
     is_published boolean NOT NULL DEFAULT false,
+    marked_as_done boolean NOT NULL DEFAULT false,
     title text NOT NULL,
     title_slug TEXT NOT NULL,
     /* Reference to the username of the creator. */

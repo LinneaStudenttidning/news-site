@@ -11,10 +11,11 @@ WITH inserted_article AS (
             created_at,
             updated_at,
             tags,
-            is_published
+            is_published,
+            marked_as_done
         )
     VALUES
-        (DEFAULT, $1, $2, $3, $4, $5, $6, DEFAULT, DEFAULT, $7, $8) RETURNING *
+        (DEFAULT, $1, $2, $3, $4, $5, $6, DEFAULT, DEFAULT, $7, $8, $9) RETURNING *
 ) 
 SELECT
     id,
@@ -28,6 +29,7 @@ SELECT
     updated_at,
     tags,
     is_published,
+    marked_as_done,
     creators AS "creator!: Creator"
 FROM inserted_article
 JOIN creators ON

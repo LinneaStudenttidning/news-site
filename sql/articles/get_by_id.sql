@@ -10,6 +10,7 @@ SELECT
     updated_at,
     tags,
     is_published,
+    marked_as_done,
     creators AS "creator!: Creator"
 FROM
     articles

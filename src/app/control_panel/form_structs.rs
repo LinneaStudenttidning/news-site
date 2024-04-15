@@ -11,6 +11,7 @@ pub struct SaveTextForm<'a> {
     pub text_body: &'a str,
     pub tags: &'a str,
     pub publish: Option<bool>,
+    pub marked_as_done: bool,
 }
 
 #[derive(FromForm)]
@@ -23,6 +24,7 @@ pub struct EditTextForm<'a> {
     pub text_body: &'a str,
     pub tags: &'a str,
     pub publish: Option<bool>,
+    pub marked_as_done: bool,
 }
 
 #[derive(FromForm)]
