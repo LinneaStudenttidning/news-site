@@ -81,18 +81,18 @@
 <dialog data-dialog-box="create-user">
     <form action="/control-panel/create-creator" method="post">
         <label>Användarnamn</label>
-        <input name="username" placeholder="bob_andersen" type="text" required>
+        <input name="username" placeholder="bob_andersen" type="text" autocomplete="new-password" required>
 
         <label>Namn (visningsnamn)</label>
-        <input name="display-name" placeholder="Bob Andersen" type="text" required>
+        <input name="display-name" placeholder="Bob Andersen" type="text" autocomplete="new-password" required>
 
         <label>Lösenord</label>
-        <input name="password" placeholder="SuperSecret" type="password" required>
+        <input name="password" placeholder="SuperSecret" type="password" autocomplete="new-password" required>
 
         <label>Skapa som ansvarig utgivare</label>
         <div>
-            <input name="as-publisher" type="checkbox">
-            Klicka i rutan för att skapa som ansvarig utgivare.
+            <input id="as-publisher" name="as-publisher" type="checkbox">
+            <label for="as-publisher">Klicka i rutan för att skapa som ansvarig utgivare.</label>
         </div>
 
         <div class="flex wrap gap">
