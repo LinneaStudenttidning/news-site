@@ -7,14 +7,6 @@
 {% block main %}
 <h1>Journalistik av studenter, för studenter – och alla andra!</h1>
 <article>
-    <h1>Lorem, ipsum dolor.</h1>
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repellat illum quae aliquid, odio quas itaque aut nisi
-        ipsum, nihil nostrum soluta consequuntur vero. Deleniti aut rerum iure natus animi odio.</p>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, harum sunt minus, error earum sit tenetur rem
-        perferendis ipsa odio reiciendis iure ab placeat nostrum labore. Incidunt fuga quasi at, deleniti corporis,
-        laboriosam <b>totam suscipit culpa recusandae</b> numquam quibusdam! Impedit?</p>
-    <h2>Kontakt</h2>
-    <p>email@example.com</p>
-    <p>070-123 45 67</p>
+    {{ about_us_md | markdown | safe }}
 </article>
 {% endblock main %}

@@ -60,6 +60,16 @@ impl From<VarError> for Error {
     }
 }
 
+impl From<std::io::Error> for Error {
+    fn from(value: std::io::Error) -> Self {
+        Error {
+            source: "std::io::Error".to_string(),
+            err_string: value.to_string(),
+            status: Status::InternalServerError,
+        }
+    }
+}
+
 impl<'a> rocket::response::Responder<'a, 'static> for Error {
     fn respond_to(self, request: &'a Request<'_>) -> rocket::response::Result<'static> {
         // let headers = request
