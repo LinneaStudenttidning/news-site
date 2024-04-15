@@ -18,7 +18,7 @@ async fn landing(db: &State<DatabaseHandler>) -> Result<Template, Error> {
     let tags = Text::get_all_tags(db, None).await?;
     let authors = Creator::get_all_authors(db).await?;
 
-    let texts = Text::get_n_latest(db, 16, Some(true)).await?;
+    let texts = Text::get_n_latest(db, 16, true).await?;
 
     Ok(Template::render(
         "landing",
@@ -76,7 +76,7 @@ async fn text_by_id(
 
 #[get("/feed/atom.xml")]
 async fn feed_atom(db: &State<DatabaseHandler>) -> Result<Template, Error> {
-    let texts = Text::get_n_latest(db, 50, Some(true)).await?;
+    let texts = Text::get_n_latest(db, 50, true).await?;
 
     Ok(Template::render("atom", context! { texts }))
 }

@@ -27,8 +27,8 @@ async fn control_panel(
     flash: Option<FlashMessage<'_>>,
 ) -> Result<Template, Error> {
     let creator = Creator::get_by_username(db, &claims.data.username).await?;
-    let published_texts = Text::get_n_latest(db, 50, Some(true)).await?;
-    let unpublished_texts = Text::get_n_latest(db, 50, Some(false)).await?;
+    let published_texts = Text::get_n_latest(db, 50, true).await?;
+    let unpublished_texts = Text::get_n_latest(db, 50, false).await?;
     let all_creator_usernames = Creator::get_all(db)
         .await?
         .into_iter()

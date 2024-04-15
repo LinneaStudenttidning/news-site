@@ -151,21 +151,15 @@ impl Text {
     }
 
     /// Gets Oup to `n` latest `Text`s from the database.
-    /// The `is_published` defaults to `true` if `None`.
     pub async fn get_n_latest(
         db: &DatabaseHandler,
         n: i64,
-        is_published: Option<bool>,
+        is_published: bool,
     ) -> Result<Vec<Self>, Error> {
-        sqlx::query_file_as!(
-            Self,
-            "sql/articles/get_n_latest.sql",
-            is_published.unwrap_or(true),
-            n,
-        )
-        .fetch_all(&db.pool)
-        .await
-        .map_err(Error::from)
+        sqlx::query_file_as!(Self, "sql/articles/get_n_latest.sql", is_published, n,)
+            .fetch_all(&db.pool)
+            .await
+            .map_err(Error::from)
     }
 
     /// Gets ONE `Text` from the database by its id.
