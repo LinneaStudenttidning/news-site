@@ -226,4 +226,30 @@ impl Creator {
             },
         )
     }
+
+    /// Promotes a user to `CreatorRole::Publisher`
+    /// FIXME: Return type.
+    pub async fn promote(db: &DatabaseHandler, username: &str) -> Result<(), Error> {
+        sqlx::query!(
+            "UPDATE creators SET role = 'publisher' WHERE username = $1",
+            username
+        )
+        .execute(&db.pool)
+        .await
+        .map(|_| ())
+        .map_err(Error::from)
+    }
+
+    /// Demotes a user to `CreatorRole::Writer`
+    /// FIXME: Return type.
+    pub async fn demote(db: &DatabaseHandler, username: &str) -> Result<(), Error> {
+        sqlx::query!(
+            "UPDATE creators SET role = 'writer' WHERE username = $1",
+            username
+        )
+        .execute(&db.pool)
+        .await
+        .map(|_| ())
+        .map_err(Error::from)
+    }
 }

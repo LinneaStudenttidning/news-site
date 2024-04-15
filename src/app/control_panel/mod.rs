@@ -15,7 +15,7 @@ use rocket_dyn_templates::{context, Template};
 
 use self::form_structs::{
     ChangePasswordAnyForm, CreateCreatorForm, EditBiographyForm, EditDisplayNameForm,
-    EditPasswordForm, EditTextForm, LoginForm, SaveTextForm,
+    EditPasswordForm, EditTextForm, LoginForm, PromoteDemoteForm, SaveTextForm,
 };
 
 pub mod form_structs;
@@ -340,6 +340,58 @@ async fn change_password_any(
     ))
 }
 
+#[post("/promote-creator", data = "<form>")]
+async fn promote_creator(
+    claims: Claims,
+    db: &State<DatabaseHandler>,
+    form: Form<PromoteDemoteForm<'_>>,
+) -> Result<Flash<Redirect>, Error> {
+    if !claims.admin {
+        return Err(Error::create(
+            "app::control_panel::promote_creator",
+            "Sorry, the action you are performing requires admin access!",
+            Status::Forbidden,
+        ));
+    }
+
+    Creator::promote(db, form.username).await?;
+
+    Ok(Flash::success(
+        Redirect::to("/control-panel"),
+        format!("Gjorde {} till ansvarig utgivare.", form.username),
+    ))
+}
+
+#[post("/demote-creator", data = "<form>")]
+async fn demote_creator(
+    claims: Claims,
+    db: &State<DatabaseHandler>,
+    form: Form<PromoteDemoteForm<'_>>,
+) -> Result<Flash<Redirect>, Error> {
+    if !claims.admin {
+        return Err(Error::create(
+            "app::control_panel::demote_creator",
+            "Sorry, the action you are performing requires admin access!",
+            Status::Forbidden,
+        ));
+    }
+
+    if claims.sub == form.username {
+        return Err(Error::create(
+            "app::control_panel::demote_creator",
+            "Sorry, you can't revoke your own admin access!",
+            Status::BadRequest,
+        ));
+    }
+
+    Creator::promote(db, form.username).await?;
+
+    Ok(Flash::success(
+        Redirect::to("/control-panel"),
+        format!("Tog bort {} som ansvarig utgivare.", form.username),
+    ))
+}
+
 /// These should be mounted on `/control-panel`!
 pub fn get_all_routes() -> Vec<Route> {
     routes![
@@ -354,6 +406,8 @@ pub fn get_all_routes() -> Vec<Route> {
         publish_text,
         edit_text,
         create_creator,
-        change_password_any
+        change_password_any,
+        promote_creator,
+        demote_creator
     ]
 }

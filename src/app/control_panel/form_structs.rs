@@ -66,3 +66,8 @@ pub struct ChangePasswordAnyForm<'a> {
     #[field(name = "new-password")]
     pub new_password: &'a str,
 }
+
+#[derive(FromForm)]
+pub struct PromoteDemoteForm<'a> {
+    pub username: &'a str,
+}

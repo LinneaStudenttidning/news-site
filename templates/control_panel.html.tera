@@ -23,8 +23,10 @@
         <button class="btn" icon="person_edit" data-dialog-button="change-password-any">Byt lösenord för annan
             användare</button>
         <button class="btn dangerous" icon="person_remove">Ta bort användare</button>
-        <button class="btn dangerous" icon="add_moderator">Lägg till ansvarig utgivare</button>
-        <button class="btn dangerous" icon="remove_moderator">Ta bort ansvarig utgivare</button>
+        <button class="btn dangerous" icon="add_moderator" data-dialog-button="promote-user">Lägg till ansvarig
+            utgivare</button>
+        <button class="btn dangerous" icon="remove_moderator" data-dialog-button="demote-user">Ta bort ansvarig
+            utgivare</button>
         <div class="sep"></div>
         <button class="btn" icon="edit_note">Ändra "om oss"</button>
         <button class="btn" icon="gallery_thumbnail">Bildgalleriet</button>
@@ -151,6 +153,41 @@
 
         <div class="flex wrap gap">
             <button class="btn" icon="password" type="submit">Byt lösenord</button>
+            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
+        </div>
+    </form>
+</dialog>
+
+<dialog data-dialog-box="promote-to-publisher">
+    <form action="/control-panel/promote-creator" method="post">
+        <label>Användarnamn på den som ska bli ansvarig utgivare</label>
+        <input name="username" type="text" list="usernames" autocomplete="off">
+        <datalist id="usernames">
+            {% for username in all_creator_usernames %}
+            <option value="{{username}}"></option>
+            {% endfor %}
+        </datalist>
+
+        <div class="flex wrap gap">
+            <button class="btn" icon="person_add" type="submit">Skapa</button>
+            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
+        </div>
+    </form>
+</dialog>
+
+<dialog data-dialog-box="demote-to-creator">
+    <form action="/control-panel/demote-creator" method="post">
+        <label>Användarnamn på den som ska sluta vara ansvarig utgivare</label>
+        <input name="username" type="text" list="usernames" autocomplete="off">
+        <datalist id="usernames">
+            {% for username in all_creator_usernames %}
+            <option value="{{username}}"></option>
+            {% endfor %}
+        </datalist>
+        <p>OBS! Du kan inte ta bort dig själv som ansvarig utgivare.</p>
+
+        <div class="flex wrap gap">
+            <button class="btn" icon="person_add" type="submit">Skapa</button>
             <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
         </div>
     </form>
