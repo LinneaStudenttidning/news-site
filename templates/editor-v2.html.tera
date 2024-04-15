@@ -43,9 +43,13 @@
     </div>
     {% endif %}
 
+    <div>
+        <input id="marked_as_done" name="marked_as_done" type="checkbox" {% if text.marked_as_done %}checked{% endif %}>
+        <label for="marked_as_done">Markera artikeln som klar.</label>
+    </div>
+
     <div class="flex wrap gap">
         <button class="btn" icon="save" type="submit">Spara</button>
-        <button class="btn" icon="check_circle" type="submit">Markera som klar</button>
     </div>
 </form>
 {% endblock main %}
