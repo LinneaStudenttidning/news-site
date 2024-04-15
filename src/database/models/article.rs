@@ -79,7 +79,8 @@ impl Default for Text {
 }
 
 impl Text {
-    /// Create a new `Text`; this should be prefered over manually creating a new `Text`.
+    /// Create a new `Text`; this should be prefered over manually creating a new `Text`.2
+    #[allow(clippy::too_many_arguments)]
     pub fn create(
         title: &str,
         author: &str,
