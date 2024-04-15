@@ -102,6 +102,15 @@ impl<'a> FromRequest<'a> for Claims {
             ));
         }
 
+        // This check is performed so that an old (but not expired)
+        // token is invalidated on role change.
+        if claims.admin != creator.is_publisher() {
+            return Outcome::Error((
+                Status::BadRequest,
+                Error::create("Claims Guard", "Role has changed!", Status::BadRequest),
+            ));
+        }
+
         Outcome::Success(claims)
     }
 }
