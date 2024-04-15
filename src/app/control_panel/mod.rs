@@ -21,7 +21,11 @@ use self::form_structs::{
 pub mod form_structs;
 
 #[get("/")]
-async fn control_panel(db: &State<DatabaseHandler>, claims: Claims) -> Result<Template, Error> {
+async fn control_panel(
+    db: &State<DatabaseHandler>,
+    claims: Claims,
+    flash: Option<FlashMessage<'_>>,
+) -> Result<Template, Error> {
     let creator = Creator::get_by_username(db, &claims.data.username).await?;
     let published_texts = Text::get_n_latest(db, 50, Some(true)).await?;
     let unpublished_texts = Text::get_n_latest(db, 50, Some(false)).await?;
@@ -31,9 +35,11 @@ async fn control_panel(db: &State<DatabaseHandler>, claims: Claims) -> Result<Te
         .map(|creator| creator.username)
         .collect::<Vec<String>>();
 
+    let flash = flash.map(|msg| msg.message().to_string());
+
     Ok(Template::render(
         "control_panel",
-        context! { creator, published_texts, unpublished_texts, all_creator_usernames },
+        context! { creator, published_texts, unpublished_texts, all_creator_usernames, flash },
     ))
 }
 
@@ -245,13 +251,12 @@ async fn edit_text(form: Form<EditTextForm<'_>>, db: &State<DatabaseHandler>) ->
     }
 }
 
-// FIXME: I don't think it is the best option to have this return a String...
 #[post("/create-creator", data = "<form>")]
 async fn create_creator(
     claims: Claims,
     db: &State<DatabaseHandler>,
     form: Form<CreateCreatorForm<'_>>,
-) -> Result<String, Error> {
+) -> Result<Flash<Redirect>, Error> {
     if !claims.admin {
         return Err(Error::create(
             "app::control_panel::create_creator",
@@ -269,7 +274,13 @@ async fn create_creator(
 
     let saved_creator = creator.save_to_db(db).await?;
 
-    Ok(format!("Created creator: {:?}", saved_creator))
+    Ok(Flash::success(
+        Redirect::to("/control-panel"),
+        format!(
+            "Lyckades med att skapa ny användare: {} ({})",
+            saved_creator.username, saved_creator.display_name
+        ),
+    ))
 }
 
 #[post("/change-password-any", data = "<form>")]

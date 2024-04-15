@@ -7,6 +7,14 @@
 
 {% block main %}
 <h1>Kontrollpanelen</h1>
+
+{% if flash %}
+<div class="toolbox">
+    <h2 icon="info">Meddelande</h2>
+    <p>{{ flash }}</p>
+</div>
+{% endif %}
+
 {% if creator.role == "Publisher" %}
 <div class="toolbox">
     <h2 icon="admin_panel_settings">Administrativa verktyg</h2>
