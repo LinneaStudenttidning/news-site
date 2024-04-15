@@ -1,4 +1,4 @@
-use chrono::{NaiveDateTime, Utc};
+use chrono::{DateTime, Local};
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgQueryResult;
 use uuid::Uuid;
@@ -10,7 +10,7 @@ pub struct Image {
     pub id: Uuid,
     pub author: String,
     pub description: Option<String>,
-    pub created_at: NaiveDateTime,
+    pub created_at: DateTime<Local>,
     pub tags: Vec<String>,
 }
 
@@ -20,7 +20,7 @@ impl Default for Image {
             id: Uuid::new_v4(),
             author: "UNKNOWN!".into(),
             description: None,
-            created_at: Utc::now().naive_utc(),
+            created_at: Local::now(),
             tags: Vec::new(),
         }
     }

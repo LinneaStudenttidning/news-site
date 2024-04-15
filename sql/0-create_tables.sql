@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS creators (
     username text NOT NULL PRIMARY KEY,
     password text NOT NULL,
     biography text NOT NULL,
-    joined_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    joined_at timestamp with time zone  NOT NULL DEFAULT CURRENT_TIMESTAMP,
     role creator_role NOT NULL DEFAULT 'writer'
 );
 
@@ -34,8 +34,8 @@ CREATE TABLE IF NOT EXISTS articles (
     lead_paragraph text NOT NULL,
     text_body text NOT NULL,
     text_type text_type NOT NULL,
-    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     tags text [] NOT NULL DEFAULT ARRAY[]::integer[],
     -- Generate a search vector for title and content. It should prioritize Swedish over English.
     search_vec tsvector GENERATED ALWAYS AS (
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS images (
     id uuid NOT NULL PRIMARY KEY,
     author text NOT NULL,
     description text,
-    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     tags text [] NOT NULL DEFAULT ARRAY[]::integer[],
     -- Generate a search vector for title and content. It should prioritize Swedish over English.
     search_vec tsvector GENERATED ALWAYS AS (

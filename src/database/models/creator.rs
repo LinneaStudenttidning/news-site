@@ -5,8 +5,7 @@ use argon2::Argon2;
 use argon2::PasswordHash;
 use argon2::PasswordHasher;
 use argon2::PasswordVerifier;
-use chrono::NaiveDateTime;
-use chrono::Utc;
+use chrono::{DateTime, Local, Utc};
 use jsonwebtoken::Header;
 use rocket::http::Status;
 use serde::{Deserialize, Serialize};
@@ -35,7 +34,7 @@ pub struct Creator {
     pub username: String,
     pub password: String,
     pub biography: String,
-    pub joined_at: NaiveDateTime,
+    pub joined_at: DateTime<Local>,
     pub role: CreatorRole,
 }
 
@@ -46,7 +45,7 @@ impl Default for Creator {
             username: "no_name".to_string(),
             password: "".to_string(),
             biography: "Empty biography.".to_string(),
-            joined_at: Utc::now().naive_utc(),
+            joined_at: Local::now(),
             role: CreatorRole::Writer,
         }
     }

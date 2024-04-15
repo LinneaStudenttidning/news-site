@@ -1,6 +1,6 @@
 use std::fmt::Debug;
 
-use chrono::{NaiveDateTime, Utc};
+use chrono::{DateTime, Local};
 use rocket::{http::Status, request::FromParam};
 use serde::{Deserialize, Serialize};
 use slug::slugify;
@@ -49,8 +49,8 @@ pub struct Text {
     pub lead_paragraph: String,
     pub text_body: String,
     pub text_type: TextType,
-    pub created_at: NaiveDateTime,
-    pub updated_at: NaiveDateTime,
+    pub created_at: DateTime<Local>,
+    pub updated_at: DateTime<Local>,
     pub tags: Vec<String>,
     pub is_published: bool,
     pub creator: Creator,
@@ -66,8 +66,8 @@ impl Default for Text {
             lead_paragraph: "Missing lead paragraph!".into(),
             text_body: "Missing text body!".into(),
             text_type: TextType::Other,
-            created_at: Utc::now().naive_utc(),
-            updated_at: Utc::now().naive_utc(),
+            created_at: Local::now(),
+            updated_at: Local::now(),
             tags: Vec::new(),
             is_published: false,
             creator: Creator::create("Missing name", "Missing Display name", "password", false)
