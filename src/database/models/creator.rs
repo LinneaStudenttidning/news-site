@@ -138,6 +138,14 @@ impl Creator {
             .map_err(Error::from)
     }
 
+    /// Gets ALL creators from the database which that have at least one published text.
+    pub async fn get_all_authors(db: &DatabaseHandler) -> Result<Vec<Self>, Error> {
+        sqlx::query_file_as!(Self, "sql/creators/get_all_authors.sql")
+            .fetch_all(&db.pool)
+            .await
+            .map_err(Error::from)
+    }
+
     /// Gets ONE creator from the database by its `username`.
     pub async fn get_by_username(db: &DatabaseHandler, username: &str) -> Result<Self, Error> {
         sqlx::query_file_as!(Self, "sql/creators/get_by_username.sql", username)

@@ -1,6 +1,9 @@
 use crate::{
     anyresponder::AnyResponder,
-    database::{models::article::Text, DatabaseHandler},
+    database::{
+        models::{article::Text, creator::Creator},
+        DatabaseHandler,
+    },
     error::Error,
 };
 use rocket::{response::Redirect, Route, State};
@@ -11,26 +14,36 @@ pub mod texts;
 
 #[get("/")]
 async fn landing(db: &State<DatabaseHandler>) -> Result<Template, Error> {
+    let tags = Text::get_all_tags(db, None).await?;
+    let authors = Creator::get_all_authors(db).await?;
+
     let texts = Text::get_n_latest(db, 16, Some(true)).await?;
 
-    let tags = Text::get_all_tags(db, None).await?;
-
-    Ok(Template::render("landing", context! { texts, tags }))
+    Ok(Template::render(
+        "landing",
+        context! { tags, authors, texts },
+    ))
 }
 
 #[get("/about-us")]
 async fn about_us(db: &State<DatabaseHandler>) -> Result<Template, Error> {
     let tags = Text::get_all_tags(db, None).await?;
+    let authors = Creator::get_all_authors(db).await?;
 
-    Ok(Template::render("about", context! { tags }))
+    Ok(Template::render("about", context! { tags, authors }))
 }
 
 #[get("/search?<q>")]
 async fn search(q: Option<&str>, db: &State<DatabaseHandler>) -> Result<Template, Error> {
     let tags = Text::get_all_tags(db, None).await?;
+    let authors = Creator::get_all_authors(db).await?;
+
     let texts = Text::search(db, q.unwrap_or("")).await?;
 
-    Ok(Template::render("search", context! { texts, tags, q }))
+    Ok(Template::render(
+        "search",
+        context! { texts, tags, authors, q },
+    ))
 }
 
 #[get("/t/<id>/<title_slug>")]
@@ -39,6 +52,9 @@ async fn text_by_id(
     title_slug: &str,
     db: &State<DatabaseHandler>,
 ) -> Result<AnyResponder, Error> {
+    let tags = Text::get_all_tags(db, None).await?;
+    let authors = Creator::get_all_authors(db).await?;
+
     let text = Text::get_by_id(db, id, None).await?;
 
     if title_slug != text.title_slug {
@@ -46,9 +62,7 @@ async fn text_by_id(
         return Ok(AnyResponder::from(redirect));
     }
 
-    let tags = Text::get_all_tags(db, None).await?;
-
-    let template = Template::render("text-by-id", context! { text, tags });
+    let template = Template::render("text-by-id", context! { text, tags, authors });
     Ok(AnyResponder::from(template))
 }
 

@@ -3,7 +3,10 @@ use rocket_dyn_templates::{context, Template};
 
 use crate::{
     database::{
-        models::article::{Text, TextType},
+        models::{
+            article::{Text, TextType},
+            creator::Creator,
+        },
         DatabaseHandler,
     },
     error::Error,
@@ -11,11 +14,15 @@ use crate::{
 
 #[get("/tag/<tag>")]
 async fn texts_by_tag(tag: &str, db: &State<DatabaseHandler>) -> Result<Template, Error> {
+    let tags = Text::get_all_tags(db, None).await?;
+    let authors = Creator::get_all_authors(db).await?;
+
     let texts = Text::get_by_tag(db, tag).await?;
 
-    let tags = Text::get_all_tags(db, None).await?;
-
-    Ok(Template::render("landing", context! { texts, tags }))
+    Ok(Template::render(
+        "landing",
+        context! { texts, tags, authors },
+    ))
 }
 
 #[get("/type/<text_type>")]
@@ -23,20 +30,28 @@ async fn texts_by_type(
     text_type: TextType,
     db: &State<DatabaseHandler>,
 ) -> Result<Template, Error> {
+    let tags = Text::get_all_tags(db, None).await?;
+    let authors = Creator::get_all_authors(db).await?;
+
     let texts = Text::get_by_type(db, text_type).await?;
 
-    let tags = Text::get_all_tags(db, None).await?;
-
-    Ok(Template::render("landing", context! { texts, tags }))
+    Ok(Template::render(
+        "landing",
+        context! { texts, tags, authors },
+    ))
 }
 
 #[get("/author/<author>")]
 async fn texts_by_author(author: &str, db: &State<DatabaseHandler>) -> Result<Template, Error> {
+    let tags = Text::get_all_tags(db, None).await?;
+    let authors = Creator::get_all_authors(db).await?;
+
     let texts = Text::get_by_author(db, author).await?;
 
-    let tags = Text::get_all_tags(db, None).await?;
-
-    Ok(Template::render("landing", context! { texts, tags }))
+    Ok(Template::render(
+        "landing",
+        context! { texts, tags, authors },
+    ))
 }
 
 /// These should be mounted on `/texts`!
