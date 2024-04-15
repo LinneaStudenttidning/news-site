@@ -384,7 +384,7 @@ async fn demote_creator(
         ));
     }
 
-    Creator::promote(db, form.username).await?;
+    Creator::demote(db, form.username).await?;
 
     Ok(Flash::success(
         Redirect::to("/control-panel"),
