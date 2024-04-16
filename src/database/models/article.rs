@@ -125,6 +125,7 @@ impl Text {
     }
 
     /// Updates ONE text from the data by its `id`.
+    /// TODO: This should probably also update `marked_as_done` status.
     pub async fn update_by_id(
         db: &DatabaseHandler,
         id: i32,
@@ -163,7 +164,8 @@ impl Text {
     }
 
     /// Gets ONE `Text` from the database by its id.
-    /// `check_if_published` defaults to `true` if `None`
+    /// * `check_if_published` defaults to `true` if `None`
+    /// FIXME: `check_if_published` should just be `bool`, not `Option<bool>`.
     pub async fn get_by_id(
         db: &DatabaseHandler,
         id: i32,

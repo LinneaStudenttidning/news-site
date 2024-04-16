@@ -4,6 +4,7 @@ use crate::{
     api::{
         auth::{change_password, change_password_any, login, logout},
         creator::{creator_new, demote, promote},
+        text::{text_edit, text_save},
     },
     error::Error,
     token::Claims,
@@ -11,6 +12,7 @@ use crate::{
 
 pub mod auth;
 pub mod creator;
+pub mod text;
 
 pub type DefaultResponse<T> = Result<Json<T>, Json<Error>>;
 
@@ -36,6 +38,9 @@ pub fn get_all_routes() -> Vec<Route> {
         // * /creator
         creator_new,
         demote,
-        promote
+        promote,
+        // * /text
+        text_save,
+        text_edit
     ]
 }
