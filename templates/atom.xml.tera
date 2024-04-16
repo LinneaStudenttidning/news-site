@@ -7,6 +7,7 @@
     <rights>copyright something</rights>
     <link rel="alternate" type="text/html" hreflang="sv" href="{{ get_env(name="SITE_URL") }}/"/>
     <link rel="self" type="application/atom+xml" hreflang="sv" href="{{ get_env(name="SITE_URL") }}/feed/atom.xml"/>
+    <icon>/static/favicon/favicon.ico</icon>
     {% for text in texts %}
     <entry>
         <title>{{ text.title }}</title>
