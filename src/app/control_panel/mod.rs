@@ -1,3 +1,4 @@
+use crate::anyresponder::AnyResponder;
 use crate::data_dir;
 use crate::database::{models::article::Text, DatabaseHandler};
 use crate::flash_msg::FlashMsg;
@@ -49,9 +50,15 @@ async fn control_panel(
 }
 
 #[get("/login")]
-fn login_page(flash: Option<FlashMessage>) -> Template {
-    let flash: FlashMsg = flash.into();
-    Template::render("login", context! { flash })
+fn login_page(flash: Option<FlashMessage>, claims: Option<Claims>) -> Result<AnyResponder, Error> {
+    // Render template if logged out, else redirect to control panel
+    if claims.is_none() {
+        let flash: FlashMsg = flash.into();
+        let template = Template::render("login", context! { flash });
+        return Ok(AnyResponder::from(template));
+    }
+    let redirect = Redirect::found("/control-panel");
+    Ok(AnyResponder::from(redirect))
 }
 
 #[post("/login", data = "<form>")]
