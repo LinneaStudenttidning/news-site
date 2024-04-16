@@ -7,11 +7,19 @@
 {% block main %}
 <h1>Logga in</h1>
 
-<form action="/control-panel/login" method="post">
-    {% if flash %}
-    <code class="error">{{ flash }}</code>
+{% if flash.message %}
+<div class="toolbox {% if flash.kind == "error" %}error{% endif %}">
+    {% if flash.kind == "success" %}
+    <h2 icon="info">Meddelande</h2>
+    <p>{{ flash.message }}</p>
+    {% else %}
+    <h2 icon="error">Felmeddelande</h2>
+    <p>{{ flash.message }}</p>
     {% endif %}
+</div>
+{% endif %}
 
+<form action="/control-panel/login" method="post">
     <label for="username">Användarnamn:</label>
     <input type="text" name="username" id="username" required autofocus>
 

@@ -16,6 +16,7 @@ pub mod data_dir;
 pub mod database;
 pub mod defaults;
 pub mod error;
+pub mod flash_msg;
 pub mod token;
 
 use comrak::{markdown_to_html, Options};

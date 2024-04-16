@@ -8,10 +8,15 @@
 {% block main %}
 <h1>Kontrollpanelen</h1>
 
-{% if flash %}
-<div class="toolbox">
+{% if flash.message %}
+<div class="toolbox {% if flash.kind == "error" %}error{% endif %}">
+    {% if flash.kind == "success" %}
     <h2 icon="info">Meddelande</h2>
-    <p>{{ flash }}</p>
+    <p>{{ flash.message }}</p>
+    {% else %}
+    <h2 icon="error">Felmeddelande</h2>
+    <p>{{ flash.message }}</p>
+    {% endif %}
 </div>
 {% endif %}
 

@@ -1,5 +1,6 @@
 use crate::data_dir;
 use crate::database::{models::article::Text, DatabaseHandler};
+use crate::flash_msg::FlashMsg;
 use crate::{
     app::rocket_uri_macro_text_by_id, database::models::creator::Creator, error::Error,
     token::Claims,
@@ -39,7 +40,7 @@ async fn control_panel(
         .map(|creator| creator.username)
         .collect::<Vec<String>>();
 
-    let flash = flash.map(|msg| msg.message().to_string());
+    let flash: FlashMsg = flash.into();
 
     Ok(Template::render(
         "control_panel",
@@ -49,10 +50,8 @@ async fn control_panel(
 
 #[get("/login")]
 fn login_page(flash: Option<FlashMessage>) -> Template {
-    Template::render(
-        "login",
-        context! { flash: flash.map(|msg| msg.message().to_string())},
-    )
+    let flash: FlashMsg = flash.into();
+    Template::render("login", context! { flash })
 }
 
 #[post("/login", data = "<form>")]
