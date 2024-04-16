@@ -21,7 +21,7 @@ pub mod token;
 
 use comrak::{markdown_to_html, Options};
 use database::DatabaseHandler;
-use rocket::fs::FileServer;
+use rocket::{fs::FileServer, response::Flash, response::Redirect};
 use rocket_dyn_templates::{context, tera, Engines, Template};
 
 fn custom_tera(engines: &mut Engines) {
@@ -40,6 +40,14 @@ fn custom_tera(engines: &mut Engines) {
 async fn not_found() -> Template {
     let tags: Vec<String> = Vec::new();
     Template::render("errors/404", context! { tags })
+}
+
+#[catch(401)]
+fn unauthorized() -> Flash<Redirect> {
+    Flash::error(
+        Redirect::to("/control-panel/login"),
+        "Du har ingen giltig session, var vänlig och logga in.",
+    )
 }
 
 #[rocket::main]
@@ -63,6 +71,7 @@ async fn main() {
         .mount("/control-panel", app::control_panel::get_all_routes())
         .mount("/static", FileServer::from("./static"))
         .register("/", catchers![not_found])
+        .register("/", catchers![unauthorized])
         .launch()
         .await
     {

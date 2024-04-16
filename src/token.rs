@@ -49,7 +49,7 @@ impl<'a> FromRequest<'a> for Claims {
             }
             None => {
                 return Outcome::Error((
-                    Status::BadRequest,
+                    Status::Unauthorized,
                     Error::create("Claims Guard", "No 'token' cookie!", Status::BadRequest),
                 ))
             }
@@ -93,11 +93,11 @@ impl<'a> FromRequest<'a> for Claims {
         // token is invalidated on password change.
         if claims.data.password != creator.password {
             return Outcome::Error((
-                Status::BadRequest,
+                Status::Unauthorized,
                 Error::create(
                     "Claims Guard",
                     "Password hashes do not match!",
-                    Status::BadRequest,
+                    Status::Unauthorized,
                 ),
             ));
         }
@@ -106,8 +106,8 @@ impl<'a> FromRequest<'a> for Claims {
         // token is invalidated on role change.
         if claims.admin != creator.is_publisher() {
             return Outcome::Error((
-                Status::BadRequest,
-                Error::create("Claims Guard", "Role has changed!", Status::BadRequest),
+                Status::Unauthorized,
+                Error::create("Claims Guard", "Role has changed!", Status::Unauthorized),
             ));
         }
 
