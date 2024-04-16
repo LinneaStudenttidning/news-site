@@ -1,11 +1,12 @@
-use rocket::{serde::json::Json, State};
+use rocket::{http::Status, serde::json::Json, State};
 
 use crate::{
     database::{models::creator::Creator, DatabaseHandler},
+    error::Error,
     token::Claims,
 };
 
-use self::requests::NewCreator;
+use self::requests::{NewCreator, PromoteOrDemote};
 
 use super::{error_if_not_admin, DefaultResponse};
 
@@ -29,4 +30,35 @@ pub async fn creator_new(
     let saved_creator = creator.save_to_db(db).await?;
 
     Ok(Json(saved_creator))
+}
+
+#[put("/creator/demote", data = "<data>")]
+pub async fn demote(
+    claims: Claims,
+    data: Json<PromoteOrDemote<'_>>,
+    db: &State<DatabaseHandler>,
+) -> Result<String, Error> {
+    error_if_not_admin(&claims)?;
+
+    if claims.data.username == data.username {
+        return Err(Error::create(
+            &format!("{}:{}", file!(), line!()),
+            "Sorry, you can't revoke your own admin access!",
+            Status::BadRequest,
+        ));
+    }
+
+    Creator::demote(db, data.username).await?;
+    Ok(format!("Succesfully demoted {}!", data.username))
+}
+
+#[put("/creator/promote", data = "<data>")]
+pub async fn promote(
+    claims: Claims,
+    data: Json<PromoteOrDemote<'_>>,
+    db: &State<DatabaseHandler>,
+) -> Result<String, Error> {
+    error_if_not_admin(&claims)?;
+    Creator::promote(db, data.username).await?;
+    Ok(format!("Succesfully promoted {}!", data.username))
 }

@@ -3,7 +3,7 @@ use rocket::{http::Status, serde::json::Json, Route};
 use crate::{
     api::{
         auth::{change_password, change_password_any, login, logout},
-        creator::creator_new,
+        creator::{creator_new, demote, promote},
     },
     error::Error,
     token::Claims,
@@ -34,6 +34,8 @@ pub fn get_all_routes() -> Vec<Route> {
         change_password,
         change_password_any,
         // * /creator
-        creator_new
+        creator_new,
+        demote,
+        promote
     ]
 }
