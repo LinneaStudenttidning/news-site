@@ -1,3 +1,4 @@
+use crate::data_dir;
 use crate::database::{models::article::Text, DatabaseHandler};
 use crate::{
     app::rocket_uri_macro_text_by_id, database::models::creator::Creator, error::Error,
@@ -14,8 +15,9 @@ use rocket::{
 use rocket_dyn_templates::{context, Template};
 
 use self::form_structs::{
-    ChangePasswordAnyForm, CreateCreatorForm, EditBiographyForm, EditDisplayNameForm,
-    EditPasswordForm, EditTextForm, LoginForm, PromoteDemoteForm, SaveTextForm,
+    ChangePasswordAnyForm, CreateCreatorForm, EditAboutUsForm, EditBiographyForm,
+    EditDisplayNameForm, EditPasswordForm, EditTextForm, LoginForm, PromoteDemoteForm,
+    SaveTextForm,
 };
 
 pub mod form_structs;
@@ -29,6 +31,7 @@ async fn control_panel(
     let creator = Creator::get_by_username(db, &claims.data.username).await?;
     let published_texts = Text::get_by_author(db, &claims.data.username, true).await?;
     let unpublished_texts = Text::get_by_author(db, &claims.data.username, false).await?;
+    let about_us = data_dir::get_about_us();
 
     let all_creator_usernames = Creator::get_all(db)
         .await?
@@ -40,7 +43,7 @@ async fn control_panel(
 
     Ok(Template::render(
         "control_panel",
-        context! { creator, published_texts, unpublished_texts, all_creator_usernames, flash },
+        context! { creator, published_texts, unpublished_texts, all_creator_usernames, about_us, flash },
     ))
 }
 
@@ -110,6 +113,31 @@ async fn change_display_name(
     .map_err(|e| e.to_string())?;
 
     Ok(Redirect::to("/control-panel"))
+}
+
+#[post("/change-about-us", data = "<form>")]
+async fn change_about_us(
+    form: Form<EditAboutUsForm<'_>>,
+    claims: Claims,
+) -> Result<Flash<Redirect>, Error> {
+    if !claims.admin {
+        return Err(Error::create(
+            "app::control_panel::create_creator",
+            "Sorry, the action you are performing requires admin access!",
+            Status::Forbidden,
+        ));
+    }
+
+    match data_dir::edit_about_us(form.about_us.to_string()) {
+        true => Ok(Flash::success(
+            Redirect::to("/control-panel"),
+            "Lyckades med att ändra \"om oss\"".to_string(),
+        )),
+        false => Ok(Flash::error(
+            Redirect::to("/control-panel"),
+            "Misslyckades med att ändra \"om oss\"".to_string(),
+        )),
+    }
 }
 
 #[post("/change-biography", data = "<form>")]
@@ -409,6 +437,7 @@ pub fn get_all_routes() -> Vec<Route> {
         create_creator,
         change_password_any,
         promote_creator,
+        change_about_us,
         demote_creator
     ]
 }

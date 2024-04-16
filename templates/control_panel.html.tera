@@ -28,7 +28,7 @@
         <button class="btn dangerous" icon="remove_moderator" data-dialog-button="demote-to-creator">Ta bort ansvarig
             utgivare</button>
         <div class="sep"></div>
-        <button class="btn" icon="edit_note">Ändra "om oss"</button>
+        <button class="btn" icon="edit_note" data-dialog-button="change-about-us">Ändra "om oss"</button>
         <button class="btn" icon="gallery_thumbnail">Bildgalleriet</button>
         <button class="btn" icon="preview">Granska och godkänn nya texter</button>
         <button class="btn" icon="edit_note">Redigera text</button>
@@ -192,6 +192,18 @@
         </div>
     </form>
 </dialog>
+
+<dialog data-dialog-box="change-about-us">
+    <form action="/control-panel/change-about-us" method="post">
+        <label>Om oss</label>
+        <textarea name="about-us" rows="20">{{ about_us }}</textarea>
+        <div class="flex wrap gap">
+            <button class="btn" icon="edit_note" type="submit">Ändra "om oss"</button>
+            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
+        </div>
+    </form>
+</dialog>
+
 {% endif %}
 {% endblock main %}
 

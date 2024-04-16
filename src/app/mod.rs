@@ -1,12 +1,10 @@
-use std::{env, fs};
-
 use crate::{
     anyresponder::AnyResponder,
+    data_dir,
     database::{
         models::{article::Text, creator::Creator},
         DatabaseHandler,
     },
-    defaults::DATA_DIR,
     error::Error,
     token::Claims,
 };
@@ -34,9 +32,7 @@ async fn about_us(db: &State<DatabaseHandler>) -> Result<Template, Error> {
     let tags = Text::get_all_tags(db, None).await?;
     let authors = Creator::get_all_authors(db).await?;
 
-    let data_dir = env::var("DATA_DIR").unwrap_or(DATA_DIR.into());
-    let about_us_md_path = format!("{data_dir}/about_us.md");
-    let about_us_md = fs::read_to_string(about_us_md_path)?;
+    let about_us_md = data_dir::get_about_us();
 
     Ok(Template::render(
         "about",

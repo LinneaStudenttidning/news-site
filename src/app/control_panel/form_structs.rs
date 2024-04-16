@@ -71,3 +71,9 @@ pub struct ChangePasswordAnyForm<'a> {
 pub struct PromoteDemoteForm<'a> {
     pub username: &'a str,
 }
+
+#[derive(FromForm)]
+pub struct EditAboutUsForm<'a> {
+    #[field(name = "about-us")]
+    pub about_us: &'a str,
+}

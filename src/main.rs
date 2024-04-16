@@ -12,6 +12,7 @@ extern crate rocket;
 
 pub mod anyresponder;
 pub mod app;
+pub mod data_dir;
 pub mod database;
 pub mod defaults;
 pub mod error;
