@@ -1,7 +1,7 @@
 {% extends "templates/app" %}
 
 {% block head %}
-<title>Sök – Klister</title>
+<title>Sök – {{ get_env(name="SITE_TITLE") }}</title>
 {% endblock head %}
 
 {% block main %}

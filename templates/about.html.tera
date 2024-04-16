@@ -1,7 +1,8 @@
 {% extends "templates/app" %}
 
 {% block head %}
-<title>Om oss – Klister</title>
+<title>Om oss – {{ get_env(name="SITE_TITLE") }}</title>
+<meta name="description" content="{{ get_env(name="SITE_DESCRIPTION") }}">
 {% endblock head %}
 
 {% block main %}

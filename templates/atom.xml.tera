@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>{{ get_env(name="SITE_URL") }}/</id>
-    <title>Klister Studenttidning</title>
-    <subtitle>De senaste artiklarna från Klister Studenttidning</subtitle>
+    <title>{{ get_env(name="SITE_TITLE") }}</title>
+    <subtitle>De senaste artiklarna från >{{ get_env(name="SITE_TITLE") }}</subtitle>
     <updated>{{ texts[0].updated_at | date(format="%+") }}</updated>
     <rights>copyright something</rights>
     <link rel="alternate" type="text/html" hreflang="sv" href="{{ get_env(name="SITE_URL") }}/"/>

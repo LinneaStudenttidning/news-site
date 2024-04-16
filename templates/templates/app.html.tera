@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/static/styles/main.css">
-    <link rel="alternate" title="Klister Studenttidning" type="application/atom+xml" href="/feed/atom.xml">
+    <link rel="alternate" title="{{ get_env(name="SITE_TITLE") }}" type="application/atom+xml" href="/feed/atom.xml">
     {% block head %}
-    <title>Nyheter – Klister</title>
+    <title>Nyheter – {{ get_env(name="SITE_TITLE") }}</title>
     {% endblock head %}
 </head>
 

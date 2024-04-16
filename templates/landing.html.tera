@@ -2,10 +2,11 @@
 
 {% block head %}
 {% if title %}
-<title>{{ title }} – Klister</title>
+<title>{{ title }} – {{ get_env(name="SITE_TITLE") }}</title>
 {% else %}
-<title>Nyheter – Klister</title>
+<title>Nyheter – {{ get_env(name="SITE_TITLE") }}</title>
 {% endif %}
+<meta name="description" content="Senaste inom nyheter, reportage, & opinion">
 {% endblock head %}
 
 {% block main %}

@@ -1,7 +1,8 @@
 {% extends "templates/app" %}
 
 {% block head %}
-<title>{{ text.title }} – Klister</title>
+<title>{{ text.title }} – {{ get_env(name="SITE_TITLE") }}</title>
+<meta name="description" content="{{ text.lead_paragraph }}">
 {% endblock head %}
 
 {% block main %}
