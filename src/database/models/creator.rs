@@ -31,6 +31,7 @@ pub struct Creator {
     /// `display_name` may use any characters.
     pub display_name: String,
     /// `username` should be match the regex /[\w\-\.]+/
+    /// Should also **never** change.
     pub username: String,
     pub password: String,
     pub biography: String,
@@ -225,6 +226,28 @@ impl Creator {
                 )
             },
         )
+    }
+
+    /// Change a users password.
+    /// * `password` is supposed to **not** be hashed.`
+    pub async fn change_password(
+        db: &DatabaseHandler,
+        username: &str,
+        password: &str,
+    ) -> Result<(), Error> {
+        let creator = Creator::get_by_username(db, username).await?;
+        let new_password = Creator::hash_password(password)?;
+
+        Creator::update_by_username(
+            db,
+            &creator.username,
+            &creator.display_name,
+            &creator.biography,
+            &new_password,
+        )
+        .await?;
+
+        Ok(())
     }
 
     /// Promotes a user to `CreatorRole::Publisher`
