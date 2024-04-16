@@ -18,8 +18,8 @@ use rocket_dyn_templates::{context, Template};
 
 use self::form_structs::{
     ChangePasswordAnyForm, CreateCreatorForm, EditAboutUsForm, EditBiographyForm,
-    EditDisplayNameForm, EditPasswordForm, EditTextForm, LoginForm, PromoteDemoteForm,
-    SaveTextForm,
+    EditDisplayNameForm, EditPasswordForm, EditTextForm, LockCreatorForm, LoginForm,
+    PromoteDemoteForm, SaveTextForm,
 };
 
 pub mod form_structs;
@@ -82,6 +82,13 @@ async fn login(
             ))
         }
     };
+
+    if creator.password == "LOCKED" {
+        return Ok(Flash::error(
+            Redirect::to(uri!("/control-panel/login")),
+            "Detta konto är låst. Kontakta din ansvariga utgivare för att låsa kontot.",
+        ));
+    }
 
     let token = match creator.login(form.password).await {
         Ok(token) => token,
@@ -433,6 +440,36 @@ async fn demote_creator(
     ))
 }
 
+#[post("/lock-creator", data = "<form>")]
+async fn lock_creator(
+    claims: Claims,
+    db: &State<DatabaseHandler>,
+    form: Form<LockCreatorForm<'_>>,
+) -> Result<Flash<Redirect>, Error> {
+    if !claims.admin {
+        return Err(Error::create(
+            "app::control_panel::lock_creator",
+            "Sorry, the action you are performing requires admin access!",
+            Status::Forbidden,
+        ));
+    }
+
+    if claims.sub == form.username {
+        return Err(Error::create(
+            "app::control_panel::lock_creator",
+            "Sorry, you can't lock your own account!",
+            Status::BadRequest,
+        ));
+    }
+
+    Creator::lock(db, form.username).await?;
+
+    Ok(Flash::success(
+        Redirect::to("/control-panel"),
+        format!("Användaren {} är nu låst.", form.username),
+    ))
+}
+
 /// These should be mounted on `/control-panel`!
 pub fn get_all_routes() -> Vec<Route> {
     routes![
@@ -451,6 +488,7 @@ pub fn get_all_routes() -> Vec<Route> {
         change_password_any,
         promote_creator,
         change_about_us,
-        demote_creator
+        demote_creator,
+        lock_creator,
     ]
 }

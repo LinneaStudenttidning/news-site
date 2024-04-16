@@ -73,6 +73,11 @@ pub struct PromoteDemoteForm<'a> {
 }
 
 #[derive(FromForm)]
+pub struct LockCreatorForm<'a> {
+    pub username: &'a str,
+}
+
+#[derive(FromForm)]
 pub struct EditAboutUsForm<'a> {
     #[field(name = "about-us")]
     pub about_us: &'a str,
