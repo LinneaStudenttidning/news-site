@@ -236,6 +236,8 @@
             beskrivning</button>
         <button class="btn" icon="password" data-dialog-button="change-password">Ändra lösenord</button>
         <button class="btn" icon="image">Ändra profilbild</button>
+        <form id="logout-form" action="/control-panel/logout" method="post"></form>
+        <button form="logout-form" type="submit" class="btn dangerous" icon="logout">Logga ut</button>
     </div>
 </div>
 

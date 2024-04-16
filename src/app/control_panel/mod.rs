@@ -61,6 +61,12 @@ fn login_page(flash: Option<FlashMessage>, claims: Option<Claims>) -> Result<Any
     Ok(AnyResponder::from(redirect))
 }
 
+#[post("/logout")]
+async fn logout(jar: &CookieJar<'_>) -> Flash<Redirect> {
+    jar.remove("token");
+    Flash::success(Redirect::to("/control-panel/login"), "Du är nu utloggad!")
+}
+
 #[post("/login", data = "<form>")]
 async fn login(
     form: Form<LoginForm<'_>>,
@@ -433,6 +439,7 @@ pub fn get_all_routes() -> Vec<Route> {
         control_panel,
         login_page,
         login,
+        logout,
         change_display_name,
         change_biography,
         change_password,
