@@ -27,7 +27,7 @@
         <button class="btn" icon="person_add" data-dialog-button="create-user">Skapa ny användare</button>
         <button class="btn" icon="person_edit" data-dialog-button="change-password-any">Byt lösenord för annan
             användare</button>
-        <button class="btn dangerous" icon="person_remove">Ta bort användare</button>
+        <button class="btn dangerous" icon="lock_person" data-dialog-button="lock-creator">Lås användare</button>
         <button class="btn dangerous" icon="add_moderator" data-dialog-button="promote-to-publisher">Lägg till ansvarig
             utgivare</button>
         <button class="btn dangerous" icon="remove_moderator" data-dialog-button="demote-to-creator">Ta bort ansvarig
@@ -145,7 +145,7 @@
 <dialog data-dialog-box="change-password-any">
     <form action="/control-panel/change-password-any" method="post">
         <label>Användare att ge nytt lösenord</label>
-        <input name="username" type="text" list="usernames" autocomplete="off">
+        <input name="username" type="text" list="usernames" autocomplete="new-password">
         <datalist id="usernames">
             {% for username in all_creator_usernames %}
             <option value="{{username}}"></option>
@@ -163,10 +163,31 @@
     </form>
 </dialog>
 
+<dialog data-dialog-box="lock-creator">
+    <form action="/control-panel/lock-creator" method="post">
+        <label>
+            Användarnamn på det konto du vill låsa. Ett låst konto kommer att finnas kvar, 
+            men användare kommer inte kunna logga in. Om du vill låsa upp ett konto igen, 
+            så måste du ändra lösenord för dem.
+        </label>
+        <input name="username" type="text" list="usernames" autocomplete="new-password">
+        <datalist id="usernames">
+            {% for username in all_creator_usernames %}
+            <option value="{{username}}"></option>
+            {% endfor %}
+        </datalist>
+
+        <div class="flex wrap gap">
+            <button class="btn" icon="add_moderator" type="submit">Lås användare</button>
+            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
+        </div>
+    </form>
+</dialog>
+
 <dialog data-dialog-box="promote-to-publisher">
     <form action="/control-panel/promote-creator" method="post">
         <label>Användarnamn på den som ska bli ansvarig utgivare</label>
-        <input name="username" type="text" list="usernames" autocomplete="off">
+        <input name="username" type="text" list="usernames" autocomplete="new-password">
         <datalist id="usernames">
             {% for username in all_creator_usernames %}
             <option value="{{username}}"></option>
@@ -183,7 +204,7 @@
 <dialog data-dialog-box="demote-to-creator">
     <form action="/control-panel/demote-creator" method="post">
         <label>Användarnamn på den som ska sluta vara ansvarig utgivare</label>
-        <input name="username" type="text" list="usernames" autocomplete="off">
+        <input name="username" type="text" list="usernames" autocomplete="new-password">
         <datalist id="usernames">
             {% for username in all_creator_usernames %}
             <option value="{{username}}"></option>

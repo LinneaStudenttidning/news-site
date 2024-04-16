@@ -275,4 +275,17 @@ impl Creator {
         .map(|_| ())
         .map_err(Error::from)
     }
+
+    /// Demotes a user to `CreatorRole::Writer`
+    /// FIXME: Return type.
+    pub async fn lock(db: &DatabaseHandler, username: &str) -> Result<(), Error> {
+        sqlx::query!(
+            "UPDATE creators SET password = 'LOCKED' WHERE username = $1",
+            username
+        )
+        .execute(&db.pool)
+        .await
+        .map(|_| ())
+        .map_err(Error::from)
+    }
 }
