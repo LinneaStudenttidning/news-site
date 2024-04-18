@@ -13,7 +13,7 @@ use crate::{
 
 use self::requests::{ChangePasswordOther, ChangePasswordSelf, Login};
 
-use super::{error_if_not_admin, DefaultResponse};
+use super::{default_response::DefaultResponse, error_if_not_admin};
 
 pub mod requests;
 
