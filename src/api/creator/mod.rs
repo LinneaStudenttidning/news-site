@@ -6,9 +6,12 @@ use crate::{
     token::Claims,
 };
 
-use self::requests::{NewCreator, PromoteOrDemote};
+use self::requests::{NewCreator, PromoteOrDemote, UpdateProfile};
 
-use super::{error_if_not_admin, DefaultResponse};
+use super::{
+    default_response::{default_response, DefaultResponse},
+    error_if_not_admin,
+};
 
 pub mod requests;
 
@@ -61,4 +64,21 @@ pub async fn promote(
     error_if_not_admin(&claims)?;
     Creator::promote(db, data.username).await?;
     Ok(format!("Succesfully promoted {}!", data.username))
+}
+
+#[put("/creator/update-profile", data = "<data>")]
+pub async fn update_profile(
+    claims: Claims,
+    data: Json<UpdateProfile<'_>>,
+    db: &State<DatabaseHandler>,
+) -> DefaultResponse<Creator> {
+    let creator = Creator::get_by_username(db, &claims.sub).await?;
+
+    let display_name = data.display_name.unwrap_or(&creator.display_name);
+    let biography = data.biography.unwrap_or(&creator.biography);
+
+    default_response(
+        Creator::update_by_username(db, &claims.sub, display_name, biography, &creator.password)
+            .await,
+    )
 }

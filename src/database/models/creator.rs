@@ -155,6 +155,7 @@ impl Creator {
     }
 
     /// Updates ONE creator from the data by its `username`.
+    /// FIXME: Remove changing password here in favour of `Self::change_password()`.
     pub async fn update_by_username(
         db: &DatabaseHandler,
         username: &str,

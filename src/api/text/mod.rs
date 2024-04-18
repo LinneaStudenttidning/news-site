@@ -8,7 +8,7 @@ use crate::{
 
 use self::requests::SaveOrEditText;
 
-use super::DefaultResponse;
+use super::default_response::{default_response, DefaultResponse};
 
 pub mod requests;
 
@@ -41,7 +41,7 @@ pub async fn text_save(
         data.marked_as_done,
     );
 
-    text.save_to_db(db).await.map(Json).map_err(Json)
+    default_response(text.save_to_db(db).await)
 }
 
 #[put("/text/edit", data = "<data>")]
@@ -78,16 +78,16 @@ pub async fn text_edit(
         false => current_text.is_published,
     };
 
-    Text::update_by_id(
-        db,
-        current_text_id,
-        data.title,
-        data.leading_paragraph,
-        data.text_body,
-        &tags,
-        should_publish_instantly,
+    default_response(
+        Text::update_by_id(
+            db,
+            current_text_id,
+            data.title,
+            data.leading_paragraph,
+            data.text_body,
+            &tags,
+            should_publish_instantly,
+        )
+        .await,
     )
-    .await
-    .map(Json)
-    .map_err(Json)
 }

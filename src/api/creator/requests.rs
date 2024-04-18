@@ -13,3 +13,9 @@ pub struct NewCreator<'a> {
 pub struct PromoteOrDemote<'a> {
     pub username: &'a str,
 }
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct UpdateProfile<'a> {
+    pub display_name: Option<&'a str>,
+    pub biography: Option<&'a str>,
+}

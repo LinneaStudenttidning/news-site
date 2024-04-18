@@ -1,4 +1,4 @@
-use rocket::{http::Status, serde::json::Json, Route};
+use rocket::{http::Status, Route};
 
 use crate::{
     api::{
@@ -12,9 +12,8 @@ use crate::{
 
 pub mod auth;
 pub mod creator;
+pub mod default_response;
 pub mod text;
-
-pub type DefaultResponse<T> = Result<Json<T>, Json<Error>>;
 
 pub fn error_if_not_admin(claims: &Claims) -> Result<(), Error> {
     match claims.admin {
