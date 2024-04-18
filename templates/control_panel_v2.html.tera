@@ -1,0 +1,157 @@
+{% extends "templates/app" %}
+
+{% block head %}
+<title>Kontrollpanelen – {{ get_env(name="SITE_TITLE") }}</title>
+<script type="module" src="/static/scripts/control-panel-v2.js" async defer></script>
+{% endblock head %}
+
+{% block main %}
+<h1>Kontrollpanelen</h1>
+
+{# FIXME: REMOVE WRITER CHECK IN PRODUCTION! #}
+{% if creator.role == "Publisher" or creator.role == "Writer" %}
+<div class="toolbox">
+    <h2 icon="admin_panel_settings">Administrativa verktyg</h2>
+    <div class="content flex wrap gap">
+        <button class="btn" icon="person_add" data-dialog-button="create-user" data-dialog-method="POST"
+            data-dialog-action="/api/creator/new">Skapa ny användare</button>
+        <button class="btn" icon="person_edit" data-dialog-button="change-password-any">Byt lösenord för annan
+            användare</button>
+        <button class="btn dangerous" icon="lock_person" data-dialog-button="lock-creator">Lås användare</button>
+        <button class="btn dangerous" icon="add_moderator" data-dialog-button="promote-to-publisher">Lägg till ansvarig
+            utgivare</button>
+        <button class="btn dangerous" icon="remove_moderator" data-dialog-button="demote-to-creator">Ta bort ansvarig
+            utgivare</button>
+        <div class="sep"></div>
+        <button class="btn" icon="edit_note" data-dialog-button="change-about-us">Ändra "om oss"</button>
+        <button class="btn" icon="gallery_thumbnail">Bildgalleriet</button>
+        <button class="btn" icon="preview">Granska och godkänn nya texter</button>
+        <button class="btn" icon="edit_note">Redigera text</button>
+        <button class="btn dangerous" icon="unpublished">Avpublicera text</button>
+    </div>
+</div>
+{% endif %}
+
+<div class="toolbox">
+    <h2 icon="feed">Dina texter</h2>
+    <div class="content">
+        <h3>Opublicerade texter (påbörjade)</h3>
+        {% if unpublished_texts | length > 0 %}
+        {% for text in unpublished_texts %}
+        {% if not text.marked_as_done %}
+        <div class="article-box">
+            <p class="title">{{ text.title }} </p>
+            <p class="date">{{ text.created_at | date(format="%F %T") }}</p>
+            <div class="flex wrap gap actions">
+                <a class="btn icon-only" icon="edit_note" href="/control-panel/edit/{{ text.id }}"></a>
+                <button class="btn icon-only share"
+                    data-url="{{ get_env(name="SITE_URL") }}/t/{{ text.id }}/{{ text.title_slug }}"
+                    data-title="{{ text.title }}" icon="share">
+                </button>
+                <a class="btn icon-only" icon="open_in_new" href="/t/{{ text.id }}/{{ text.title_slug }}"
+                    target="_blank"></a>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        <p>Du har inga opublicerade texter.</p>
+        {% endif %}
+        <div class="flex wrap gap">
+            <a class="btn" icon="post_add" href="/control-panel/editor">Skapa ny text</a>
+        </div>
+
+        <h3>Opublicerade texter (färdiga)</h3>
+        {% if unpublished_texts | length > 0 %}
+        {% for text in unpublished_texts %}
+        {% if text.marked_as_done %}
+        <div class="article-box">
+            <p class="title">{{ text.title }} </p>
+            <p class="date">{{ text.created_at | date(format="%F %T") }}</p>
+            <div class="flex wrap gap actions">
+                <a class="btn icon-only" icon="edit_note" href="/control-panel/edit/{{ text.id }}"></a>
+                <button class="btn icon-only share"
+                    data-url="{{ get_env(name="SITE_URL") }}/t/{{ text.id }}/{{ text.title_slug }}"
+                    data-title="{{ text.title }}" icon="share">
+                </button>
+                <a class="btn icon-only" icon="open_in_new" href="/t/{{ text.id }}/{{ text.title_slug }}"
+                    target="_blank"></a>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        <p>Du har inga färdiga texter som inväntar publicering.</p>
+        {% endif %}
+
+        <h3>Publicerade texter</h3>
+        {% if published_texts | length > 0 %}
+        {% for text in published_texts %}
+        <div class="article-box">
+            <p class="title">{{ text.title }} </p>
+            <p class="date">{{ text.created_at | date(format="%F %T") }}</p>
+            <div class="flex wrap gap actions">
+                <a class="btn icon-only" icon="edit_note" href="/control-panel/edit/{{ text.id }}"></a>
+                <button class="btn icon-only share"
+                    data-url="{{ get_env(name="SITE_URL") }}/t/{{ text.id }}/{{ text.title_slug }}"
+                    data-title="{{ text.title }}" icon="share">
+                </button>
+                <a class="btn icon-only" icon="open_in_new" href="/t/{{ text.id }}/{{ text.title_slug }}"
+                    target="_blank"></a>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>Du har inga publicerade texter.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock main %}
+
+{% block aside %}
+<div class="side-content">
+    <h1>Din profil</h1>
+    <div class="content profile">
+        <img src="https://source.unsplash.com/random/400x400" alt="Profilbild" class="pfp">
+        <h3 class="name">{{ creator.display_name }}</h3>
+        <div class="info-table">
+            <p class="prop">Användarnamn</p>
+            <p class="value">{{ creator.username }}</p>
+            <p class="prop">Beskrivning</p>
+            <p class="value">{{ creator.biography }}</p>
+            <p class="prop">Konto skapat</p>
+            <p class="value">{{ creator.joined_at | date(format="%-d %B %Y, %R") }}</p>
+            <p class="prop">Roll</p>
+            <p class="value">{{ creator.role }}</p>
+        </div>
+    </div>
+    <div class="flex wrap gap">
+        <button class="btn" icon="person_edit" data-dialog-button="change-display-name">Ändra
+            visningsnamn</button>
+        <button class="btn" icon="edit_note" data-dialog-button="change-biography">Ändra
+            beskrivning</button>
+        <button class="btn" icon="password" data-dialog-button="change-password">Ändra lösenord</button>
+        <button class="btn" icon="image">Ändra profilbild</button>
+        <form id="logout-form" action="/control-panel/logout" method="post"></form>
+        <button form="logout-form" type="submit" class="btn dangerous" icon="logout">Logga ut</button>
+    </div>
+</div>
+{% endblock aside %}
+
+{% block body_end %}
+<template id="dialog-template">
+    <dialog>
+        <form action="#">
+            <h2>
+                <slot name="prompt"></slot>
+            </h2>
+            <div class="flex wrap gap">
+                <button class="btn" icon="person_add" type="submit">Skapa</button>
+                <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
+            </div>
+        </form>
+    </dialog>
+</template>
+
+<div class="dialogs-go-here"></div>
+{% endblock body_end %}

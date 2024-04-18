@@ -61,6 +61,8 @@
         <p>&copy; Redaktionen</p>
         <a href="/control-panel/login">Inloggning för redaktionen</a>
     </footer>
+
+    {% block body_end %}{% endblock body_end %}
 </body>
 
 </html>
