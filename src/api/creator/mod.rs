@@ -6,7 +6,7 @@ use crate::{
     token::Claims,
 };
 
-use self::requests::{NewCreator, PromoteOrDemote, UpdateProfile};
+use self::requests::{NewCreator, OnlyUsername, UpdateProfile};
 
 use super::{
     default_response::{default_response, DefaultResponse},
@@ -38,7 +38,7 @@ pub async fn creator_new(
 #[put("/creator/demote", data = "<data>")]
 pub async fn demote(
     claims: Claims,
-    data: Json<PromoteOrDemote<'_>>,
+    data: Json<OnlyUsername<'_>>,
     db: &State<DatabaseHandler>,
 ) -> Result<String, Error> {
     error_if_not_admin(&claims)?;
@@ -58,7 +58,7 @@ pub async fn demote(
 #[put("/creator/promote", data = "<data>")]
 pub async fn promote(
     claims: Claims,
-    data: Json<PromoteOrDemote<'_>>,
+    data: Json<OnlyUsername<'_>>,
     db: &State<DatabaseHandler>,
 ) -> Result<String, Error> {
     error_if_not_admin(&claims)?;
@@ -81,4 +81,26 @@ pub async fn update_profile(
         Creator::update_by_username(db, &claims.sub, display_name, biography, &creator.password)
             .await,
     )
+}
+
+#[put("/creator/lock", data = "<data>")]
+pub async fn lock_creator(
+    claims: Claims,
+    data: Json<OnlyUsername<'_>>,
+    db: &State<DatabaseHandler>,
+) -> DefaultResponse<Creator> {
+    error_if_not_admin(&claims)?;
+
+    if claims.sub == data.username {
+        return default_response(Err(Error::create(
+            &format!("{}:{}", file!(), line!()),
+            "You can't lock your own account!",
+            Status::BadRequest,
+        )));
+    }
+
+    Creator::lock(db, data.username).await?;
+    let locked_creator = Creator::get_by_username(db, data.username).await?;
+
+    default_response(Ok(locked_creator))
 }

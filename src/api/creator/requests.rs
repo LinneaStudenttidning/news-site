@@ -10,7 +10,7 @@ pub struct NewCreator<'a> {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-pub struct PromoteOrDemote<'a> {
+pub struct OnlyUsername<'a> {
     pub username: &'a str,
 }
 
