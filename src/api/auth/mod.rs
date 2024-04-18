@@ -37,6 +37,11 @@ pub async fn login(
     Ok(Json(creator))
 }
 
+#[get("/auth/who")]
+pub fn who(claims: Claims) -> Json<Creator> {
+    Json(claims.data)
+}
+
 #[post("/auth/logout")]
 pub fn logout(jar: &CookieJar<'_>) -> String {
     jar.remove("token");
