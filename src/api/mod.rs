@@ -4,6 +4,7 @@ use crate::{
     api::{
         auth::{change_password, change_password_any, login, logout},
         creator::{creator_new, demote, promote},
+        site_settings::edit_about_us,
         text::{text_edit, text_save},
     },
     error::Error,
@@ -13,6 +14,7 @@ use crate::{
 pub mod auth;
 pub mod creator;
 pub mod default_response;
+pub mod site_settings;
 pub mod text;
 
 pub fn error_if_not_admin(claims: &Claims) -> Result<(), Error> {
@@ -40,6 +42,8 @@ pub fn get_all_routes() -> Vec<Route> {
         promote,
         // * /text
         text_save,
-        text_edit
+        text_edit,
+        // * /site-settings
+        edit_about_us,
     ]
 }

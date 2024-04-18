@@ -13,6 +13,7 @@ pub fn get_about_us() -> String {
         .to_string()
 }
 
+/// FIXME: THIS SHOULD RETURN A `Result<T, E>`!
 pub fn edit_about_us(new_about_us: String) -> bool {
     let data_dir = env::var("DATA_DIR").unwrap_or(DATA_DIR.into());
     let about_us_md_path = format!("{data_dir}/about_us.md");
