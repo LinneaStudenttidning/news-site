@@ -8,7 +8,7 @@
 
 {% block main %}
 <h1>Textredigerare</h1>
-<form action="{% if text %}/control-panel/edit-text{% else %}/control-panel/save-text{% endif %}" method="post">
+<form action="{% if text %}/api/text/edit{% else %}/api/text/save{% endif %}" method="post">
     {# TODO: This should be editable? #}
     {% if not text %}
     <label for="text-type">Texttyp:</label>
@@ -28,10 +28,12 @@
     <input type="text" name="title" id="title" value="{% if text.title %}{{ text.title }}{% endif %}" required>
 
     <label for="leading-paragraph">Ingress:</label>
-    <textarea name="leading-paragraph" id="leading-paragraph" rows="5" value="" required>{% if text.lead_paragraph %}{{ text.lead_paragraph }}{% endif %}</textarea>
+    <textarea name="leading-paragraph" id="leading-paragraph" rows="5" value=""
+        required>{% if text.lead_paragraph %}{{ text.lead_paragraph }}{% endif %}</textarea>
 
     <label for="text-body">Brödtext:</label>
-    <textarea name="text-body" id="text-body" rows="15" required>{% if text.text_body %}{{ text.text_body }}{% endif %}</textarea>
+    <textarea name="text-body" id="text-body" rows="15"
+        required>{% if text.text_body %}{{ text.text_body }}{% endif %}</textarea>
 
     <label for="tags">Taggar, separera med semikolon (;):</label>
     <input type="text" name="tags" value="{% if text.tags %}{{ text.tags | join(sep=";") }}{% endif %}" id="tags">
