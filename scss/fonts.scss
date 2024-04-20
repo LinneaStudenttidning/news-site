@@ -47,7 +47,7 @@ $pruned-unicode-range: 'U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2
 @font-face {
     font-family: 'Readex Pro';
     font-display: swap;
-    src: local('Gentium Plus'),
+    src: local('Readex Pro'),
         url("/static/fonts/ReadexPro/ReadexPro-VariableFont_HEXP_wght.woff2") format('woff2-variations'),
         url("/static/fonts/ReadexPro/ReadexPro-VariableFont_HEXP_wght.ttf") format('truetype-variations');
     unicode-range: $pruned-unicode-range;
