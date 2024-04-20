@@ -8,6 +8,7 @@
  * @typedef {object} Input
  * @property {string} inputName The `name` and `id` property of the input.
  * @property {InputType} inputType The `type` property of the input.
+ * @property {string} label The text for the label to the input.
  * @property {string|null} placeholder The `placeholder` property of the input. (Optional.)
  */
 
@@ -63,7 +64,6 @@ function createDialog(dialogId, dialogInfo, inputs) {
      * @type {HTMLTemplateElement}
      */
     let dialog = DIALOG_TEMPLATE.content.cloneNode(true).querySelector("dialog")
-    console.dir(dialog, { depth: null })
     dialog.setAttribute("data-dialog-box", dialogId)
 
     /**
@@ -73,12 +73,9 @@ function createDialog(dialogId, dialogInfo, inputs) {
     form.method = method
     form.action = action
 
-    let prompt = document.createElement("h2")
-    prompt.slot = "prompt"
+    let prompt = dialog.querySelector(".prompt")
     prompt.innerText = dialogInfo.prompt
     prompt.setAttribute("icon", dialogInfo.promptIcon)
-
-    dialog.appendChild(prompt)
 
     let inputElements = inputs.map(input => {
         let inputElement = input.inputType === "textarea" ? document.createElement("textarea") : document.createElement("input")
@@ -90,11 +87,22 @@ function createDialog(dialogId, dialogInfo, inputs) {
         inputElement.name = input.inputName
         inputElement.id = input.inputName
 
-        return inputElement
+        /**
+         * @type {HTMLLabelElement}
+         */
+        let labelElement = document.createElement("label")
+        labelElement.htmlFor = input.inputName
+        labelElement.textContent = input.label
+
+        return [inputElement, labelElement]
     })
 
+    const inputsContainer = dialog.querySelector(".inputs")
     for (const inputElement of inputElements) {
-        form.appendChild(inputElement)
+        // Label
+        inputsContainer.appendChild(inputElement[0])
+        // Input
+        inputsContainer.appendChild(inputElement[1])
     }
 
     buttonElement.addEventListener("click", () => dialog.showModal())

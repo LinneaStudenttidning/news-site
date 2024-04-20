@@ -142,9 +142,8 @@
 <template id="dialog-template">
     <dialog>
         <form action="#">
-            <h2>
-                <slot name="prompt"></slot>
-            </h2>
+            <h2 class="prompt"></h2>
+            <div class="inputs form"></div>
             <div class="flex wrap gap">
                 <button class="btn" icon="person_add" type="submit">Skapa</button>
                 <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>

@@ -1,7 +1,8 @@
 @use "palette";
 @use "settings";
 
-form {
+form,
+.form {
     display: flex;
     flex-direction: column;
     background-color: palette.$standout;
@@ -35,4 +36,10 @@ form {
     > .btn {
         width: max-content;
     }
+}
+
+/// .form is a div containing inputs in a form.
+/// It should therefore not add extra padding.
+.form {
+    padding: 0;
 }
