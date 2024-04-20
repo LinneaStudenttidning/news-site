@@ -38,7 +38,7 @@ fn login_page(flash: Option<FlashMessage>, claims: Option<Claims>) -> Result<Any
     // Render template if logged out, else redirect to control panel
     if claims.is_none() {
         let flash: FlashMsg = flash.into();
-        let template = Template::render("control-panel/login", context! { flash });
+        let template = Template::render("control_panel/login", context! { flash });
         return Ok(AnyResponder::from(template));
     }
     let redirect = Redirect::found("/control-panel");
