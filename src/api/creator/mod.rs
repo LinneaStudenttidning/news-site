@@ -15,7 +15,7 @@ use self::forms::{NewCreator, OnlyUsername, UpdateProfile};
 
 pub mod forms;
 
-#[post("/creator/new")]
+#[post("/creator/new", data = "<form>")]
 pub async fn creator_new(
     claims: Claims,
     db: &State<DatabaseHandler>,

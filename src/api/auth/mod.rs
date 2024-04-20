@@ -67,7 +67,7 @@ pub async fn auth_logout(jar: &CookieJar<'_>) -> Flash<Redirect> {
 }
 
 #[post("/auth/change-password", data = "<form>")]
-async fn auth_change_password(
+pub async fn auth_change_password(
     form: Form<ChangePasswordSelf<'_>>,
     db: &State<DatabaseHandler>,
     claims: Claims,
@@ -103,7 +103,7 @@ async fn auth_change_password(
 }
 
 #[post("/auth/change-password-other", data = "<form>")]
-async fn auth_change_password_other(
+pub async fn auth_change_password_other(
     claims: Claims,
     db: &State<DatabaseHandler>,
     form: Form<ChangePasswordOther<'_>>,
