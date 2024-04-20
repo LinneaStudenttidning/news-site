@@ -119,7 +119,7 @@
 
 {% if creator.role == "Publisher" %}
 <dialog data-dialog-box="create-user">
-    <form action="/control-panel/create-creator" method="post">
+    <form action="/api/creator/new" method="post">
         <label>Användarnamn</label>
         <input name="username" placeholder="bob_andersen" type="text" autocomplete="new-password" required>
 
@@ -143,7 +143,7 @@
 </dialog>
 
 <dialog data-dialog-box="change-password-any">
-    <form action="/control-panel/change-password-any" method="post">
+    <form action="/api/auth/change-password-other" method="post">
         <label>Användare att ge nytt lösenord</label>
         <input name="username" type="text" list="usernames" autocomplete="new-password">
         <datalist id="usernames">
@@ -164,10 +164,10 @@
 </dialog>
 
 <dialog data-dialog-box="lock-creator">
-    <form action="/control-panel/lock-creator" method="post">
+    <form action="/api/creator/lock" method="post">
         <label>
-            Användarnamn på det konto du vill låsa. Ett låst konto kommer att finnas kvar, 
-            men användare kommer inte kunna logga in. Om du vill låsa upp ett konto igen, 
+            Användarnamn på det konto du vill låsa. Ett låst konto kommer att finnas kvar,
+            men användare kommer inte kunna logga in. Om du vill låsa upp ett konto igen,
             så måste du ändra lösenord för dem.
         </label>
         <input name="username" type="text" list="usernames" autocomplete="new-password">
@@ -185,7 +185,7 @@
 </dialog>
 
 <dialog data-dialog-box="promote-to-publisher">
-    <form action="/control-panel/promote-creator" method="post">
+    <form action="/api/creator/promote" method="post">
         <label>Användarnamn på den som ska bli ansvarig utgivare</label>
         <input name="username" type="text" list="usernames" autocomplete="new-password">
         <datalist id="usernames">
@@ -202,7 +202,7 @@
 </dialog>
 
 <dialog data-dialog-box="demote-to-creator">
-    <form action="/control-panel/demote-creator" method="post">
+    <form action="/api/creator/demote" method="post">
         <label>Användarnamn på den som ska sluta vara ansvarig utgivare</label>
         <input name="username" type="text" list="usernames" autocomplete="new-password">
         <datalist id="usernames">
@@ -220,7 +220,7 @@
 </dialog>
 
 <dialog data-dialog-box="change-about-us">
-    <form action="/control-panel/change-about-us" method="post">
+    <form action="/api/site-settings/update-about-us" method="post">
         <label>Om oss</label>
         <textarea name="about-us" rows="20">{{ about_us }}</textarea>
         <div class="flex wrap gap">
@@ -263,7 +263,7 @@
 </div>
 
 <dialog data-dialog-box="change-display-name">
-    <form action="/control-panel/change-display-name" method="post">
+    <form action="/api/creator/update" method="post">
         <label>Visningsnamn</label>
         <input name="display_name" value="{{ creator.display_name }}" type="text" required>
 
@@ -275,7 +275,7 @@
 </dialog>
 
 <dialog data-dialog-box="change-biography">
-    <form action="/control-panel/change-biography" method="post">
+    <form action="/api/creator/update" method="post">
         <label>Beskrivning</label>
         <input name="biography" value="{{ creator.biography }}" type="text" required>
 
@@ -287,7 +287,7 @@
 </dialog>
 
 <dialog data-dialog-box="change-password">
-    <form action="/control-panel/change-password" method="post">
+    <form action="/api/auth/change-password" method="post">
         <label>Nuvarande lösenord</label>
         <input name="current_password" value="" type="password" required>
 
