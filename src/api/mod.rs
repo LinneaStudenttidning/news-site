@@ -6,6 +6,7 @@ use crate::api::{
     text::{text_edit, text_save},
 };
 
+pub mod auth;
 pub mod creator;
 pub mod site_settings;
 pub mod text;
