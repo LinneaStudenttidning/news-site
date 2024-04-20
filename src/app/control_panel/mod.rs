@@ -8,8 +8,6 @@ use rocket::response::Redirect;
 use rocket::{Route, State};
 use rocket_dyn_templates::{context, Template};
 
-pub mod form_structs;
-
 #[get("/")]
 async fn control_panel(
     db: &State<DatabaseHandler>,
