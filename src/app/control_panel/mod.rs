@@ -324,6 +324,7 @@ async fn edit_text(
     ))))
 }
 
+// PORTED
 #[post("/create-creator", data = "<form>")]
 async fn create_creator(
     claims: Claims,
@@ -390,6 +391,7 @@ async fn change_password_any(
     ))
 }
 
+// PORTED
 #[post("/promote-creator", data = "<form>")]
 async fn promote_creator(
     claims: Claims,
@@ -412,6 +414,7 @@ async fn promote_creator(
     ))
 }
 
+// PORTED
 #[post("/demote-creator", data = "<form>")]
 async fn demote_creator(
     claims: Claims,
@@ -442,6 +445,7 @@ async fn demote_creator(
     ))
 }
 
+// PORTED
 #[post("/lock-creator", data = "<form>")]
 async fn lock_creator(
     claims: Claims,

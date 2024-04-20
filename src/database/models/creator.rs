@@ -154,6 +154,7 @@ impl Creator {
     }
 
     /// Updates ONE creator from the data by its `username`.
+    /// FIXME: There is no reason to use this function to update password...
     pub async fn update_by_username(
         db: &DatabaseHandler,
         username: &str,
@@ -264,5 +265,27 @@ impl Creator {
         .await
         .map(|_| ())
         .map_err(Error::from)
+    }
+
+    /// Change a users password.
+    /// * `password` is supposed to **not** be hashed.`
+    pub async fn change_password(
+        db: &DatabaseHandler,
+        username: &str,
+        password: &str,
+    ) -> Result<(), Error> {
+        let creator = Creator::get_by_username(db, username).await?;
+        let new_password = Creator::hash_password(password)?;
+
+        Creator::update_by_username(
+            db,
+            &creator.username,
+            &creator.display_name,
+            &creator.biography,
+            &new_password,
+        )
+        .await?;
+
+        Ok(())
     }
 }
