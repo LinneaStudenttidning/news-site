@@ -172,32 +172,6 @@ impl Creator {
         .map_err(Error::from)
     }
 
-    /// Changes the display name of a `Creator`.
-    pub async fn change_display_name(
-        &self,
-        db: &DatabaseHandler,
-        new_display_name: &str,
-    ) -> Result<Self, Error> {
-        sqlx::query!(
-            "UPDATE creators SET display_name = $1 WHERE username = $2",
-            new_display_name,
-            &self.username
-        )
-        .execute(&db.pool)
-        .await?;
-
-        // Return what the new `Creator` looks like.
-        // FIXME: Maybe this should only return the new `display_name`?
-        Ok(Self {
-            username: self.username.to_string(),
-            password: self.password.to_string(),
-            display_name: new_display_name.into(),
-            biography: self.biography.to_string(),
-            joined_at: self.joined_at,
-            role: self.role.clone(),
-        })
-    }
-
     pub async fn login(&self, password: &str) -> Result<String, Error> {
         if !Creator::verify_password(password, &self.password)? {
             return Err(Error::create(
