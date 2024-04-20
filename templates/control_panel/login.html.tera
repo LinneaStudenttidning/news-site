@@ -19,7 +19,7 @@
 </div>
 {% endif %}
 
-<form action="/control-panel/login" method="post">
+<form action="/api/auth/login" method="post">
     <label for="username">Användarnamn:</label>
     <input type="text" name="username" id="username" required autofocus>
 

@@ -68,6 +68,7 @@ async fn main() {
         .attach(Template::custom(custom_tera))
         .manage(database)
         .mount("/", app::get_all_routes())
+        .mount("/api", api::get_all_routes())
         .mount("/texts", app::texts::get_all_routes())
         .mount("/control-panel", app::control_panel::get_all_routes())
         .mount("/static", FileServer::from("./static"))
