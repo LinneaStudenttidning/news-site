@@ -111,6 +111,7 @@ async fn login(
     Ok(Flash::success(Redirect::to("/control-panel"), ""))
 }
 
+// PORTED
 #[post("/change-display-name", data = "<form>")]
 async fn change_display_name(
     form: Form<EditDisplayNameForm<'_>>,
@@ -134,6 +135,7 @@ async fn change_display_name(
     Ok(Redirect::to("/control-panel"))
 }
 
+// PORTED
 #[post("/change-about-us", data = "<form>")]
 async fn change_about_us(
     form: Form<EditAboutUsForm<'_>>,
@@ -159,6 +161,7 @@ async fn change_about_us(
     }
 }
 
+// PORTED
 #[post("/change-biography", data = "<form>")]
 async fn change_biography(
     form: Form<EditBiographyForm<'_>>,
