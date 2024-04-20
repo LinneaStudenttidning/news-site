@@ -3,17 +3,18 @@ UPDATE articles SET
     title_slug = $2,
     lead_paragraph = $3,
     text_body = $4,
+    text_type = $5,
     updated_at = NOW(),
-    tags = $5,
-    is_published = $6
+    tags = $6,
+    is_published = $7
 FROM creators
 WHERE
     articles.author = creators.username
 AND
-    id = $7
+    id = $8
 RETURNING
     id,
-    title, 
+    title,
     title_slug,
     author,
     lead_paragraph,

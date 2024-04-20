@@ -71,7 +71,7 @@ pub async fn text_edit(
         None => {
             return Err(Error::create(
                 &format!("{}:{}", file!(), line!()),
-                "Field `textId` (`text_id`) not specified!",
+                "Field `text-id` (`text_id`) not specified!",
                 Status::BadRequest,
             ))
         }
@@ -91,6 +91,7 @@ pub async fn text_edit(
         form.title,
         form.leading_paragraph,
         form.text_body,
+        form.text_type,
         &tags,
         should_publish,
     )

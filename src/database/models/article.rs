@@ -125,12 +125,14 @@ impl Text {
     }
 
     /// Updates ONE text from the data by its `id`.
+    #[allow(clippy::too_many_arguments)]
     pub async fn update_by_id(
         db: &DatabaseHandler,
         id: i32,
         title: &str,
         lead_paragraph: &str,
         text_body: &str,
+        text_type: TextType,
         tags: &Vec<String>,
         is_published: bool,
     ) -> Result<Text, Error> {
@@ -141,6 +143,7 @@ impl Text {
             slugify(title),
             lead_paragraph,
             text_body,
+            text_type as TextType,
             tags,
             is_published,
             id,

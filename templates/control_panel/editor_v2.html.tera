@@ -9,19 +9,16 @@
 {% block main %}
 <h1>Textredigerare</h1>
 <form action="{% if text %}/api/text/edit{% else %}/api/text/save{% endif %}" method="post">
-    {# TODO: This should be editable? #}
-    {% if not text %}
     <label for="text-type">Texttyp:</label>
     <select name="text-type" id="text-type">
-        <option value="Article">Artikel</option>
-        <option value="Coverage">Reportage</option>
-        <option value="Opinion">Opinion/Debatt</option>
-        <option value="Other">Annat/Övrigt</option>
+        <option value="Article" {% if text and text.text_type == "Article" %}selected{% endif %}>Artikel</option>
+        <option value="Coverage" {% if text and text.text_type == "Coverage" %}selected{% endif %}>Reportage</option>
+        <option value="Opinion" {% if text and text.text_type == "Opinion" %}selected{% endif %}>Opinion/Debatt</option>
+        <option value="Other" {% if text and text.text_type == "Other" %}selected{% endif %}>Annat/Övrigt</option>
     </select>
-    {% endif %}
 
     {% if text %}
-    <input type="hidden" id="text_id" name="text_id" value="{{ text.id }}">
+    <input type="hidden" id="text-id" name="text-id" value="{{ text.id }}">
     {% endif %}
 
     <label for="title">Rubrik:</label>
