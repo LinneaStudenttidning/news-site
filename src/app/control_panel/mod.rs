@@ -44,7 +44,7 @@ async fn control_panel(
     let flash: FlashMsg = flash.into();
 
     Ok(Template::render(
-        "control_panel",
+        "control_panel/main",
         context! { creator, published_texts, unpublished_texts, all_creator_usernames, about_us, flash },
     ))
 }
@@ -221,7 +221,7 @@ async fn change_password(
 #[get("/editor")]
 fn editor(claims: Claims) -> Template {
     Template::render(
-        "editor-v2",
+        "control_panel/editor_v2",
         context! { is_publisher: claims.data.is_publisher() },
     )
 }
@@ -235,11 +235,12 @@ async fn editor_text_id(
     let text = Text::get_by_id(db, text_id, Some(false)).await?;
 
     Ok(Template::render(
-        "editor-v2",
+        "control_panel/editor_v2",
         context! { text, is_publisher: claims.data.is_publisher() },
     ))
 }
 
+// PORTED
 #[post("/save-text", data = "<form>")]
 async fn publish_text(
     form: Form<SaveTextForm<'_>>,
@@ -280,6 +281,7 @@ async fn publish_text(
     }
 }
 
+// PORTED
 #[post("/edit-text", data = "<form>")]
 async fn edit_text(
     form: Form<EditTextForm<'_>>,

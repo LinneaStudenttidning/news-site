@@ -11,6 +11,7 @@
 extern crate rocket;
 
 pub mod anyresponder;
+pub mod api;
 pub mod app;
 pub mod data_dir;
 pub mod database;
