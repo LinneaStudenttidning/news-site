@@ -1,10 +1,9 @@
 UPDATE creators
 SET
     display_name = $1,
-    biography = $2,
-    password = $3
+    biography = $2
 WHERE
-    username = $4
+    username = $3
 RETURNING
     display_name,
     username,

@@ -90,14 +90,7 @@ pub async fn auth_change_password(
         ));
     }
 
-    let _updated_creator = Creator::update_by_username(
-        db,
-        &claims.data.username,
-        &creator.display_name,
-        &creator.biography,
-        &Creator::hash_password(form.new_password)?,
-    )
-    .await?;
+    Creator::change_password(db, &claims.data.username, form.new_password).await?;
 
     Ok(Redirect::to("/control-panel"))
 }
@@ -117,21 +110,13 @@ pub async fn auth_change_password_other(
     }
 
     let creator = Creator::get_by_username(db, form.username).await?;
-    let new_password = Creator::hash_password(form.new_password)?;
-    let updated_creator = Creator::update_by_username(
-        db,
-        &creator.username,
-        &creator.display_name,
-        &creator.biography,
-        &new_password,
-    )
-    .await?;
+    Creator::change_password(db, &creator.username, form.new_password).await?;
 
     Ok(Flash::success(
         Redirect::to("/control-panel"),
         format!(
             "Updaterad lösenordet för användaren: {} ({})",
-            updated_creator.username, updated_creator.display_name
+            creator.username, creator.display_name
         ),
     ))
 }

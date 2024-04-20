@@ -59,14 +59,7 @@ pub async fn creator_update_profile(
     let display_name = form.display_name.unwrap_or(&creator.display_name);
     let biography = form.biography.unwrap_or(&creator.biography);
 
-    Creator::update_by_username(
-        db,
-        &claims.data.username,
-        display_name,
-        biography,
-        &creator.password,
-    )
-    .await?;
+    Creator::update_by_username(db, &claims.data.username, display_name, biography).await?;
 
     Ok(Redirect::to("/control-panel"))
 }

@@ -154,20 +154,17 @@ impl Creator {
     }
 
     /// Updates ONE creator from the data by its `username`.
-    /// FIXME: There is no reason to use this function to update password...
     pub async fn update_by_username(
         db: &DatabaseHandler,
         username: &str,
         display_name: &str,
         biography: &str,
-        password: &str,
     ) -> Result<Self, Error> {
         sqlx::query_file_as!(
             Self,
             "sql/creators/update.sql",
             display_name,
             biography,
-            password,
             username
         )
         .fetch_one(&db.pool)
@@ -277,13 +274,12 @@ impl Creator {
         let creator = Creator::get_by_username(db, username).await?;
         let new_password = Creator::hash_password(password)?;
 
-        Creator::update_by_username(
-            db,
-            &creator.username,
-            &creator.display_name,
-            &creator.biography,
-            &new_password,
+        sqlx::query!(
+            "UPDATE creators SET password = $1 WHERE username = $2",
+            creator.username,
+            new_password
         )
+        .execute(&db.pool)
         .await?;
 
         Ok(())
