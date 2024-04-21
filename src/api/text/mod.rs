@@ -81,7 +81,7 @@ pub async fn text_edit(
 
     // Only admins are allowed to edit publish status.
     let should_publish = match claims.admin {
-        true => form.publish.unwrap_or(current_text.is_published),
+        true => form.publish.unwrap_or(false),
         false => current_text.is_published,
     };
 
