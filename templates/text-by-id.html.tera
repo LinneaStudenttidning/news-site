@@ -7,10 +7,10 @@
 
 {% block main %}
 
-{# TODO style this #}
 {% if is_logged_in and not text.is_published %}
-<div class="toolbox">
-    <h3>Detta är en opublicerad artikel. Endast inloggad kan se den.</h3>
+<div class="infobox warning">
+    <h2 icon="warning">Artikeln är inte publicerad</h2>
+    <p>Denna artikel är inte publicerad. Endast inloggade skribenter kan se den.</p>
 </div>
 {% endif %}
 
