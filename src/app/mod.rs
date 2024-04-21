@@ -73,7 +73,10 @@ async fn text_by_id(
         return Ok(AnyResponder::from(redirect));
     }
 
-    let template = Template::render("text-by-id", context! { text, tags, authors, is_logged_in });
+    let template = Template::render(
+        "single-text-view",
+        context! { text, tags, authors, is_logged_in, creator: claims.map(|claims| claims.data) },
+    );
     Ok(AnyResponder::from(template))
 }
 
