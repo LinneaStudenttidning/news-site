@@ -256,7 +256,7 @@
         <button class="btn" icon="edit_note" data-dialog-button="change-biography">Ändra
             beskrivning</button>
         <button class="btn" icon="password" data-dialog-button="change-password">Ändra lösenord</button>
-        <button class="btn" icon="image">Ändra profilbild</button>
+        <button class="btn" icon="image" data-dialog-button="update-profile-picture">Ändra profilbild</button>
         <form id="logout-form" action="/api/auth/logout" method="post"></form>
         <button form="logout-form" type="submit" class="btn dangerous" icon="logout">Logga ut</button>
     </div>
@@ -299,6 +299,18 @@
 
         <div class="flex wrap gap">
             <button class="btn" icon="person_edit" type="submit">Ändra lösenord</button>
+            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
+        </div>
+    </form>
+</dialog>
+
+<dialog data-dialog-box="update-profile-picture">
+    <form action="/api/creator/update-profile-picture" method="post" enctype="multipart/form-data">
+        <label>Välj ny profilbild:</label>
+        <input id="image" name="image" type="file" required>
+
+        <div class="flex wrap gap">
+            <button class="btn" icon="person_edit" type="submit">Ändra profilbild</button>
             <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
         </div>
     </form>

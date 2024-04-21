@@ -1,3 +1,4 @@
+use image::ImageFormat;
 use rocket::{
     form::Form,
     http::Status,
@@ -11,7 +12,7 @@ use crate::{
     token::Claims,
 };
 
-use self::forms::{NewCreator, OnlyUsername, UpdateProfile};
+use self::forms::{ImageOnly, NewCreator, OnlyUsername, UpdateProfile};
 
 pub mod forms;
 
@@ -60,6 +61,27 @@ pub async fn creator_update_profile(
     let biography = form.biography.unwrap_or(&creator.biography);
 
     Creator::update_by_username(db, &claims.data.username, display_name, biography).await?;
+
+    Ok(Redirect::to("/control-panel"))
+}
+
+#[post(
+    "/creator/update-profile-picture",
+    format = "multipart/form-data",
+    data = "<form>"
+)]
+pub async fn creator_update_profile_picture(
+    claims: Claims,
+    form: Form<ImageOnly>,
+) -> Result<Redirect, Error> {
+    let content_type = form.image.content_type.to_string();
+    let image_format = ImageFormat::from_mime_type(content_type).ok_or(Error::create(
+        &format!("{}:{}", file!(), line!()),
+        "Sorry, the action you are performing requires admin access!",
+        Status::Forbidden,
+    ))?;
+
+    Creator::change_profile_picture(&claims.data.username, &form.image.data, image_format)?;
 
     Ok(Redirect::to("/control-panel"))
 }

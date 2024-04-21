@@ -121,6 +121,25 @@ impl Creator {
         Ok(())
     }
 
+    pub fn change_profile_picture(
+        username: &str,
+        image_data: &[u8],
+        image_format: ImageFormat,
+    ) -> Result<(), Error> {
+        let image_data = load(Cursor::new(image_data), image_format)?.resize_to_fill(
+            512,
+            512,
+            image::imageops::FilterType::Triangle,
+        );
+
+        image_data.save_with_format(
+            format!("data/profile-pictures/{}.webp", username),
+            ImageFormat::WebP,
+        )?;
+
+        Ok(())
+    }
+
     /// Checks what it says.
     pub fn is_publisher(&self) -> bool {
         matches!(self.role, CreatorRole::Publisher)
