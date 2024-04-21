@@ -77,7 +77,7 @@ pub async fn text_edit(
         }
     };
 
-    let current_text = Text::get_by_id(db, text_id, Some(false)).await?;
+    let current_text = Text::get_by_id(db, text_id, false).await?;
 
     // Only admins are allowed to publish on save.
     let should_publish = match claims.admin {

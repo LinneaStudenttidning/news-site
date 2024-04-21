@@ -63,13 +63,10 @@ async fn text_by_id(
     let tags = Text::get_all_tags(db, None).await?;
     let authors = Creator::get_all_authors(db).await?;
 
-    let is_logged_in = match claims {
-        Some(_creator) => true,
-        None => false,
-    };
+    let is_logged_in = claims.is_some();
 
     // Logged in users can view unpublished texts
-    let text = Text::get_by_id(db, id, Some(!is_logged_in)).await?;
+    let text = Text::get_by_id(db, id, !is_logged_in).await?;
 
     if title_slug != text.title_slug {
         let redirect = Redirect::found(uri!(text_by_id(id, text.title_slug)));

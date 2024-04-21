@@ -59,7 +59,7 @@ async fn editor_text_id(
     db: &State<DatabaseHandler>,
     claims: Claims,
 ) -> Result<Template, Error> {
-    let text = Text::get_by_id(db, text_id, Some(false)).await?;
+    let text = Text::get_by_id(db, text_id, false).await?;
 
     Ok(Template::render(
         "control_panel/editor_v2",

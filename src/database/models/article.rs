@@ -166,21 +166,17 @@ impl Text {
     }
 
     /// Gets ONE `Text` from the database by its id.
-    /// `check_if_published` defaults to `true` if `None`
+    /// * `must_be_published` if `true`, returns only if published.
+    ///     If false, returns article so long it exists.
     pub async fn get_by_id(
         db: &DatabaseHandler,
         id: i32,
-        check_if_published: Option<bool>,
+        must_be_published: bool,
     ) -> Result<Self, Error> {
-        sqlx::query_file_as!(
-            Self,
-            "sql/articles/get_by_id.sql",
-            id,
-            check_if_published.unwrap_or(true)
-        )
-        .fetch_one(&db.pool)
-        .await
-        .map_err(Error::from)
+        sqlx::query_file_as!(Self, "sql/articles/get_by_id.sql", id, must_be_published)
+            .fetch_one(&db.pool)
+            .await
+            .map_err(Error::from)
     }
 
     /// Gets ALL `Text`s from the database by `author`.
