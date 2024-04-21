@@ -12,6 +12,7 @@ pub mod creator;
 pub mod site_settings;
 pub mod text;
 
+/// These should be mounted on `/api`.
 pub fn get_all_routes() -> Vec<Route> {
     routes![
         // -> /auth
