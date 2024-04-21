@@ -6,12 +6,13 @@ UPDATE articles SET
     text_type = $5,
     updated_at = NOW(),
     tags = $6,
-    is_published = $7
+    is_published = $7,
+    marked_as_done = $8
 FROM creators
 WHERE
     articles.author = creators.username
 AND
-    id = $8
+    id = $9
 RETURNING
     id,
     title,

@@ -135,6 +135,7 @@ impl Text {
         text_type: TextType,
         tags: &Vec<String>,
         is_published: bool,
+        marked_as_done: bool,
     ) -> Result<Text, Error> {
         sqlx::query_file_as!(
             Self,
@@ -146,6 +147,7 @@ impl Text {
             text_type as TextType,
             tags,
             is_published,
+            marked_as_done,
             id,
         )
         .fetch_one(&db.pool)

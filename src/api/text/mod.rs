@@ -94,6 +94,7 @@ pub async fn text_edit(
         form.text_type,
         &tags,
         should_publish,
+        form.marked_as_done,
     )
     .await?;
 
