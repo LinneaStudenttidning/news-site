@@ -72,6 +72,10 @@ async fn main() {
         .mount("/texts", app::texts::get_all_routes())
         .mount("/control-panel", app::control_panel::get_all_routes())
         .mount("/static", FileServer::from("./static"))
+        .mount(
+            "/dynamic-data/profile-pictures",
+            FileServer::from("./data/profile-pictures"),
+        )
         .register("/", catchers![not_found])
         .register("/", catchers![unauthorized])
         .launch()

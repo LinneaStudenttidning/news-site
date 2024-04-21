@@ -1,5 +1,7 @@
 use std::{env::VarError, fmt};
 
+use identicon_rs::error::IdenticonError;
+use image::ImageError;
 use rocket::{http::Status, Request, Response};
 use rocket_dyn_templates::{context, Template};
 use serde::{Deserialize, Serialize};
@@ -64,6 +66,26 @@ impl From<std::io::Error> for Error {
     fn from(value: std::io::Error) -> Self {
         Error {
             source: "std::io::Error".to_string(),
+            err_string: value.to_string(),
+            status: Status::InternalServerError,
+        }
+    }
+}
+
+impl From<IdenticonError> for Error {
+    fn from(value: IdenticonError) -> Self {
+        Error {
+            source: "identicon_rs::error::IdenticonError".to_string(),
+            err_string: value.to_string(),
+            status: Status::InternalServerError,
+        }
+    }
+}
+
+impl From<ImageError> for Error {
+    fn from(value: ImageError) -> Self {
+        Error {
+            source: "image::error::IdenticonError".to_string(),
             err_string: value.to_string(),
             status: Status::InternalServerError,
         }

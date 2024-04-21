@@ -1,3 +1,5 @@
+use std::io::Cursor;
+
 use crate::error::Error;
 use argon2::password_hash::rand_core::OsRng;
 use argon2::password_hash::SaltString;
@@ -6,6 +8,9 @@ use argon2::PasswordHash;
 use argon2::PasswordHasher;
 use argon2::PasswordVerifier;
 use chrono::{DateTime, Local, Utc};
+use identicon_rs::Identicon;
+use image::load;
+use image::ImageFormat;
 use jsonwebtoken::Header;
 use rocket::http::Status;
 use serde::{Deserialize, Serialize};
@@ -99,12 +104,30 @@ impl Creator {
         })
     }
 
+    pub fn generate_profile_picture(username: &str) -> Result<(), Error> {
+        let png_data = Identicon::new(username)
+            .set_border(0)
+            .set_size(7)?
+            .set_scale(512)?
+            .export_png_data()?;
+
+        let image_data = load(Cursor::new(png_data), ImageFormat::Png)?;
+
+        image_data.save_with_format(
+            format!("data/profile-pictures/{}.webp", username),
+            ImageFormat::WebP,
+        )?;
+
+        Ok(())
+    }
+
     /// Checks what it says.
     pub fn is_publisher(&self) -> bool {
         matches!(self.role, CreatorRole::Publisher)
     }
 
     /// Saves an instance of `Creator` to the database.
+    /// This also generates a default profile picture for the creator.
     pub async fn save_to_db(&self, db: &DatabaseHandler) -> Result<Creator, Error> {
         let user_exists = Self::get_by_username(db, &self.username).await.is_ok();
         if user_exists {
@@ -114,6 +137,8 @@ impl Creator {
                 Status::BadRequest,
             ));
         }
+
+        Self::generate_profile_picture(&self.username)?;
 
         sqlx::query_file_as!(
             Creator,
@@ -257,5 +282,36 @@ impl Creator {
         .await?;
 
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn generate_profile_picture() {
+        Creator::generate_profile_picture("test-username").expect("SHOULD NOT FAIL!");
+    }
+
+    /// Generate a profile picture for all users.
+    /// Only for testing purposes!
+    #[test]
+    fn generate_profile_pictures_for_all() {
+        async fn test() {
+            let db = DatabaseHandler::create()
+                .await
+                .expect("FAILED TO CONNECT TO DATABASE");
+
+            let creators = Creator::get_all_authors(&db)
+                .await
+                .expect("FAILED TO GET ALL AUTHORS");
+
+            for creator in creators {
+                Creator::generate_profile_picture(&creator.username).expect("SHOULD NOT FAIL!");
+            }
+        }
+
+        tokio_test::block_on(test())
     }
 }

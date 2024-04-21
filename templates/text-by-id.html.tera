@@ -23,7 +23,7 @@
     </div>
     <div class="info">
         <div class="author" itemprop="author" itemscope itemtype="https://schema.org/Person">
-            <img itemprop="image" src="https://source.unsplash.com/random/400x400?b" alt="Bild på författaren">
+            <img itemprop="image" src="/dynamic-data/profile-pictures/{{ text.author }}.webp" alt="Bild på författaren">
             <p class="byline" itemprop="name">
                 {{ text.creator.display_name }}
             </p>
