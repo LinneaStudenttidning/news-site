@@ -9,7 +9,7 @@
 <h1>Kontrollpanelen</h1>
 
 {% if flash.message %}
-<div class="toolbox {% if flash.kind == "error" %}error{% endif %}">
+<div class="infobox {{ flash.kind }}">
     {% if flash.kind == "success" %}
     <h2 icon="info">Meddelande</h2>
     <p>{{ flash.message }}</p>
@@ -257,7 +257,7 @@
             beskrivning</button>
         <button class="btn" icon="password" data-dialog-button="change-password">Ändra lösenord</button>
         <button class="btn" icon="image">Ändra profilbild</button>
-        <form id="logout-form" action="/control-panel/logout" method="post"></form>
+        <form id="logout-form" action="/api/auth/logout" method="post"></form>
         <button form="logout-form" type="submit" class="btn dangerous" icon="logout">Logga ut</button>
     </div>
 </div>

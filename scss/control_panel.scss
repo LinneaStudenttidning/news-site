@@ -2,7 +2,8 @@
 @use "settings";
 @use "mixins";
 
-.toolbox {
+.toolbox,
+.infobox {
     box-shadow: 0 .5rem .75rem palette.$shadow200;
     background-color: palette.$standout;
     padding: 1rem;
@@ -27,6 +28,20 @@
 
     .content {
         width: 100%;
+    }
+}
+
+.infobox {
+    &.success {
+        background-color: palette.$green100;
+    }
+
+    &.warning {
+        background-color: palette.$yellow100;
+    }
+
+    &.error {
+        background-color: palette.$red100;
     }
 }
 

@@ -8,7 +8,7 @@
 <h1>Logga in</h1>
 
 {% if flash.message %}
-<div class="toolbox {% if flash.kind == "error" %}error{% endif %}">
+<div class="infobox {{ flash.kind }}">
     {% if flash.kind == "success" %}
     <h2 icon="info">Meddelande</h2>
     <p>{{ flash.message }}</p>
