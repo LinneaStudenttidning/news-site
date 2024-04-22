@@ -62,7 +62,7 @@ body {
     > footer {
         grid-area: footer;
         color: palette.$surface;
-        background-color: palette.$primary400;
+        background-color: palette.$primary500;
         margin-top: 5vmin;
         padding: 2rem;
         font-family: settings.$font-family-default;
@@ -74,7 +74,7 @@ body {
         a,
         a:visited {
             color: inherit;
-            text-decoration: solid underline 1px palette.$grey400;
+            text-decoration: solid underline 1px palette.$primary300;
             transition: text-decoration .3s;
 
             &:hover {
