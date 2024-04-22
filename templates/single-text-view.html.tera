@@ -57,11 +57,17 @@
     <h1>Verktygslåda</h1>
     <div class="flex wrap gap">
         {% if can_mark_as_done %}
-        <button class="btn" icon="done">Markera som klar</button>
+        <form class="hidden-form" id="mark-text-done-form" action="/api/text/set-done-status/true" method="post">
+            <input type="hidden" name="text-id" value="{{ text.id }}">
+        </form>
+        <button form="mark-text-done-form" type="submit" class="btn" icon="done">Markera som klar</button>
         {% endif %}
 
         {% if can_unmark_as_done %}
-        <button class="btn" icon="close">Markera som inte klar</button>
+        <form class="hidden-form" id="mark-text-not-done-form" action="/api/text/set-done-status/false" method="post">
+            <input type="hidden" name="text-id" value="{{ text.id }}">
+        </form>
+        <button form="mark-text-not-done-form" class="btn" icon="close">Markera som inte klar</button>
         {% endif %}
 
         {% if can_edit_text %}
@@ -69,11 +75,17 @@
         {% endif %}
 
         {% if can_unpublish_text %}
-        <button class="btn dangerous" icon="unpublished">Avpublicera</button>
+        <form class="hidden-form" id="unpublish-text-form" action="/api/text/set-publish-status/false" method="post">
+            <input type="hidden" name="text-id" value="{{ text.id }}">
+        </form>
+        <button form="unpublish-text-form" class="btn dangerous" icon="unpublished">Avpublicera</button>
         {% endif %}
 
         {% if can_publish_text %}
-        <button class="btn" icon="publish">Publicera</button>
+        <form class="hidden-form" id="publish-text-form" action="/api/text/set-publish-status/true" method="post">
+            <input type="hidden" name="text-id" value="{{ text.id }}">
+        </form>
+        <button form="publish-text-form" class="btn" icon="publish">Publicera</button>
         {% endif %}
     </div>
 </div>

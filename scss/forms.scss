@@ -35,4 +35,8 @@ form {
     > .btn {
         width: max-content;
     }
+
+    &.hidden-form {
+        display: none;
+    }
 }
