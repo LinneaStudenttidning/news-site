@@ -7,7 +7,7 @@ use crate::api::{
         creator_update_profile_picture,
     },
     site_settings::site_settings_update_about_us,
-    text::{text_edit, text_save},
+    text::{text_edit, text_save, text_set_done_status, text_set_publish_status},
 };
 
 pub mod auth;
@@ -34,6 +34,8 @@ pub fn get_all_routes() -> Vec<Route> {
         site_settings_update_about_us,
         // -> /text
         text_save,
-        text_edit
+        text_edit,
+        text_set_done_status,
+        text_set_publish_status,
     ]
 }

@@ -4,10 +4,7 @@ use chrono::{DateTime, Local};
 use rocket::{http::Status, request::FromParam};
 use serde::{Deserialize, Serialize};
 use slug::slugify;
-use sqlx::{
-    self,
-    postgres::{PgQueryResult, PgRow},
-};
+use sqlx::{self, postgres::PgQueryResult};
 
 use crate::{database::DatabaseHandler, error::Error};
 
@@ -245,20 +242,66 @@ impl Text {
             .map_err(Error::from)
     }
 
-    /// Publishes a `Text`.
-    pub async fn publish(db: &DatabaseHandler, id: i32) -> Result<Vec<PgRow>, Error> {
-        sqlx::query!("UPDATE articles SET is_published = true WHERE id = $1", id)
-            .fetch_all(&db.pool)
-            .await
-            .map_err(Error::from)
+    /// Changes the `is_published` field of a text in the database.
+    /// * `executor` is the person who wants to publish the text,
+    ///     must be a `Publisher`.
+    /// * `id` text's id.
+    /// * `status` publish status; `true` for published, `false` for not published.
+    pub async fn set_publish_status(
+        db: &DatabaseHandler,
+        executor: &Creator,
+        id: i32,
+        status: bool,
+    ) -> Result<(), Error> {
+        if !executor.is_publisher() {
+            return Err(Error::create(
+                &format!("{}:{}", file!(), line!()),
+                "Must be `Publisher` to set publish status!",
+                Status::Unauthorized,
+            ));
+        }
+
+        sqlx::query!(
+            "UPDATE articles SET is_published = $1 WHERE id = $2",
+            status,
+            id
+        )
+        .execute(&db.pool)
+        .await
+        .map(|_| ())
+        .map_err(Error::from)
     }
 
-    /// Unpublishes a `Text`.
-    pub async fn unpublish(db: &DatabaseHandler, id: i32) -> Result<Vec<PgRow>, Error> {
-        sqlx::query!("UPDATE articles SET is_published = false WHERE id = $1", id)
-            .fetch_all(&db.pool)
-            .await
-            .map_err(Error::from)
+    /// Changes the `marked_as_done` field of a text in the database.
+    /// * `executor` is the person who wants to publish the text,
+    ///     must be a `Publisher`.
+    /// * `id` text's id.
+    /// * `status` done status; `true` for done, `false` for not done.
+    pub async fn set_done_status(
+        db: &DatabaseHandler,
+        executor: &Creator,
+        id: i32,
+        status: bool,
+    ) -> Result<(), Error> {
+        let text = Self::get_by_id(db, id, false).await?;
+
+        if text.author != executor.username {
+            return Err(Error::create(
+                &format!("{}:{}", file!(), line!()),
+                "Only original author can change sdone status!",
+                Status::Unauthorized,
+            ));
+        }
+
+        sqlx::query!(
+            "UPDATE articles SET marked_as_done = $1 WHERE id = $2",
+            status,
+            id
+        )
+        .execute(&db.pool)
+        .await
+        .map(|_| ())
+        .map_err(Error::from)
     }
 
     /// Deletes ONE `Text` from the database by its id.

@@ -6,7 +6,7 @@ use crate::{
     token::Claims,
 };
 
-use self::forms::SaveOrEditText;
+use self::forms::{OnlyTextId, SaveOrEditText};
 
 pub mod forms;
 
@@ -102,4 +102,30 @@ pub async fn text_edit(
         "/t/{}/{}",
         updated_text.id, updated_text.title_slug
     )))
+}
+
+#[post("/text/set-publish-status/<publish_status>", data = "<form>")]
+pub async fn text_set_publish_status(
+    form: Form<OnlyTextId>,
+    publish_status: bool,
+    db: &State<DatabaseHandler>,
+    claims: Claims,
+) -> Result<Redirect, Error> {
+    let text = Text::get_by_id(db, form.text_id, false).await?;
+    Text::set_publish_status(db, &claims.data, form.text_id, publish_status)
+        .await
+        .map(|_| Redirect::to(format!("/t/{}/{}", text.id, text.title_slug)))
+}
+
+#[post("/text/set-done-status/<done_status>", data = "<form>")]
+pub async fn text_set_done_status(
+    form: Form<OnlyTextId>,
+    done_status: bool,
+    db: &State<DatabaseHandler>,
+    claims: Claims,
+) -> Result<Redirect, Error> {
+    let text = Text::get_by_id(db, form.text_id, false).await?;
+    Text::set_done_status(db, &claims.data, form.text_id, done_status)
+        .await
+        .map(|_| Redirect::to(format!("/t/{}/{}", text.id, text.title_slug)))
 }
