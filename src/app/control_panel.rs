@@ -3,6 +3,7 @@ use crate::data_dir;
 use crate::database::{models::article::Text, DatabaseHandler};
 use crate::flash_msg::FlashMsg;
 use crate::{database::models::creator::Creator, error::Error, token::Claims};
+use rocket::http::Status;
 use rocket::request::FlashMessage;
 use rocket::response::Redirect;
 use rocket::{Route, State};
@@ -45,6 +46,27 @@ fn login_page(flash: Option<FlashMessage>, claims: Option<Claims>) -> Result<Any
     Ok(AnyResponder::from(redirect))
 }
 
+#[get("/preview-done-unpublished")]
+async fn preview_done_unpublished(
+    claims: Claims,
+    db: &State<DatabaseHandler>,
+) -> Result<Template, Error> {
+    if !claims.admin {
+        return Err(Error::create(
+            &format!("{}:{}", file!(), line!()),
+            "You need to be an admin to access this view!",
+            Status::Unauthorized,
+        ));
+    };
+
+    let texts = Text::get_all_done_unpublished(db).await?;
+
+    Ok(Template::render(
+        "control_panel/preview_done_unpublished",
+        context! { creator: claims.data, texts },
+    ))
+}
+
 #[get("/editor")]
 fn editor(claims: Claims) -> Template {
     Template::render(
@@ -69,5 +91,11 @@ async fn editor_text_id(
 
 /// These should be mounted on `/control-panel`!
 pub fn get_all_routes() -> Vec<Route> {
-    routes![control_panel, login_page, editor, editor_text_id,]
+    routes![
+        control_panel,
+        login_page,
+        preview_done_unpublished,
+        editor,
+        editor_text_id,
+    ]
 }

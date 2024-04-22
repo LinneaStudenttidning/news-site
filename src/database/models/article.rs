@@ -144,13 +144,21 @@ impl Text {
         .map_err(Error::from)
     }
 
-    /// Gets Oup to `n` latest `Text`s from the database.
+    /// Gets up to `n` latest `Text`s from the database.
     pub async fn get_n_latest(
         db: &DatabaseHandler,
         n: i64,
         is_published: bool,
     ) -> Result<Vec<Self>, Error> {
         sqlx::query_file_as!(Self, "sql/articles/get_n_latest.sql", is_published, n,)
+            .fetch_all(&db.pool)
+            .await
+            .map_err(Error::from)
+    }
+
+    /// Gets all done, but unpublished, articles.
+    pub async fn get_all_done_unpublished(db: &DatabaseHandler) -> Result<Vec<Self>, Error> {
+        sqlx::query_file_as!(Self, "sql/articles/get_all_done_unpublished.sql")
             .fetch_all(&db.pool)
             .await
             .map_err(Error::from)

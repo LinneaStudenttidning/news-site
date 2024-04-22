@@ -1,0 +1,56 @@
+{% extends "templates/app" %}
+
+{% block head %}
+<title>Kontrollpanelen – {{ get_env(name="SITE_TITLE") }}</title>
+<script type="module" src="/static/scripts/control-panel.js" async defer></script>
+{% endblock head %}
+
+{% block main %}
+<h1>Granska texter</h1>
+
+<div class="toolbox">
+    <h2 icon="feed">Färdiga (opublicerade) texter</h2>
+    <div class="content">
+        {% if texts | length > 0 %}
+        {% for text in texts %}
+        <div class="article-box">
+            <p class="title">{{ text.title }} </p>
+            <p class="date">{{ text.created_at | date(format="%F %T") }}</p>
+            <p class="author">{{ text.author }}</p>
+            <div class="flex wrap gap actions">
+                <a class="btn icon-only" icon="preview" href="/t/{{ text.id }}/{{ text.title_slug }}"
+                    target="_blank"></a>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>Det finns inga texter att granska!</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock main %}
+
+{% block aside %}
+<div class="side-content">
+    <h1>Din profil</h1>
+    <div class="content profile">
+        <img src="/dynamic-data/profile-pictures/{{ creator.username }}.webp" alt="Profilbild" class="pfp">
+        <h3 class="name">{{ creator.display_name }}</h3>
+        <div class="info-table">
+            <p class="prop">Användarnamn</p>
+            <p class="value">{{ creator.username }}</p>
+            <p class="prop">Beskrivning</p>
+            <p class="value">{{ creator.biography }}</p>
+            <p class="prop">Konto skapat</p>
+            <p class="value">{{ creator.joined_at | date(format="%-d %B %Y, %R") }}</p>
+            <p class="prop">Roll</p>
+            <p class="value">{{ creator.role }}</p>
+        </div>
+    </div>
+    <div class="flex wrap gap">
+        <a href="/control-panel" class="btn" icon="settings">Kontrollpanelen</a>
+        <form id="logout-form" action="/api/auth/logout" method="post"></form>
+        <button form="logout-form" type="submit" class="btn dangerous" icon="logout">Logga ut</button>
+    </div>
+</div>
+{% endblock aside %}
