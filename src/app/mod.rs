@@ -73,9 +73,32 @@ async fn text_by_id(
         return Ok(AnyResponder::from(redirect));
     }
 
+    let can_edit_text = match &claims {
+        Some(claims) => {
+            claims.data.is_publisher() || (claims.sub == text.author && !text.is_published)
+        }
+        None => false,
+    };
+    let can_mark_as_done = match &claims {
+        Some(claims) => !text.marked_as_done && claims.sub == text.author,
+        None => false,
+    };
+    let can_unmark_as_done = match &claims {
+        Some(claims) => !text.is_published && text.marked_as_done && claims.sub == text.author,
+        None => false,
+    };
+    let can_publish_text = match &claims {
+        Some(claims) => claims.data.is_publisher() && !text.is_published,
+        None => false,
+    };
+    let can_unpublish_text = match &claims {
+        Some(claims) => claims.data.is_publisher() && text.is_published,
+        None => false,
+    };
+
     let template = Template::render(
         "single-text-view",
-        context! { text, tags, authors, is_logged_in, creator: claims.map(|claims| claims.data) },
+        context! { text, tags, authors, is_logged_in, can_edit_text, can_mark_as_done, can_unmark_as_done, can_publish_text, can_unpublish_text },
     );
     Ok(AnyResponder::from(template))
 }

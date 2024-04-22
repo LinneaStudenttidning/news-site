@@ -56,24 +56,24 @@
 <div class="side-content">
     <h1>Verktygslåda</h1>
     <div class="flex wrap gap">
-        {% if text.author == creator.username %}
-        {% if text.marked_as_done %}
+        {% if can_mark_as_done %}
         <button class="btn" icon="done">Markera som klar</button>
-        {% else  %}
+        {% endif %}
+
+        {% if can_unmark_as_done %}
         <button class="btn" icon="close">Markera som inte klar</button>
         {% endif %}
+
+        {% if can_edit_text %}
+        <a href="/control-panel/edit/{{ text.id }}" class="btn" icon="edit_note">Redigera</a>
         {% endif %}
 
-        {% if creator.role == "Publisher" or text.author == creator.username and not text.is_published %}
-        <button class="btn" icon="edit_note">Redigera</button>
-        {% endif %}
-
-        {% if creator.role == "Publisher" %}
-        {% if text.is_published %}
+        {% if can_unpublish_text %}
         <button class="btn dangerous" icon="unpublished">Avpublicera</button>
-        {% else %}
-        <button class="btn dangerous" icon="publish">Publicera</button>
         {% endif %}
+
+        {% if can_publish_text %}
+        <button class="btn" icon="publish">Publicera</button>
         {% endif %}
     </div>
 </div>
