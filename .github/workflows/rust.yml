@@ -29,6 +29,8 @@ jobs:
       run: sudo apt-get install -y postgresql-client
     - name: Setup tables
       run: psql "postgres://news:news@localhost/news" -a -f "sql/0-create_tables.sql"
+    - name: Prepare directories
+      run: mkdir -p data/profile-pictures
     - name: Check code
       run: cargo check --quiet
       env:
