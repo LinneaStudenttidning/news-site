@@ -85,8 +85,6 @@ impl Text {
         text_body: &str,
         text_type: TextType,
         tags: Vec<String>,
-        is_published: bool,
-        marked_as_done: bool,
     ) -> Self {
         Self {
             title: title.into(),
@@ -95,8 +93,6 @@ impl Text {
             text_body: text_body.into(),
             text_type,
             tags,
-            is_published,
-            marked_as_done,
             ..Default::default()
         }
     }
@@ -131,8 +127,6 @@ impl Text {
         text_body: &str,
         text_type: TextType,
         tags: &Vec<String>,
-        is_published: bool,
-        marked_as_done: bool,
     ) -> Result<Text, Error> {
         sqlx::query_file_as!(
             Self,
@@ -143,8 +137,6 @@ impl Text {
             text_body,
             text_type as TextType,
             tags,
-            is_published,
-            marked_as_done,
             id,
         )
         .fetch_one(&db.pool)
@@ -338,8 +330,6 @@ mod tests {
                 "Text body",
                 TextType::Article,
                 vec![],
-                true, // is_published
-                true, // marked as done
             );
 
             text.save_to_db(&db).await.expect("SAVING ARTICLE FAILED");

@@ -25,9 +25,6 @@ pub async fn text_save(
             .collect::<Vec<String>>(),
     };
 
-    // Only admins are allowed to publish on save.
-    let should_publish_instantly = form.publish.unwrap_or(false) && claims.admin;
-
     let text = Text::create(
         form.title,
         &claims.data.username,
@@ -35,8 +32,6 @@ pub async fn text_save(
         form.text_body,
         form.text_type,
         tags,
-        should_publish_instantly,
-        form.marked_as_done,
     );
 
     match text.save_to_db(db).await {
@@ -79,11 +74,13 @@ pub async fn text_edit(
 
     let current_text = Text::get_by_id(db, text_id, false).await?;
 
-    // Only admins are allowed to edit publish status.
-    let should_publish = match claims.admin {
-        true => form.publish.unwrap_or(false),
-        false => current_text.is_published,
-    };
+    if current_text.author != claims.sub && !claims.admin {
+        return Err(Error::create(
+            &format!("{}:{}", file!(), line!()),
+            "Must be owner of text or publisher to edit!",
+            Status::Unauthorized,
+        ));
+    }
 
     let updated_text = Text::update_by_id(
         db,
@@ -93,8 +90,6 @@ pub async fn text_edit(
         form.text_body,
         form.text_type,
         &tags,
-        should_publish,
-        form.marked_as_done,
     )
     .await?;
 

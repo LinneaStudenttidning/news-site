@@ -63,7 +63,7 @@ async fn editor_text_id(
 
     Ok(Template::render(
         "control_panel/editor_v2",
-        context! { text, is_publisher: claims.data.is_publisher() },
+        context! { text, is_publisher: claims.data.is_publisher(), is_editing: true, creator: claims.data },
     ))
 }
 

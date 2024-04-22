@@ -13,9 +13,6 @@ pub struct SaveOrEditText<'a> {
     #[field(name = "text-body")]
     pub text_body: &'a str,
     pub tags: &'a str,
-    pub publish: Option<bool>,
-    #[field(name = "marked-as-done")]
-    pub marked_as_done: bool,
 }
 
 #[derive(Debug, FromForm)]

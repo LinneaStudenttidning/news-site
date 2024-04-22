@@ -5,14 +5,12 @@ UPDATE articles SET
     text_body = $4,
     text_type = $5,
     updated_at = NOW(),
-    tags = $6,
-    is_published = $7,
-    marked_as_done = $8
+    tags = $6
 FROM creators
 WHERE
     articles.author = creators.username
 AND
-    id = $9
+    id = $7
 RETURNING
     id,
     title,

@@ -8,6 +8,38 @@
 
 {% block main %}
 <h1>Textredigerare</h1>
+
+{% if is_editing %}
+<div class="infobox">
+    <h2 icon="handyman">Verktyg</h2>
+    <div class="flex wrap gap">
+        {% if text.author == creator.username and not text.marked_as_done %}
+        <form class="hidden-form" id="mark-text-done-form" action="/api/text/set-done-status/true" method="post">
+            <input type="hidden" name="text-id" value="{{ text.id }}">
+        </form>
+        <button form="mark-text-done-form" type="submit" class="btn" icon="done">Markera som klar</button>
+        {% elif text.author == creator.username and text.marked_as_done %}
+        <form class="hidden-form" id="mark-text-not-done-form" action="/api/text/set-done-status/false" method="post">
+            <input type="hidden" name="text-id" value="{{ text.id }}">
+        </form>
+        <button form="mark-text-not-done-form" class="btn" icon="close">Markera som inte klar</button>
+        {% endif %}
+
+        {% if is_publisher and text.is_published %}
+        <form class="hidden-form" id="unpublish-text-form" action="/api/text/set-publish-status/false" method="post">
+            <input type="hidden" name="text-id" value="{{ text.id }}">
+        </form>
+        <button form="unpublish-text-form" class="btn dangerous" icon="unpublished">Avpublicera</button>
+        {% elif is_publisher and not text.is_published %}
+        <form class="hidden-form" id="publish-text-form" action="/api/text/set-publish-status/true" method="post">
+            <input type="hidden" name="text-id" value="{{ text.id }}">
+        </form>
+        <button form="publish-text-form" class="btn" icon="publish">Publicera</button>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
 <form action="{% if text %}/api/text/edit{% else %}/api/text/save{% endif %}" method="post">
     <label for="text-type">Texttyp:</label>
     <select name="text-type" id="text-type">
@@ -34,18 +66,6 @@
 
     <label for="tags">Taggar, separera med semikolon (;):</label>
     <input type="text" name="tags" value="{% if text.tags %}{{ text.tags | join(sep=";") }}{% endif %}" id="tags">
-
-    {% if is_publisher %}
-    <div>
-        <input id="publish" name="publish" type="checkbox" {% if text.is_published %}checked{% endif %}>
-        <label for="publish">Publicera artikel.</label>
-    </div>
-    {% endif %}
-
-    <div>
-        <input id="marked_as_done" name="marked_as_done" type="checkbox" {% if text.marked_as_done %}checked{% endif %}>
-        <label for="marked_as_done">Markera artikeln som klar.</label>
-    </div>
 
     <div class="flex wrap gap">
         <button class="btn" icon="save" type="submit">Spara</button>
