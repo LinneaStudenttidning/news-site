@@ -1,64 +1,80 @@
-$black: #0C120F;
-$white: #F3F7F5;
+$black: #12121A;
+$white: #FAFAFF;
 
-$grey100: desaturate(darken($white, 5%), 10%);
-$grey200: desaturate(darken($white, 20%), 10%);
-$grey300: desaturate(darken($white, 35%), 10%);
-$grey400: desaturate(darken($white, 50%), 10%);
+$grey100: #D3D3D9;
+$grey200: #ADADB3;
+$grey300: #86868D;
+$grey400: #5F5F66;
+$grey500: #393940;
 
-$green100: #75C787;
-$green200: #12662F;
-$green300: #0B471D;
-$green400: #042A0D;
-$green: $green200;
+$green100: #BFEED7;
+$green200: #58D599;
+$green300: #0EB866;
+$green400: #078347;
+$green500: #024B28;
+$green: $green300;
 
+$yellow100: #F8F2C4;
+$yellow200: #EFDF67;
+$yellow300: #E6CD0F;
+$yellow400: #AA9703;
+$yellow500: #5C5100;
+$yellow: $yellow300;
 
-$yellow100: #FED997;
-$yellow200: #CC8D0A;
-$yellow300: #A26C06;
-$yellow400: #623804;
-$yellow: $yellow200;
+$red100: #F8C4B9;
+$red200: #F35D3F;
+$red300: #D72704;
+$red400: #A71D02;
+$red500: #701300;
+$red: $red300;
 
-$red100: #E78D6E;
-$red200: #CC4B16;
-$red300: #892F12;
-$red400: #330002;
-$red: $red200;
+$blue100: #A8CDF0;
+$blue200: #318BDD;
+$blue300: #0E66B8;
+$blue400: #074A88;
+$blue500: #003261;
+$blue: $blue300;
 
-$blue200: #2880de;
-$blue: $blue200;
-
-$purple200: #d020cd;
-$purple: $purple200;
+$purple300: #d020cd;
+$purple: $purple300;
 
 $primary100: $green100;
 $primary200: $green200;
 $primary300: $green300;
 $primary400: $green400;
+$primary500: $green500;
 $primary: $green;
 
-$secondary100: $yellow100;
-$secondary200: $yellow200;
-$secondary300: $yellow300;
-$secondary400: $yellow400;
-$secondary: $yellow;
-
-$tertiary100: $red100;
-$tertiary200: $red200;
-$tertiary300: $red300;
-$tertiary400: $red400;
-$tertiary: $red;
-
-$surface: desaturate(lighten($yellow100, 12%), 40%);
-$standout: $white;
-$text: $black;
-
+$success100: $green100;
+$success200: $green200;
+$success300: $green300;
+$success400: $green400;
+$success500: $green500;
 $success: $green;
+
+$danger100: $red100;
+$danger200: $red200;
+$danger300: $red300;
+$danger400: $red400;
+$danger500: $red500;
 $danger: $red;
+
+$warning100: $yellow100;
+$warning200: $yellow200;
+$warning300: $yellow300;
+$warning400: $yellow400;
+$warning500: $yellow500;
 $warning: $yellow;
+
+$info100: $blue100;
+$info200: $blue200;
+$info300: $blue300;
+$info400: $blue400;
+$info500: $blue500;
 $info: $blue;
 
-$shadow100: rgba($black, 0.05);
+$text: $black;
+$surface: #F2F2FA;
+$standout: $white;
+
 $shadow200: rgba($black, 0.15);
-$shadow300: rgba($black, 0.35);
-$shadow400: rgba($black, 0.5);

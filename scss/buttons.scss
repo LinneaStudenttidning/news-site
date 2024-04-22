@@ -5,7 +5,7 @@
 .btn,
 .btn:visited {
     cursor: pointer;
-    color: palette.$primary400;
+    color: palette.$primary500;
     background-color: palette.$primary100;
     font-family: settings.$font-family-forms;
     font-size: .9rem;
@@ -39,7 +39,7 @@
 
     &[icon]::before {
         @include mixins.icon;
-        color: palette.$primary300;
+        color: palette.$primary400;
     }
 
     &.icon-only {
@@ -51,15 +51,15 @@
     }
 
     &.dangerous {
-        background-color: palette.$red100;
-        color: palette.$red400;
+        background-color: palette.$danger100;
+        color: palette.$danger500;
 
         &:active {
-            background-color: darken(palette.$red100, 5%);
+            background-color: darken(palette.$danger100, 5%);
         }
 
         &[icon]::before {
-            color: palette.$red300;
+            color: palette.$danger400;
         }
     }
 }

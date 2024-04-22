@@ -21,7 +21,7 @@ body {
         grid-area: nav;
         padding: 1rem;
         background-color: palette.$standout;
-        border-bottom: .2rem solid palette.$primary;
+        border-bottom: .2rem solid palette.$primary400;
         box-shadow: 0 .5rem .75rem palette.$shadow200;
 
         a,
@@ -88,7 +88,7 @@ main,
 .side-content {
     > h1:first-child {
         color: palette.$white;
-        background-color: palette.$primary;
+        background-color: palette.$primary400;
         margin: 0 0 1rem 0;
         padding: 1rem;
         font-size: 1.5rem;
@@ -129,7 +129,7 @@ main,
     }
 
     > .sep {
-        background-color: palette.$grey200;
+        background-color: palette.$grey100;
         height: .1rem;
         width: 90%;
         margin: .5rem 5%;
