@@ -36,8 +36,6 @@
         <button class="btn" icon="edit_note" data-dialog-button="change-about-us">Ändra "om oss"</button>
         <button class="btn" icon="gallery_thumbnail">Bildgalleriet</button>
         <button class="btn" icon="preview">Granska och godkänn nya texter</button>
-        <button class="btn" icon="edit_note">Redigera text</button>
-        <button class="btn dangerous" icon="unpublished">Avpublicera text</button>
     </div>
 </div>
 {% endif %}
