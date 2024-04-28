@@ -10,23 +10,20 @@
 
 <div class="box pad">
     <h2 icon="feed">Färdiga (opublicerade) texter</h2>
-    <div class="content">
-        {% if texts | length > 0 %}
-        {% for text in texts %}
-        <div class="article-box">
-            <p class="title">{{ text.title }} </p>
-            <p class="date">{{ text.created_at | date(format="%F %T") }}</p>
-            <p class="author">{{ text.author }}</p>
-            <div class="flex wrap gap actions">
-                <a class="btn icon-only" icon="preview" href="/t/{{ text.id }}/{{ text.title_slug }}"
-                    target="_blank"></a>
-            </div>
+    {% if texts | length > 0 %}
+    {% for text in texts %}
+    <div class="article-box">
+        <p class="title">{{ text.title }} </p>
+        <p class="date">{{ text.created_at | date(format="%F %T") }}</p>
+        <p class="author">{{ text.author }}</p>
+        <div class="flex wrap gap actions">
+            <a class="btn icon-only" icon="preview" href="/t/{{ text.id }}/{{ text.title_slug }}" target="_blank"></a>
         </div>
-        {% endfor %}
-        {% else %}
-        <p>Det finns inga texter att granska!</p>
-        {% endif %}
     </div>
+    {% endfor %}
+    {% else %}
+    <p>Det finns inga texter att granska!</p>
+    {% endif %}
 </div>
 {% endblock main %}
 

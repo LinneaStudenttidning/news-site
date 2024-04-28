@@ -25,12 +25,9 @@
         }
     }
 
-    .content {
-        width: 100%;
-    }
-
     &.success {
         background-color: palette.$green100;
+        border-color: palette.$green300;
 
         > h2[icon]::before {
             @include mixins.icon(2.4);
@@ -40,6 +37,7 @@
 
     &.warning {
         background-color: palette.$yellow100;
+        border-color: palette.$yellow300;
 
         > h2[icon]::before {
             @include mixins.icon(2.4);
@@ -49,6 +47,7 @@
 
     &.error {
         background-color: palette.$red100;
+        border-color: palette.$red300;
 
         > h2[icon]::before {
             @include mixins.icon(2.4);

@@ -8,7 +8,7 @@
 {% block main %}
 
 {% if is_logged_in and not text.is_published %}
-<div class="box warning">
+<div class="box pad warning">
     <h2 icon="warning">Artikeln är inte publicerad</h2>
     <p>Denna artikel är inte publicerad. Endast inloggade skribenter kan se den.</p>
 </div>
@@ -53,7 +53,7 @@
 
 {% block aside %}
 {% if is_logged_in %}
-<div class="side-content">
+<div class="side-content box">
     <h1>Verktygslåda</h1>
     <div class="flex wrap gap">
         {% if can_mark_as_done %}
