@@ -5,7 +5,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: max-content auto;
-    gap: .25rem 1rem;
+    gap: settings.$pad-fixed-xxs settings.$pad-fixed-m;
 
     > * {
         font-family: inherit;

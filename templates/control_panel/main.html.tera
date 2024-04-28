@@ -9,7 +9,7 @@
 <h1>Kontrollpanelen</h1>
 
 {% if flash.message %}
-<div class="infobox {{ flash.kind }}">
+<div class="box {{ flash.kind }}">
     {% if flash.kind == "success" %}
     <h2 icon="info">Meddelande</h2>
     <p>{{ flash.message }}</p>
@@ -21,7 +21,7 @@
 {% endif %}
 
 {% if creator.role == "Publisher" %}
-<div class="toolbox">
+<div class="box">
     <h2 icon="admin_panel_settings">Administrativa verktyg</h2>
     <div class="content flex wrap gap">
         <button class="btn" icon="person_add" data-dialog-button="create-user">Skapa ny användare</button>
@@ -40,7 +40,7 @@
 </div>
 {% endif %}
 
-<div class="toolbox">
+<div class="box">
     <h2 icon="feed">Dina texter</h2>
     <div class="content">
         <h3>Opublicerade texter (påbörjade)</h3>

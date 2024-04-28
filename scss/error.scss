@@ -1,9 +1,10 @@
 @use "palette";
+@use "settings";
 
 .error {
     display: block;
     color: palette.$red400;
     background-color: palette.$red100;
     max-width: 100%;
-    padding: 1rem;
+    padding: settings.$pad-fixed-m;
 }

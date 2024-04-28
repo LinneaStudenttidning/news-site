@@ -1,3 +1,5 @@
+@use "settings";
+
 /*
  * `$opsz_mult` is used if the icon should be placed where it isn't 1rem.
  *      In such a case, it should be the the value of rem, without the unit.
@@ -9,7 +11,7 @@
     overflow: hidden;
 
     content: attr(icon);
-    margin-right: .25em;
+    margin-right: settings.$pad-relative-xxs;
 
     font-family: 'Material Symbols Outlined';
     font-size: 1.5em;

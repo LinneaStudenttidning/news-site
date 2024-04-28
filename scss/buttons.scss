@@ -14,7 +14,7 @@
     text-decoration: none;
     white-space: nowrap;
     text-overflow: ellipsis;
-    padding: .75em 1.5em;
+    padding: settings.$pad-relative-s settings.$pad-relative-l;
     max-width: 100%;
     overflow: hidden;
     border-radius: .5rem;
@@ -33,7 +33,7 @@
 
     &[icon] {
         display: flex;
-        padding-left: 1.25em;
+        padding-left: settings.$pad-relative-m;
         align-items: center;
     }
 
@@ -43,7 +43,7 @@
     }
 
     &.icon-only {
-        padding: .5em 1em;
+        padding: settings.$pad-relative-xs settings.$pad-relative-l;
 
         &::before {
             margin-right: 0;

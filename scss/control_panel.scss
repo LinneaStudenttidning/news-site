@@ -1,49 +1,5 @@
 @use "palette";
 @use "settings";
-@use "mixins";
-
-.toolbox,
-.infobox {
-    box-shadow: 0 .5rem .75rem palette.$shadow200;
-    background-color: palette.$standout;
-    padding: 1rem;
-    margin-bottom: 2rem;
-    container-type: inline-size;
-    width: 100%;
-
-    > :not(:last-child) {
-        margin-bottom: 1rem;
-    }
-
-    > h2 {
-        margin-top: 0;
-        display: flex;
-        align-items: center;
-
-        &[icon]::before {
-            @include mixins.icon(2.4);
-            color: palette.$primary400;
-        }
-    }
-
-    .content {
-        width: 100%;
-    }
-}
-
-.infobox {
-    &.success {
-        background-color: palette.$green100;
-    }
-
-    &.warning {
-        background-color: palette.$yellow100;
-    }
-
-    &.error {
-        background-color: palette.$red100;
-    }
-}
 
 // TODO: This might be useful somewhere else, so it might need
 // to be moved somewhere else.
@@ -52,7 +8,7 @@
     grid-template-areas: 'pfp name' 'pfp info';
     grid-template-columns: 1fr 45ch;
     grid-template-rows: repeat(auto, 2);
-    gap: 1rem;
+    gap: settings.$pad-fixed-m;
 
     > * {
         margin: 0;
@@ -79,8 +35,8 @@
     grid-template-rows: auto auto;
     place-items: start;
     background-color: palette.$surface;
-    padding: 1rem;
-    margin-bottom: 1rem;
+    padding: settings.$pad-fixed-m;
+    margin-bottom: settings.$pad-fixed-m;
 
     .title {
         grid-area: title;

@@ -19,7 +19,7 @@ body {
 
     > nav {
         grid-area: nav;
-        padding: 1rem;
+        padding: settings.$pad-fixed-m;
         background-color: palette.$standout;
         border-bottom: .2rem solid palette.$primary400;
         box-shadow: 0 .5rem .75rem palette.$shadow200;
@@ -27,7 +27,7 @@ body {
         a,
         a:visited {
             display: block;
-            padding: 0 1rem;
+            padding: 0 settings.$pad-fixed-m;
             color: palette.$text;
             text-decoration: solid underline 1px palette.$primary200;
             border-right: 1px solid palette.$grey200;
@@ -46,14 +46,14 @@ body {
 
     > main {
         grid-area: main;
-        margin: 1rem .5rem 1rem 0;
+        margin: settings.$pad-fixed-m settings.$pad-fixed-xs settings.$pad-fixed-m 0;
         background-color: transparent;
         box-shadow: none;
     }
 
     > aside {
         grid-area: aside;
-        margin: 1rem 0 20vmin 1rem;
+        margin: settings.$pad-fixed-m 0 20vmin settings.$pad-fixed-m;
         height: max-content;
         position: sticky;
         top: 1rem;
@@ -64,7 +64,7 @@ body {
         color: palette.$surface;
         background-color: palette.$primary500;
         margin-top: 5vmin;
-        padding: 2rem;
+        padding: settings.$pad-fixed-xl;
         font-family: settings.$font-family-default;
 
         > * {
@@ -89,8 +89,8 @@ main,
     > h1:first-child {
         color: palette.$white;
         background-color: palette.$primary400;
-        margin: 0 0 1rem 0;
-        padding: 1rem;
+        margin: 0 0 settings.$pad-fixed-m 0;
+        padding: settings.$pad-fixed-m;
         font-size: 1.5rem;
     }
 }
@@ -98,11 +98,11 @@ main,
 .side-content {
     box-shadow: 0 .5rem .75rem palette.$shadow200;
     background-color: palette.$standout;
-    margin-bottom: 1rem;
+    margin-bottom: settings.$pad-fixed-m;
     container-type: inline-size;
 
     > div {
-        padding: 0 1rem 1rem 1rem;
+        padding: 0 settings.$pad-fixed-m settings.$pad-fixed-m settings.$pad-fixed-m;
     }
 }
 
@@ -125,14 +125,14 @@ main,
     }
 
     &.gap {
-        gap: .5rem;
+        gap: settings.$pad-fixed-xs;
     }
 
     > .sep {
         background-color: palette.$grey100;
         height: .1rem;
         width: 90%;
-        margin: .5rem 5%;
+        margin: settings.$pad-fixed-xs 5%;
     }
 }
 
@@ -150,12 +150,11 @@ main,
 
         > main,
         > aside {
-            margin: 2rem 2rem 0 2rem;
+            margin: settings.$pad-fixed-xl settings.$pad-fixed-xl 0 settings.$pad-fixed-xl;
         }
 
         > aside {
             position: static;
         }
     }
-
 }

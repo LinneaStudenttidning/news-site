@@ -8,7 +8,7 @@ h4,
 h5,
 h6 {
     font-weight: 200;
-    margin: .5em 0 .15em 0;
+    margin: settings.$pad-relative-xs 0 settings.$pad-relative-xxs 0;
 }
 
 h1 {
@@ -51,7 +51,7 @@ ol {
 
 ul,
 ol {
-    margin-left: 1em;
+    margin-left: settings.$pad-fixed-m;
 }
 
 // FIXME: Import this font.
@@ -61,7 +61,7 @@ var {
     font-size: .85em;
     color: palette.$primary400;
     background-color: palette.$primary100;
-    padding: .15em .5em;
+    padding: settings.$pad-relative-xxs settings.$pad-relative-xs;
     border-radius: .15em;
 }
 

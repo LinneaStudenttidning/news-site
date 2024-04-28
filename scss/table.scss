@@ -1,7 +1,8 @@
 @use "palette";
+@use "settings";
 
 table {
-    margin: 1rem 0;
+    margin: settings.$pad-fixed-m 0;
     width: 100%;
     display: block;
     overflow-x: auto;
@@ -24,6 +25,6 @@ tr {
 td,
 th {
     text-align: left;
-    padding: .5rem 1rem;
+    padding: settings.$pad-fixed-xs settings.$pad-fixed-m;
     width: max-content;
 }

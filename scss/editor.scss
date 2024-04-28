@@ -4,22 +4,22 @@
 .editor {
     width: 100%;
     height: fit-content;
-    padding: 1rem;
+    padding: settings.$pad-fixed-m;
     background-color: palette.$surface;
 
     .actions {
         height: fit-content;
-        margin-bottom: 1rem;
+        margin-bottom: settings.$pad-fixed-m;
     }
 
     .textbox {
         background-color: palette.$standout;
         height: fit-content;
         min-height: 60vh;
-        padding: 1rem;
+        padding: settings.$pad-fixed-m;
 
         > * {
-            margin-bottom: .5em;
+            margin-bottom: settings.$pad-fixed-xs;
         }
 
         h1 {
@@ -43,12 +43,12 @@
 
         ul,
         ol {
-            margin-left: 2rem;
+            margin-left: settings.$pad-fixed-xl;
         }
     }
 
     .info {
-        margin-top: 1rem;
+        margin-top: settings.$pad-fixed-m;
 
         p {
             font-family: settings.$font-family-default;
@@ -57,7 +57,7 @@
             &:not(:last-child) {
                 // padding-right: .5em;
                 // border-right: 1px solid palette.$text;
-                margin-right: 1em;
+                margin-right: settings.$pad-fixed-m;
             }
         }
     }

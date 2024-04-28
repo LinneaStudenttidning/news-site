@@ -9,7 +9,7 @@
     display: block;
     box-shadow: 0 .5rem .75rem palette.$shadow200;
     background-color: palette.$standout;
-    margin-bottom: 2rem;
+    margin-bottom: settings.$pad-fixed-xl;
 
     // This is necessary for teh CSS to work correctly (at least in Firefox)...
     // I don't know why, but it pisses me off too!
@@ -18,7 +18,7 @@
 
     > h1,
     > p {
-        margin: 1rem;
+        margin: settings.$pad-fixed-m;
     }
 
     > p {
@@ -34,7 +34,7 @@
     .type {
         font-size: .85em;
         font-weight: 400;
-        padding: .25em .5em;
+        padding: settings.$pad-relative-xxs settings.$pad-relative-xs;
         margin-right: .5em;
         color: palette.$primary400;
         background-color: palette.$primary100;

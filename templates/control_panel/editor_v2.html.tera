@@ -10,7 +10,7 @@
 <h1>Textredigerare</h1>
 
 {% if is_editing %}
-<div class="infobox">
+<div class="box">
     <h2 icon="handyman">Verktyg</h2>
     <div class="flex wrap gap">
         {% if text.author == creator.username and not text.marked_as_done %}

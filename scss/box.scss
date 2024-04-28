@@ -1,0 +1,58 @@
+@use "palette";
+@use "settings";
+@use "mixins";
+
+.box {
+    box-shadow: 0 .5rem .75rem palette.$shadow200;
+    background-color: palette.$standout;
+    padding: 1rem;
+    margin-bottom: settings.$pad-fixed-xl;
+    container-type: inline-size;
+    width: 100%;
+
+    > :not(:last-child) {
+        margin-bottom: settings.$pad-fixed-m;
+    }
+
+    > h2 {
+        margin-top: 0;
+        display: flex;
+        align-items: center;
+
+        &[icon]::before {
+            @include mixins.icon(2.4);
+            color: palette.$grey400;
+        }
+    }
+
+    .content {
+        width: 100%;
+    }
+
+    &.success {
+        background-color: palette.$green100;
+
+        > h2[icon]::before {
+            @include mixins.icon(2.4);
+            color: palette.$green400;
+        }
+    }
+
+    &.warning {
+        background-color: palette.$yellow100;
+
+        > h2[icon]::before {
+            @include mixins.icon(2.4);
+            color: palette.$yellow400;
+        }
+    }
+
+    &.error {
+        background-color: palette.$red100;
+
+        > h2[icon]::before {
+            @include mixins.icon(2.4);
+            color: palette.$red400;
+        }
+    }
+}

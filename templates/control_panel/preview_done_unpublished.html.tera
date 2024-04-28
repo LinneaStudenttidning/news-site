@@ -8,7 +8,7 @@
 {% block main %}
 <h1>Granska texter</h1>
 
-<div class="toolbox">
+<div class="box">
     <h2 icon="feed">Färdiga (opublicerade) texter</h2>
     <div class="content">
         {% if texts | length > 0 %}
