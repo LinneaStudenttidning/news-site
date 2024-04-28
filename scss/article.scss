@@ -3,11 +3,6 @@
 @use "mixins";
 
 article {
-    // This is necessary for teh CSS to work correctly (at least in Firefox)...
-    // I don't know why, but it pisses me off too!
-    // Without it, the margin defined for `p` below, will not create "padding" on the `.news-item`-element...
-    padding: 0 0 1px 0;
-
     > * {
         margin: settings.$pad-fixed-m;
     }
@@ -51,7 +46,7 @@ article {
         display: flex;
         flex-direction: column;
         padding-top: settings.$pad-fixed-xs;
-        border-top: .15rem solid palette.$grey200;
+        border-top: 1px solid palette.$grey100;
 
         > .author {
             display: grid;
