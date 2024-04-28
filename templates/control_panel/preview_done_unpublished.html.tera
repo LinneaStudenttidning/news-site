@@ -8,7 +8,7 @@
 {% block main %}
 <h1>Granska texter</h1>
 
-<div class="box">
+<div class="box pad">
     <h2 icon="feed">Färdiga (opublicerade) texter</h2>
     <div class="content">
         {% if texts | length > 0 %}
@@ -31,7 +31,7 @@
 {% endblock main %}
 
 {% block aside %}
-<div class="side-content">
+<div class="box side-content">
     <h1>Din profil</h1>
     <div class="content profile">
         <img src="/dynamic-data/profile-pictures/{{ creator.username }}.webp" alt="Profilbild" class="pfp">
@@ -49,7 +49,7 @@
     </div>
     <div class="flex wrap gap">
         <a href="/control-panel" class="btn" icon="settings">Kontrollpanelen</a>
-        <form id="logout-form" action="/api/auth/logout" method="post"></form>
+        <form class="hidden-form" id="logout-form" action="/api/auth/logout" method="post"></form>
         <button form="logout-form" type="submit" class="btn dangerous" icon="logout">Logga ut</button>
     </div>
 </div>

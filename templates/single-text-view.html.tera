@@ -14,7 +14,7 @@
 </div>
 {% endif %}
 
-<article itemscope itemtype="https://schema.org/NewsArticle">
+<article class="box" itemscope itemtype="https://schema.org/NewsArticle">
     <img itemprop="image" src="https://source.unsplash.com/random/1200x400?a" alt="Random image" loading="lazy">
     <h1 itemprop="headline">{{ text.title }}</h1>
     <p itemprop="description" class="lead-paragraph">{{ text.lead_paragraph }}</p>

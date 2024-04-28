@@ -8,7 +8,7 @@
 <h1>Logga in</h1>
 
 {% if flash.message %}
-<div class="box {{ flash.kind }}">
+<div class="box pad {{ flash.kind }}">
     {% if flash.kind == "success" %}
     <h2 icon="info">Meddelande</h2>
     <p>{{ flash.message }}</p>
@@ -31,7 +31,7 @@
 {% endblock main %}
 
 {% block aside %}
-<div class="side-content">
+<div class="box side-content">
     <h1>Hjälp</h1>
     <div>
         <p><b>För läsare:</b></p>

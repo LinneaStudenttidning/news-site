@@ -4,11 +4,8 @@
 .news-item,
 .news-item:visited {
     all: unset;
-
     cursor: pointer;
     display: block;
-    box-shadow: 0 .5rem .75rem palette.$shadow200;
-    background-color: palette.$standout;
     margin-bottom: settings.$pad-fixed-xl;
 
     // This is necessary for teh CSS to work correctly (at least in Firefox)...
