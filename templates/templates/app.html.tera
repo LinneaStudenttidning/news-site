@@ -17,14 +17,18 @@
 </head>
 
 <body>
-    <nav class="flex wrap">
-        <a href="/">LOGGA</a>
-        <a href="/texts/type/article">Nyheter</a>
-        <a href="/texts/type/coverage">Reportage</a>
-        <a href="/texts/type/opinion">Opinion</a>
-        <a href="/texts/type/other">Annat</a>
-        <a href="/about-us">Om oss</a>
-        <a href="/search">Sök</a>
+    <nav>
+        <div class="links flex wrap">
+            <a href="/">LOGGA</a>
+            <a href="/texts/type/article">Nyheter</a>
+            <a href="/texts/type/coverage">Reportage</a>
+            <a href="/texts/type/opinion">Opinion</a>
+            <a href="/texts/type/other">Annat</a>
+            <a href="/about-us">Om oss</a>
+            <a href="/search">Sök</a>
+        </div>
+        <button id="nav-menu-button" class="btn icon-only" icon="menu"
+            onclick="document.querySelector('body > nav > .links').classList.toggle('visible')"></button>
     </nav>
     <main>
         {% block main %}

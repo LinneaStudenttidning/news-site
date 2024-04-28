@@ -13,33 +13,48 @@ body {
     grid-template-rows: max-content 1fr max-content;
     grid-template-columns: 1fr 70ch 35ch 1fr;
     grid-template-areas:
-        '.      nav    nav    .'
+        'nav    nav    nav    nav'
         '.      main   aside  .'
         'footer footer footer footer';
 
     > nav {
+        display: grid;
+        grid-template-columns: subgrid;
         grid-area: nav;
         padding: settings.$pad-fixed-m;
         background-color: palette.$standout;
         border-bottom: .2rem solid palette.$primary400;
         box-shadow: 0 .5rem .75rem palette.$shadow200;
 
-        a,
-        a:visited {
-            display: block;
-            padding: 0 settings.$pad-fixed-m;
-            color: palette.$text;
-            text-decoration: solid underline 1px palette.$primary200;
-            border-right: 1px solid palette.$grey200;
+        #nav-menu-button {
+            display: none;
+            width: min-content;
+        }
 
-            transition: text-decoration .3s;
+        .links {
+            grid-column: 2 / 4;
 
-            &:hover {
-                text-decoration: solid underline 2px palette.$primary;
-            }
+            a,
+            a:visited {
+                display: block;
+                padding: 0 settings.$pad-fixed-m;
+                color: palette.$text;
+                text-decoration: solid underline 1px palette.$primary200;
+                border-right: 1px solid palette.$grey200;
 
-            &:last-child {
-                border-right: 0 none transparent;
+                transition: text-decoration .3s;
+
+                &:hover {
+                    text-decoration: solid underline 2px palette.$primary;
+                }
+
+                &:first-child {
+                    padding-left: 0;
+                }
+
+                &:last-child {
+                    border-right: 0 none transparent;
+                }
             }
         }
     }
@@ -146,6 +161,10 @@ main,
         grid-template-columns: 1fr;
         grid-template-rows: max-content max-content 1fr max-content;
 
+        > nav > .links > a:first-child {
+            padding: 0 settings.$pad-fixed-m;
+        }
+
         > main,
         > aside {
             margin: settings.$pad-fixed-xl settings.$pad-fixed-xl 0 settings.$pad-fixed-xl;
@@ -153,6 +172,39 @@ main,
 
         > aside {
             position: static;
+        }
+    }
+}
+
+// FIXME: This is so bad...
+@container (width < 700px) {
+    body nav {
+        > .links {
+            position: fixed;
+            background-color: palette.$standout;
+            border: 1px solid palette.$grey100;
+            flex-direction: column;
+            width: 80%;
+            top: -200%;
+            left: 0;
+            display: none;
+            padding: settings.$pad-fixed-l;
+
+            &.visible {
+                display: flex;
+                top: 0;
+            }
+
+            a,
+            a:visited {
+                padding: settings.$pad-fixed-m;
+                border-right: 0 none transparent;
+            }
+        }
+
+        #nav-menu-button {
+            display: block;
+            margin-left: auto;
         }
     }
 }
