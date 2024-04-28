@@ -4,28 +4,35 @@
 .news-item,
 .news-item:visited {
     all: unset;
+    border-radius: 1rem;
+    border: 1px solid palette.$grey100;
+    border-top: 0 none transparent;
+    background-color: palette.$standout;
     cursor: pointer;
     display: block;
     margin-bottom: settings.$pad-fixed-xl;
 
-    // This is necessary for teh CSS to work correctly (at least in Firefox)...
-    // I don't know why, but it pisses me off too!
-    // Without it, the margin defined for `p` below, will not create "padding" on the `.news-item`-element...
-    padding-bottom: 1px;
+    > img {
+        margin-bottom: 0;
+        border-radius: 1rem 1rem 0 0;
+    }
 
-    > h1,
+    > h2,
     > p {
         margin: settings.$pad-fixed-m;
     }
 
-    > p {
-        font-family: settings.$font-family-default
+    > h2 {
+        margin-top: 0;
+        padding-top: settings.$pad-fixed-m;
     }
 
-    &:hover {
-        > h1 {
-            text-decoration: underline;
-        }
+    &:hover > h2 {
+        text-decoration: underline;
+    }
+
+    > p {
+        font-family: settings.$font-family-default
     }
 
     .type {
