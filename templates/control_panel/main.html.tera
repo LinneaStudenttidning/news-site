@@ -21,7 +21,7 @@
 {% endif %}
 
 {% if creator.role == "Publisher" %}
-<div class="box pad">
+<div class="box pad margin-bottom">
     <h2 icon="admin_panel_settings">Administrativa verktyg</h2>
     <div class="flex wrap gap">
         <button class="btn" icon="person_add" data-dialog-button="create-user">Skapa ny användare</button>
@@ -46,7 +46,7 @@
     {% if unpublished_texts | length > 0 %}
     {% for text in unpublished_texts %}
     {% if not text.marked_as_done %}
-    <div class="article-box">
+    <div class="article-box box pad">
         <p class="title">{{ text.title }} </p>
         <p class="date">{{ text.created_at | date(format="%F %T") }}</p>
         <div class="flex wrap gap actions">
@@ -72,7 +72,7 @@
     {% if unpublished_texts | length > 0 %}
     {% for text in unpublished_texts %}
     {% if text.marked_as_done %}
-    <div class="article-box">
+    <div class="article-box box pad">
         <p class="title">{{ text.title }} </p>
         <p class="date">{{ text.created_at | date(format="%F %T") }}</p>
         <div class="flex wrap gap actions">
@@ -94,7 +94,7 @@
     <h3>Publicerade texter</h3>
     {% if published_texts | length > 0 %}
     {% for text in published_texts %}
-    <div class="article-box">
+    <div class="article-box box pad">
         <p class="title">{{ text.title }} </p>
         <p class="date">{{ text.created_at | date(format="%F %T") }}</p>
         <div class="flex wrap gap actions">

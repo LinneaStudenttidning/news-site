@@ -34,9 +34,12 @@
     grid-template-columns: 1fr auto;
     grid-template-rows: auto auto;
     place-items: start;
-    background-color: palette.$surface;
     padding: settings.$pad-fixed-m;
     margin-bottom: settings.$pad-fixed-m;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
 
     .title {
         grid-area: title;

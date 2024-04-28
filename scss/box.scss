@@ -4,15 +4,18 @@
 
 .box {
     background-color: palette.$standout;
-    margin-bottom: settings.$pad-fixed-xl;
     container-type: inline-size;
     width: 100%;
     border: 1px solid palette.$grey100;
     border-radius: 1rem;
 
-    // > :not(:last-child) {
-    //     margin-bottom: settings.$pad-fixed-m;
-    // }
+    &.pad {
+        padding: settings.$pad-fixed-m
+    }
+
+    &.margin-bottom {
+        margin-bottom: settings.$pad-fixed-xl;
+    }
 
     > h2 {
         margin-top: 0;
@@ -53,9 +56,5 @@
             @include mixins.icon(2.4);
             color: palette.$red400;
         }
-    }
-
-    &.pad {
-        padding: settings.$pad-fixed-m
     }
 }
