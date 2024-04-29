@@ -99,24 +99,12 @@ body {
     }
 }
 
-main,
-.side-content {
-    > h1:first-child {
-        color: palette.$white;
-        background-color: palette.$primary400;
-        margin: 0 0 settings.$pad-fixed-m 0;
-        padding: settings.$pad-fixed-m;
-        font-size: 1.5rem;
-    }
-}
-
-.side-content {
-    margin-bottom: settings.$pad-fixed-m;
-    container-type: inline-size;
-
-    > div {
-        padding: 0 settings.$pad-fixed-m settings.$pad-fixed-m settings.$pad-fixed-m;
-    }
+main > h1:first-child {
+    color: palette.$white;
+    background-color: palette.$primary400;
+    margin: 0 0 settings.$pad-fixed-m 0;
+    padding: settings.$pad-fixed-m;
+    font-size: 1.5rem;
 }
 
 .flex {

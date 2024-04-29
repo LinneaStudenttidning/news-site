@@ -12,8 +12,8 @@
 {% endblock main %}
 
 {% block aside %}
-<div class="side-content">
-    <h1>Guide</h1>
+<div class="box pad">
+    <h2 icon="help">Guide</h2>
     <div>
         <p>
         <ul>

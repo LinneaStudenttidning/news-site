@@ -31,8 +31,8 @@
 {% endblock main %}
 
 {% block aside %}
-<div class="box side-content">
-    <h1>Hjälp</h1>
+<div class="box pad">
+    <h2 icon="help">Hjälp</h2>
     <div>
         <p><b>För läsare:</b></p>
         <p>Det här är endast inloggning för redaktionen. Om du är en "vanlig läsare", så behöver du inte logga in.</p>

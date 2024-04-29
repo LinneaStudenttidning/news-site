@@ -38,8 +38,8 @@
     <aside>
         {% block aside %}
         {% if tags %}
-        <div class="box side-content">
-            <h1>Populära taggar</h1>
+        <div class="box pad margin-bottom">
+            <h2 icon="category">Populära taggar</h2>
             <div class="flex wrap gap" id="popular-tags">
                 {% for tag in tags %}
                 <a class="btn" icon="tag" href="/texts/tag/{{ tag }}">{{ tag }}</a>
@@ -49,8 +49,8 @@
         {% endif %}
 
         {% if authors %}
-        <div class="box side-content">
-            <h1>Skribenter</h1>
+        <div class="box pad margin-bottom">
+            <h2 icon="groups">Skribenter</h2>
             <div class="flex wrap gap" id="writers">
                 {% for author in authors %}
                 <a class="btn" icon="person" href="/texts/author/{{ author.username }}">{{ author.display_name }}</a>
