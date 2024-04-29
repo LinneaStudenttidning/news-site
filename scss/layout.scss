@@ -25,6 +25,7 @@ body {
         background-color: palette.$standout;
         border-bottom: .2rem solid palette.$primary400;
         box-shadow: 0 .5rem .75rem palette.$shadow200;
+        margin-bottom: settings.$pad-fixed-m;
 
         #nav-menu-button {
             display: none;
