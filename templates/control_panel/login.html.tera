@@ -5,7 +5,7 @@
 {% endblock head %}
 
 {% block main %}
-<h1>Logga in</h1>
+<h1 class="box pad">Logga in</h1>
 
 {% if flash.message %}
 <div class="box pad {{ flash.kind }}">
@@ -19,7 +19,7 @@
 </div>
 {% endif %}
 
-<form action="/api/auth/login" method="post">
+<form class="box pad" action="/api/auth/login" method="post">
     <label for="username">Användarnamn:</label>
     <input type="text" name="username" id="username" required autofocus>
 

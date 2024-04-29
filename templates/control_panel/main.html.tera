@@ -6,7 +6,7 @@
 {% endblock head %}
 
 {% block main %}
-<h1>Kontrollpanelen</h1>
+<h1 class="box pad">Kontrollpanelen</h1>
 
 {% if flash.message %}
 <div class="box pad {{ flash.kind }}">

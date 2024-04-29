@@ -100,11 +100,7 @@ body {
 }
 
 main > h1:first-child {
-    color: palette.$white;
-    background-color: palette.$primary400;
-    margin: 0 0 settings.$pad-fixed-m 0;
-    padding: settings.$pad-fixed-m;
-    font-size: 1.5rem;
+    margin: 0 0 settings.$pad-fixed-xl 0;
 }
 
 .flex {
