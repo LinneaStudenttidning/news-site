@@ -39,7 +39,7 @@
         {% endif %}
         <div class="tags flex wrap gap">
             {% for tag in text.tags %}
-            <a href="/texts/tag/{{ tag }}" icon="tag" class="tag">{{ tag }}</a>
+            <a href="/texts/tag/{{ tag }}" icon="tag" class="btn small-btn">{{ tag }}</a>
             {% endfor %}
         </div>
     </div>

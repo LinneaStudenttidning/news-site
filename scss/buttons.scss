@@ -62,4 +62,15 @@
             color: palette.$danger400;
         }
     }
+
+    &.small-btn {
+        font-size: .75rem;
+        padding: settings.$pad-relative-s settings.$pad-relative-l;
+        border-radius: 9999rem;
+        text-decoration: none;
+
+        &:hover {
+            filter: brightness(0.95);
+        }
+    }
 }

@@ -42,7 +42,7 @@
             <h2 icon="category">Populära taggar</h2>
             <div class="flex wrap gap" id="popular-tags">
                 {% for tag in tags %}
-                <a class="btn" icon="tag" href="/texts/tag/{{ tag }}">{{ tag }}</a>
+                <a class="btn small-btn" icon="tag" href="/texts/tag/{{ tag }}">{{ tag }}</a>
                 {% endfor %}
             </div>
         </div>
@@ -53,7 +53,8 @@
             <h2 icon="groups">Skribenter</h2>
             <div class="flex wrap gap" id="writers">
                 {% for author in authors %}
-                <a class="btn" icon="person" href="/texts/author/{{ author.username }}">{{ author.display_name }}</a>
+                <a class="btn small-btn" icon="person"
+                    href="/texts/author/{{ author.username }}">{{ author.display_name }}</a>
                 {% endfor %}
             </div>
         </div>
