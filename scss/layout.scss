@@ -32,30 +32,47 @@ body {
             width: min-content;
         }
 
-        .links {
+        > .content {
             grid-column: 2 / 4;
+        }
 
-            a,
-            a:visited {
-                display: block;
-                padding: 0 settings.$pad-fixed-m;
-                color: palette.$text;
-                text-decoration: solid underline 1px palette.$primary200;
-                border-right: 1px solid palette.$grey200;
+        .links,
+        .content {
+            display: flex;
+            align-items: center;
+        }
 
-                transition: text-decoration .3s;
+        .logo,
+        .logo > img {
+            aspect-ratio: unset;
+            height: 2.5rem;
+            width: auto;
+            background-image: none;
+            background-color: transparent;
+            margin-right: settings.$pad-fixed-s;
+        }
 
-                &:hover {
-                    text-decoration: solid underline 2px palette.$primary;
-                }
+        .links > a,
+        .links > a:visited {
+            height: fit-content;
+            display: block;
+            padding: 0 settings.$pad-fixed-m;
+            color: palette.$text;
+            text-decoration: solid underline 1px palette.$primary200;
+            border-right: 1px solid palette.$grey200;
 
-                &:first-child {
-                    padding-left: 0;
-                }
+            transition: text-decoration .3s;
 
-                &:last-child {
-                    border-right: 0 none transparent;
-                }
+            &:hover {
+                text-decoration: solid underline 2px palette.$primary;
+            }
+
+            &:first-child {
+                padding-left: 0;
+            }
+
+            &:last-child {
+                border-right: 0 none transparent;
             }
         }
     }
@@ -164,7 +181,7 @@ main > h1:first-child {
 // FIXME: This is so bad...
 @container (width < 700px) {
     body nav {
-        > .links {
+        .links {
             position: fixed;
             background-color: palette.$standout;
             border: 1px solid palette.$grey100;
@@ -174,6 +191,7 @@ main > h1:first-child {
             left: 0;
             display: none;
             padding: settings.$pad-fixed-l;
+            z-index: 2;
 
             &.visible {
                 display: flex;
@@ -190,6 +208,10 @@ main > h1:first-child {
         #nav-menu-button {
             display: block;
             margin-left: auto;
+        }
+
+        .content {
+            padding: 0 settings.$pad-fixed-m;
         }
     }
 }
