@@ -1,5 +1,6 @@
 use crate::anyresponder::AnyResponder;
 use crate::data_dir;
+use crate::database::models::image::Image;
 use crate::database::{models::article::Text, DatabaseHandler};
 use crate::flash_msg::FlashMsg;
 use crate::{database::models::creator::Creator, error::Error, token::Claims};
@@ -67,6 +68,16 @@ async fn preview_done_unpublished(
     ))
 }
 
+#[get("/image-gallery")]
+async fn image_gallery(claims: Claims, db: &State<DatabaseHandler>) -> Result<Template, Error> {
+    let images = Image::get_all(db).await?;
+
+    Ok(Template::render(
+        "control_panel/image_gallery",
+        context! { creator: &claims.data, images, is_admin: claims.data.is_publisher() },
+    ))
+}
+
 #[get("/editor")]
 fn editor(claims: Claims) -> Template {
     Template::render(
@@ -94,6 +105,7 @@ pub fn get_all_routes() -> Vec<Route> {
     routes![
         control_panel,
         login_page,
+        image_gallery,
         preview_done_unpublished,
         editor,
         editor_text_id,

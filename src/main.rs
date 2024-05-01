@@ -76,6 +76,7 @@ async fn main() {
             "/dynamic-data/profile-pictures",
             FileServer::from("./data/profile-pictures"),
         )
+        .mount("/dynamic-data/images", FileServer::from("./data/images"))
         .register("/", catchers![not_found])
         .register("/", catchers![unauthorized])
         .launch()

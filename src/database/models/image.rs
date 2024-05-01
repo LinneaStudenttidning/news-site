@@ -3,7 +3,6 @@ use std::io::Cursor;
 use chrono::{DateTime, Local};
 use image::{imageops::FilterType::Triangle, load, ImageFormat};
 use serde::{Deserialize, Serialize};
-use sqlx::postgres::PgQueryResult;
 use uuid::Uuid;
 
 use crate::{database::DatabaseHandler, defaults::DATA_DIR, error::Error};
@@ -31,7 +30,7 @@ impl Default for Image {
 
 impl Image {
     /// Create a new `Image`; this should be prefered over manually creating a new `Image`.
-    pub fn create(author: &str, description: Option<&str>, tags: Vec<&str>) -> Self {
+    pub fn create(author: &str, description: Option<&str>, tags: Vec<String>) -> Self {
         Self {
             author: author.into(),
             description: description.map(Into::into),
@@ -41,15 +40,16 @@ impl Image {
     }
 
     /// Saves an instance of `Image` to the database.
-    pub async fn save_to_db(&self, db: &DatabaseHandler) -> Result<PgQueryResult, Error> {
-        sqlx::query_file!(
+    pub async fn save_to_db(&self, db: &DatabaseHandler) -> Result<Self, Error> {
+        sqlx::query_file_as!(
+            Self,
             "sql/images/insert.sql",
             self.id,
             self.author,
             self.description,
             &self.tags
         )
-        .execute(&db.pool)
+        .fetch_one(&db.pool)
         .await
         .map_err(Error::from)
     }
@@ -87,6 +87,14 @@ impl Image {
         )?;
 
         Ok(())
+    }
+
+    /// Gets ALL `Image`s from the database.
+    pub async fn get_all(db: &DatabaseHandler) -> Result<Vec<Self>, Error> {
+        sqlx::query_file_as!(Self, "sql/images/get_all.sql")
+            .fetch_all(&db.pool)
+            .await
+            .map_err(Error::from)
     }
 
     /// Gets ALL `Image`s from the database with `tag`.
