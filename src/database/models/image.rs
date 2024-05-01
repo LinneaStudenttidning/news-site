@@ -1,9 +1,12 @@
+use std::io::Cursor;
+
 use chrono::{DateTime, Local};
+use image::{imageops::FilterType::Triangle, load, ImageFormat};
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgQueryResult;
 use uuid::Uuid;
 
-use crate::{database::DatabaseHandler, error::Error};
+use crate::{database::DatabaseHandler, defaults::DATA_DIR, error::Error};
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Image {
@@ -49,6 +52,41 @@ impl Image {
         .execute(&db.pool)
         .await
         .map_err(Error::from)
+    }
+
+    /// Saves image data to a file.
+    /// It saves three versions (max dimensions):
+    /// * `s` - 600x600
+    /// * `m` - 1200x1200
+    /// * `l` - Original image size
+    pub fn save_to_file(
+        id: Uuid,
+        image_data: &[u8],
+        image_format: ImageFormat,
+    ) -> Result<(), Error> {
+        // Load in the image to a `DynamicImage`
+        let image_data = load(Cursor::new(image_data), image_format)?;
+
+        // Create different sizes of the image.
+        let s_image = image_data.resize_to_fill(600, 600, Triangle);
+        let m_image = image_data.resize_to_fill(1200, 1200, Triangle);
+        let l_image = image_data;
+
+        // Save images
+        s_image.save_with_format(
+            format!("{}/images/s/{}.webp", DATA_DIR, id),
+            ImageFormat::WebP,
+        )?;
+        m_image.save_with_format(
+            format!("{}/images/m/{}.webp", DATA_DIR, id),
+            ImageFormat::WebP,
+        )?;
+        l_image.save_with_format(
+            format!("{}/images/l/{}.webp", DATA_DIR, id),
+            ImageFormat::WebP,
+        )?;
+
+        Ok(())
     }
 
     /// Gets ALL `Image`s from the database with `tag`.
