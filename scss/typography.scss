@@ -62,7 +62,7 @@ var {
     color: palette.$primary400;
     background-color: palette.$primary100;
     padding: settings.$pad-relative-xxs settings.$pad-relative-xs;
-    border-radius: .15em;
+    border-radius: settings.$border-radius-s;
 }
 
 blockquote {

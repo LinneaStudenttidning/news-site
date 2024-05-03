@@ -4,7 +4,6 @@
 .news-item,
 .news-item:visited {
     all: unset;
-    border-radius: 1rem;
     border: 1px solid palette.$grey100;
     border-top: 0 none transparent;
     background-color: palette.$standout;
@@ -14,7 +13,7 @@
 
     > img {
         margin-bottom: 0;
-        border-radius: 1rem 1rem 0 0;
+        border-radius: settings.$border-radius-m settings.$border-radius-m 0 0;
         aspect-ratio: 3 / 1;
     }
 

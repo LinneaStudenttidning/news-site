@@ -17,14 +17,14 @@
     padding: settings.$pad-relative-s settings.$pad-relative-l;
     max-width: 100%;
     overflow: hidden;
-    border-radius: .5rem;
+    border-radius: settings.$border-radius-m;
     border: 0 none transparent;
 
     transition: border-radius .3s, background-color .2s;
 
     &:hover,
     &:focus {
-        border-radius: 1rem;
+        border-radius: settings.$border-radius-xl;
     }
 
     &:active {
