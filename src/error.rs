@@ -5,6 +5,7 @@ use image::ImageError;
 use rocket::{http::Status, Request, Response};
 use rocket_dyn_templates::{context, Template};
 use serde::{Deserialize, Serialize};
+use webp::WebPEncodingError;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Error {
@@ -87,6 +88,36 @@ impl From<ImageError> for Error {
         Error {
             source: "image::error::IdenticonError".to_string(),
             err_string: value.to_string(),
+            status: Status::InternalServerError,
+        }
+    }
+}
+
+impl From<WebPEncodingError> for Error {
+    fn from(value: WebPEncodingError) -> Self {
+        Error {
+            source: "webp::WebPEncodingError".to_string(),
+            err_string: format!("{:?}", value),
+            status: Status::InternalServerError,
+        }
+    }
+}
+
+impl<'a> From<&'a str> for Error {
+    fn from(value: &'a str) -> Self {
+        Error {
+            source: "&str".to_string(),
+            err_string: value.to_string(),
+            status: Status::InternalServerError,
+        }
+    }
+}
+
+impl From<()> for Error {
+    fn from(_: ()) -> Self {
+        Error {
+            source: "ERROR IS UNIT TYPE <()>".to_string(),
+            err_string: "Error is practically unknown! Have fun!".to_string(),
             status: Status::InternalServerError,
         }
     }

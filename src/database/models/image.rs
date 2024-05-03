@@ -1,4 +1,4 @@
-use std::io::Cursor;
+use std::{fs, io::Cursor};
 
 use chrono::{DateTime, Local};
 use image::{imageops::FilterType::Triangle, load, ImageFormat};
@@ -67,23 +67,38 @@ impl Image {
         // Load in the image to a `DynamicImage`
         let image_data = load(Cursor::new(image_data), image_format)?;
 
+        const S_SIZE: u32 = 600;
+        const M_SIZE: u32 = 1200;
+
         // Create different sizes of the image.
-        let s_image = image_data.resize_to_fill(600, 600, Triangle);
-        let m_image = image_data.resize_to_fill(1200, 1200, Triangle);
+        let s_image = image_data.resize_to_fill(
+            S_SIZE,
+            S_SIZE * image_data.height() / image_data.width(),
+            Triangle,
+        );
+        let m_image = image_data.resize_to_fill(
+            M_SIZE,
+            M_SIZE * image_data.height() / image_data.width(),
+            Triangle,
+        );
         let l_image = image_data;
 
         // Save images
-        s_image.save_with_format(
+        let s_image_as_webp = webp::Encoder::from_image(&s_image)?.encode_simple(true, 100.0)?;
+        let m_image_as_webp = webp::Encoder::from_image(&m_image)?.encode_simple(true, 100.0)?;
+        let l_image_as_webp = webp::Encoder::from_image(&l_image)?.encode_simple(true, 100.0)?;
+
+        fs::write(
             format!("{}/images/s/{}.webp", DATA_DIR, id),
-            ImageFormat::WebP,
+            &*s_image_as_webp,
         )?;
-        m_image.save_with_format(
+        fs::write(
             format!("{}/images/m/{}.webp", DATA_DIR, id),
-            ImageFormat::WebP,
+            &*m_image_as_webp,
         )?;
-        l_image.save_with_format(
+        fs::write(
             format!("{}/images/l/{}.webp", DATA_DIR, id),
-            ImageFormat::WebP,
+            &*l_image_as_webp,
         )?;
 
         Ok(())

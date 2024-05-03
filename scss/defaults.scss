@@ -33,7 +33,6 @@ strong {
 // Image loading animation
 img {
     width: 100%;
-    aspect-ratio: 3 / 1;
     background: palette.$grey100 linear-gradient(to left, palette.$grey100, palette.$white, palette.$grey100);
     background-repeat: no-repeat;
     background-size: 30%;

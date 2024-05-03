@@ -39,5 +39,5 @@ pub async fn image_upload(
     // FIXME: If this fails it should delete the database entry!
     Image::save_to_file(image.id, &form.image.data, image_format)?;
 
-    Ok(Redirect::to("/dynamic-data/images/m/{{ image.id }}.webp"))
+    Ok(Redirect::to("/control-panel/image-gallery"))
 }

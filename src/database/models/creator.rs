@@ -1,5 +1,6 @@
 use std::io::Cursor;
 
+use crate::defaults::DATA_DIR;
 use crate::error::Error;
 use argon2::password_hash::rand_core::OsRng;
 use argon2::password_hash::SaltString;
@@ -14,6 +15,7 @@ use image::ImageFormat;
 use jsonwebtoken::Header;
 use rocket::http::Status;
 use serde::{Deserialize, Serialize};
+use std::fs;
 
 use crate::database::DatabaseHandler;
 use crate::token::get_encoding_key;
@@ -132,9 +134,11 @@ impl Creator {
             image::imageops::FilterType::Triangle,
         );
 
-        image_data.save_with_format(
-            format!("data/profile-pictures/{}.webp", username),
-            ImageFormat::WebP,
+        let image_as_webp = webp::Encoder::from_image(&image_data)?.encode_simple(true, 100.0)?;
+
+        fs::write(
+            format!("{}/profile-pictures/{}.webp", DATA_DIR, username),
+            &*image_as_webp,
         )?;
 
         Ok(())
