@@ -6,8 +6,11 @@ pub struct Login<'a> {
 
 #[derive(FromForm)]
 pub struct ChangePasswordSelf<'a> {
+    #[field(name = "current_password")]
     pub current_password: &'a str,
+    #[field(name = "new_password")]
     pub new_password: &'a str,
+    #[field(name = "confirm_new_password-password")]
     pub confirm_new_password: &'a str,
 }
 
