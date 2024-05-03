@@ -68,9 +68,6 @@ CREATE TABLE IF NOT EXISTS images (
     ) STORED
 );
 
-CREATE INDEX IF NOT EXISTS idx_creators_username ON creators (username);
-
-CREATE INDEX IF NOT EXISTS idx_articles_id ON articles (id);
 CREATE INDEX IF NOT EXISTS idx_articles_title ON articles (title);
 CREATE INDEX IF NOT EXISTS idx_articles_tags ON articles USING GIN (tags);
 CREATE INDEX IF NOT EXISTS idx_articles_search ON articles USING GIN (search_vec);
