@@ -55,9 +55,9 @@ impl Image {
     }
 
     /// Saves image data to a file.
-    /// It saves three versions (max dimensions):
-    /// * `s` - 600x600
-    /// * `m` - 1200x1200
+    /// It saves three versions (max width):
+    /// * `s` - 600
+    /// * `m` - 1200
     /// * `l` - Original image size
     pub fn save_to_file(
         id: Uuid,
