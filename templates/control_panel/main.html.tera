@@ -259,9 +259,9 @@
 </div>
 
 <dialog data-dialog-box="change-display-name">
-    <form action="/api/creator/update" method="post">
+    <form action="/api/creator/update-profile" method="post">
         <label>Visningsnamn</label>
-        <input name="display_name" value="{{ creator.display_name }}" type="text" required>
+        <input name="display-name" value="{{ creator.display_name }}" type="text" required>
 
         <div class="flex wrap gap">
             <button class="btn" icon="person_edit" type="submit">Ändra visningsnamn</button>
@@ -271,7 +271,7 @@
 </dialog>
 
 <dialog data-dialog-box="change-biography">
-    <form action="/api/creator/update" method="post">
+    <form action="/api/creator/update-profile" method="post">
         <label>Beskrivning</label>
         <input name="biography" value="{{ creator.biography }}" type="text" required>
 
