@@ -5,8 +5,6 @@
 {% endblock head %}
 
 {% block main %}
-<h1 class="box pad">Logga in</h1>
-
 {% if flash.message %}
 <div class="box pad margin-bottom {{ flash.kind }}">
     {% if flash.kind == "success" %}
@@ -20,6 +18,7 @@
 {% endif %}
 
 <form class="box pad" action="/api/auth/login" method="post">
+    <h2 icon="login">Logga in</h2>
     <label for="username">Användarnamn:</label>
     <input type="text" name="username" id="username" required autofocus>
 
