@@ -10,6 +10,9 @@
 #[macro_use]
 extern crate rocket;
 
+#[macro_use]
+extern crate rust_i18n;
+
 pub mod anyresponder;
 pub mod api;
 pub mod app;
@@ -20,10 +23,15 @@ pub mod error;
 pub mod flash_msg;
 pub mod token;
 
+use std::collections::HashMap;
+
 use comrak::{markdown_to_html, Options};
 use database::DatabaseHandler;
 use rocket::{fs::FileServer, response::Flash, response::Redirect};
 use rocket_dyn_templates::{context, tera, Engines, Template};
+
+// Load locales.
+i18n!("locales", fallback = ["sv", "en"]);
 
 fn custom_tera(engines: &mut Engines) {
     engines.tera.register_filter(
@@ -33,6 +41,21 @@ fn custom_tera(engines: &mut Engines) {
             let raw_html = markdown_to_html(&markdown, &Options::default());
             let sanitized_html = ammonia::clean(&raw_html);
             Ok(tera::to_value(sanitized_html)?)
+        },
+    );
+    engines.tera.register_function(
+        "t",
+        |value: &HashMap<String, tera::Value>| -> tera::Result<tera::Value> {
+            let gettext = value
+                .get("t")
+                .expect("Argument `t` (text entry) not defined!")
+                .to_string();
+            let _locale = value
+                .get("l")
+                .unwrap_or(&tera::to_value("en_GB")?)
+                .to_string();
+            let text = format!("{}", t!(&gettext));
+            Ok(tera::to_value(text)?)
         },
     );
 }

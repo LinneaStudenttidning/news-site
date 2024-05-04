@@ -10,7 +10,7 @@
 {% endblock head %}
 
 {% block main %}
-<h1 class="box pad">Senaste inom nyheter, reportage, & opinion</h1>
+<h1 class="box pad">{{ t(t="hello") }}</h1>
 <div>
     {% for text in texts %}
     <a href="/t/{{ text.id }}/{{ text.title_slug }}" class="news-item box">
