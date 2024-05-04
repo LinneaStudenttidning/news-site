@@ -8,7 +8,7 @@
 <h1 class="box pad">Logga in</h1>
 
 {% if flash.message %}
-<div class="box pad {{ flash.kind }}">
+<div class="box pad margin-bottom {{ flash.kind }}">
     {% if flash.kind == "success" %}
     <h2 icon="info">Meddelande</h2>
     <p>{{ flash.message }}</p>
