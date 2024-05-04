@@ -27,7 +27,7 @@ async fn control_panel(
         .map(|creator| creator.username)
         .collect::<Vec<String>>();
 
-    let flash: FlashMsg = flash.into();
+    let flash = flash.map(FlashMsg::from);
 
     Ok(Template::render(
         "control_panel/main",
@@ -39,7 +39,7 @@ async fn control_panel(
 fn login_page(flash: Option<FlashMessage>, claims: Option<Claims>) -> Result<AnyResponder, Error> {
     // Render template if logged out, else redirect to control panel
     if claims.is_none() {
-        let flash: FlashMsg = flash.into();
+        let flash = flash.map(FlashMsg::from);
         let template = Template::render("control_panel/login", context! { flash });
         return Ok(AnyResponder::from(template));
     }
