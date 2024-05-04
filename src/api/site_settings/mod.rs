@@ -24,11 +24,11 @@ pub async fn site_settings_update_about_us(
     }
 
     match data_dir::edit_about_us(form.about_us.to_string()) {
-        true => Ok(Flash::success(
+        Ok(_) => Ok(Flash::success(
             Redirect::to("/control-panel"),
             "Lyckades med att ändra \"om oss\"".to_string(),
         )),
-        false => Ok(Flash::error(
+        Err(_) => Ok(Flash::error(
             Redirect::to("/control-panel"),
             "Misslyckades med att ändra \"om oss\"".to_string(),
         )),
