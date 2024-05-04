@@ -20,6 +20,9 @@
 
     > h2 {
         margin-top: 0;
+        margin-bottom: settings.$pad-relative-xs;
+        padding: 0 settings.$pad-relative-xxs settings.$pad-relative-xxs settings.$pad-relative-xxs;
+        border-bottom: 1px solid palette.$grey100;
         display: flex;
         align-items: center;
 

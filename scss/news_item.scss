@@ -25,6 +25,8 @@
     > h2 {
         margin-top: 0;
         padding-top: settings.$pad-fixed-m;
+        padding: 0;
+        border-bottom: 0 none transparent;
     }
 
     &:hover > h2 {

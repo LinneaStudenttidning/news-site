@@ -1,7 +1,8 @@
-@use "defaults";
 @use "fonts";
-@use "typography";
+@use "defaults";
 @use "layout";
+@use "typography";
+@use "box";
 @use "news_item";
 @use "article";
 @use "buttons";
@@ -12,4 +13,3 @@
 @use "table";
 @use "popup";
 @use "error";
-@use "box";
