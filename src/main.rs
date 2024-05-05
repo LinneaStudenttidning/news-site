@@ -56,7 +56,7 @@ fn custom_tera(engines: &mut Engines) {
                 .ok_or("NOT A STRING!")
                 .expect("NOT A STRING!");
 
-            let default_locale = tera::to_value("en_GB")?;
+            let default_locale = tera::to_value("sv")?;
             let locale = value
                 .get("l")
                 .unwrap_or(&default_locale)
