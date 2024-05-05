@@ -6,7 +6,7 @@
 .btn:visited {
     cursor: pointer;
     color: palette.$primary500;
-    background-color: palette.$primary100;
+    background-color: transparent;
     font-family: settings.$font-family-forms;
     font-size: .9rem;
     font-weight: 300;
@@ -18,13 +18,14 @@
     max-width: 100%;
     overflow: hidden;
     border-radius: settings.$border-radius-m;
-    border: 0 none transparent;
+    border: 2px solid palette.$primary100;
 
     transition: border-radius .3s, background-color .2s;
 
     &:hover,
     &:focus {
-        border-radius: settings.$border-radius-xl;
+        border-radius: settings.$border-radius-l;
+        background-color: palette.$primary100;
     }
 
     &:active {
@@ -51,8 +52,12 @@
     }
 
     &.dangerous {
-        background-color: palette.$danger100;
         color: palette.$danger500;
+        border-color: palette.$danger100;
+
+        &:hover {
+            background-color: palette.$danger100;
+        }
 
         &:active {
             background-color: darken(palette.$danger100, 5%);
