@@ -7,6 +7,19 @@ use uuid::Uuid;
 
 use crate::{database::DatabaseHandler, defaults::DATA_DIR, error::Error};
 
+/// Max width of a small image.
+const IMG_S_SIZE: u32 = 600;
+/// Max width of a medium image.
+const IMG_M_SIZE: u32 = 1200;
+
+/// `Image` represents the metadata of an image.
+/// It is stored in the database. The actual image files are stored in:
+/// `${DATA_DIR}/images/{s,m,l}`
+///
+/// The `s`, `m`, and `l` represent different sizes (max width) of the image:
+/// * `s` - 600
+/// * `m` - 1200
+/// * `l` - Original image size
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Image {
     pub id: Uuid,
@@ -67,27 +80,25 @@ impl Image {
         // Load in the image to a `DynamicImage`
         let image_data = load(Cursor::new(image_data), image_format)?;
 
-        const S_SIZE: u32 = 600;
-        const M_SIZE: u32 = 1200;
-
         // Create different sizes of the image.
         let s_image = image_data.resize_to_fill(
-            S_SIZE,
-            S_SIZE * image_data.height() / image_data.width(),
+            IMG_S_SIZE,
+            IMG_S_SIZE * image_data.height() / image_data.width(),
             Triangle,
         );
         let m_image = image_data.resize_to_fill(
-            M_SIZE,
-            M_SIZE * image_data.height() / image_data.width(),
+            IMG_M_SIZE,
+            IMG_M_SIZE * image_data.height() / image_data.width(),
             Triangle,
         );
         let l_image = image_data;
 
-        // Save images
+        // Encode the images as WebP.
         let s_image_as_webp = webp::Encoder::from_image(&s_image)?.encode_simple(true, 100.0)?;
         let m_image_as_webp = webp::Encoder::from_image(&m_image)?.encode_simple(true, 100.0)?;
         let l_image_as_webp = webp::Encoder::from_image(&l_image)?.encode_simple(true, 100.0)?;
 
+        // Save the images.
         fs::write(
             format!("{}/images/s/{}.webp", DATA_DIR, id),
             &*s_image_as_webp,
