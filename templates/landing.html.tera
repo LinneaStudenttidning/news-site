@@ -10,13 +10,13 @@
 {% endblock head %}
 
 {% block main %}
-<h1 class="box pad">{{ t(t="hello") }}</h1>
+<h1 class="box pad">{{ t(t="landing_msg") }}</h1>
 <div>
     {% for text in texts %}
     <a href="/t/{{ text.id }}/{{ text.title_slug }}" class="news-item box">
         <img src="https://source.unsplash.com/random/600x200?{{ text.id }}" alt="Random image" loading="lazy">
         <h2>{{ text.title }}</h2>
-        <p><span class="type">{{ text.text_type }}</span>{{ text.lead_paragraph }}</p>
+        <p><span class="type">{{ t(t="text_types." ~ text.text_type) }}</span>{{ text.lead_paragraph }}</p>
         <p class="news-meta-data">{{ text.creator.display_name }}, {{ text.created_at | date(format="%R")  }}</p>
     </a>
     {% endfor %}

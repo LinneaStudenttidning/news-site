@@ -1,2 +1,7 @@
 _version: 1
-hello: "Hej!"
+landing_msg: "Senaste nytt!"
+text_types:
+  Article: "Artikel"
+  Coverage: "Reportage"
+  Opinion: "Opinion"
+  Other: "Annat"
