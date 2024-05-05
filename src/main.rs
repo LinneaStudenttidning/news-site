@@ -27,7 +27,10 @@ use std::collections::HashMap;
 
 use comrak::{markdown_to_html, Options};
 use database::DatabaseHandler;
-use rocket::{fs::FileServer, response::Flash, response::Redirect};
+use rocket::{
+    fs::FileServer,
+    response::{Flash, Redirect},
+};
 use rocket_dyn_templates::{context, tera, Engines, Template};
 
 // Load locales.
@@ -49,12 +52,20 @@ fn custom_tera(engines: &mut Engines) {
             let gettext = value
                 .get("t")
                 .expect("Argument `t` (text entry) not defined!")
-                .to_string();
-            let _locale = value
+                .as_str()
+                .ok_or("NOT A STRING!")
+                .expect("NOT A STRING!");
+
+            let default_locale = tera::to_value("en_GB")?;
+            let locale = value
                 .get("l")
-                .unwrap_or(&tera::to_value("en_GB")?)
-                .to_string();
-            let text = format!("{}", t!(&gettext));
+                .unwrap_or(&default_locale)
+                .as_str()
+                .ok_or("NOT A STRING!")
+                .expect("NOT A STRING!");
+
+            let text = format!("{}", t!(&gettext, locale = &locale));
+
             Ok(tera::to_value(text)?)
         },
     );
