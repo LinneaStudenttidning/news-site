@@ -10,6 +10,16 @@
     cursor: pointer;
     display: block;
     margin-bottom: settings.$pad-fixed-l;
+    transition: box-shadow .3s, border-color .1s;
+
+    &:hover {
+        border-color: palette.$grey200;
+        box-shadow: 0 .5rem .5rem palette.$shadow200;
+
+        > h2 {
+            text-decoration: underline;
+        }
+    }
 
     > img {
         margin-bottom: 0;
@@ -27,10 +37,6 @@
         padding-top: settings.$pad-fixed-m;
         padding: 0;
         border-bottom: 0 none transparent;
-    }
-
-    &:hover > h2 {
-        text-decoration: underline;
     }
 
     > p {
