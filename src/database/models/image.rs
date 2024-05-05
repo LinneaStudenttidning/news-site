@@ -3,6 +3,7 @@ use std::{fs, io::Cursor};
 use chrono::{DateTime, Local};
 use image::{imageops::FilterType::Triangle, load, ImageFormat};
 use serde::{Deserialize, Serialize};
+use sqlx::postgres::PgQueryResult;
 use uuid::Uuid;
 
 use crate::{database::DatabaseHandler, defaults::DATA_DIR, error::Error};
@@ -138,6 +139,22 @@ impl Image {
     ) -> Result<Vec<Self>, Error> {
         sqlx::query_file_as!(Self, "sql/images/get_by_any_of_tags.sql", tags)
             .fetch_all(&db.pool)
+            .await
+            .map_err(Error::from)
+    }
+
+    /// Deletes ONE `Image` from the database and file stystem by its id.
+    pub async fn delete(db: &DatabaseHandler, id: Uuid) -> Result<PgQueryResult, Error> {
+        // Remove all files.
+        // FIXME: If for some reason the image files do not exist, but the metadata does,
+        // this will error out and the metadata won't be deleted.
+        fs::remove_file(format!("{}/images/s/{}.webp", DATA_DIR, id))?;
+        fs::remove_file(format!("{}/images/m/{}.webp", DATA_DIR, id))?;
+        fs::remove_file(format!("{}/images/l/{}.webp", DATA_DIR, id))?;
+
+        // Remove from database.
+        sqlx::query!("DELETE FROM images WHERE id = $1", id)
+            .execute(&db.pool)
             .await
             .map_err(Error::from)
     }

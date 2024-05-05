@@ -1,5 +1,8 @@
+use std::str::FromStr;
+
 use image::ImageFormat;
 use rocket::{form::Form, http::Status, response::Redirect, State};
+use uuid::Uuid;
 
 use crate::{
     database::{models::image::Image, DatabaseHandler},
@@ -38,6 +41,27 @@ pub async fn image_upload(
 
     // FIXME: If this fails it should delete the database entry!
     Image::save_to_file(image.id, &form.image.data, image_format)?;
+
+    Ok(Redirect::to("/control-panel/image-gallery"))
+}
+
+#[post("/image/delete/<id>")]
+pub async fn image_delete(
+    db: &State<DatabaseHandler>,
+    claims: Claims,
+    id: &str,
+) -> Result<Redirect, Error> {
+    if !claims.admin {
+        return Err(Error::create(
+            "app::control_panel::promote_creator",
+            "Sorry, the action you are performing requires admin access!",
+            Status::Forbidden,
+        ));
+    }
+
+    let id_as_uuid = Uuid::from_str(id)?;
+
+    Image::delete(db, id_as_uuid).await?;
 
     Ok(Redirect::to("/control-panel/image-gallery"))
 }

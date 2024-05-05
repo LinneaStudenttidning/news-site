@@ -6,7 +6,7 @@ use crate::api::{
         creator_demote, creator_lock, creator_new, creator_promote, creator_update_profile,
         creator_update_profile_picture,
     },
-    image::image_upload,
+    image::{image_delete, image_upload},
     site_settings::site_settings_update_about_us,
     text::{text_edit, text_save, text_set_done_status, text_set_publish_status},
 };
@@ -34,6 +34,7 @@ pub fn get_all_routes() -> Vec<Route> {
         creator_lock,
         // -> /image
         image_upload,
+        image_delete,
         // ->  /site-settings
         site_settings_update_about_us,
         // -> /text

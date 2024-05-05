@@ -31,6 +31,13 @@
         <img src="/dynamic-data/images/m/{{ image.id }}.webp" alt="{{ image.description }}">
         <p>{{ image.description }}</p>
         <p>{{ image.created_at | date(format="%F %T") }}</p>
+        {% if is_admin %}
+        {# FIXME: THIS SHOULD REALLY BE DOUBLE CHECKED BEFORE GOING THROUGH!  #}
+        <form id="image-delete-{{ image.id }}" action="/api/image/delete/{{ image.id }}" class="hidden-form"
+            method="post"></form>
+        <button class="btn dangerous" form="image-delete-{{ image.id }}" type="submit" icon="delete_permanently">Ta
+            bort!</button>
+        {% endif %}
     </div>
     {% endfor %}
     {% else %}
