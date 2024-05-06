@@ -14,10 +14,23 @@ form {
         font-family: settings.$font-family-forms;
         font-weight: unset;
         font-size: 1rem;
-        background-color: palette.$surface;
-        border: 0 none transparent;
-        padding: settings.$pad-relative-xs settings.$pad-relative-m;
+        background-color: palette.$standout;
+        border: 2px solid palette.$grey100;
+        border-radius: settings.$border-radius-s;
+        padding: settings.$pad-relative-xs settings.$pad-relative-s;
         margin-bottom: settings.$pad-fixed-m;
+
+        transition: border .2s, outline .1s;
+
+        &:hover {
+            border-color: palette.$primary200;
+        }
+
+        &:active,
+        &:focus {
+            border-color: palette.$primary;
+            outline: 4px solid palette.$primary100;
+        }
     }
 
     > .editor {
