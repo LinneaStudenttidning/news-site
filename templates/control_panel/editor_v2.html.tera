@@ -7,10 +7,8 @@
 {% endblock head %}
 
 {% block main %}
-<h1>Textredigerare</h1>
-
 {% if is_editing %}
-<div class="box">
+<div class="box pad margin-bottom">
     <h2 icon="handyman">Verktyg</h2>
     <div class="flex wrap gap">
         {% if text.author == creator.username and not text.marked_as_done %}
@@ -40,7 +38,9 @@
 </div>
 {% endif %}
 
-<form action="{% if text %}/api/text/edit{% else %}/api/text/save{% endif %}" method="post">
+<form class="box pad margin-bottom" action="{% if text %}/api/text/edit{% else %}/api/text/save{% endif %}"
+    method="post">
+    <h2 icon="edit_note">{% if is_editing %}Redigera text{% else  %}Skapa text{% endif %}</h2>
     <label for="text-type">Texttyp:</label>
     <select name="text-type" id="text-type">
         <option value="Article" {% if text and text.text_type == "Article" %}selected{% endif %}>Artikel</option>
@@ -79,10 +79,12 @@
     <div>
         <p>
         <ul>
-            <li>Det första stycket du skriver kommer automatiskt att bli fetstilt, alltså ingressen.</li>
-            <li>Använd knapparna för att göra din text fetstilt/kursiv/annat där det behövs.</li>
-            <li>Du ska <strong>endast</strong> ha en <code>H1</code>, alltså rubrik.</li>
-            <li>Du får ha hur många <code>H2</code>, alltså mellanrubriker, du vill/behöver.</li>
+            <li>Glöm inte att spara din text när du är klar!</li>
+            <li>Rubriken och ingressen kommer att formatteras automatiskt.</li>
+            <li>Du kan använda <a href="https://www.markdownguide.org/cheat-sheet/#basic-syntax">markdown</a>. (OBS!
+                Detta kan nog skapa problem om du använder något annat än fetstil, kursiv stil, block-citat, länkar,
+                eller listor...)</li>
+            <li>För en mellanrubrik, använd två hashtags. (## Min rubrik [ny rad])</li>
         </ul>
         </p>
     </div>
