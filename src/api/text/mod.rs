@@ -82,6 +82,14 @@ pub async fn text_edit(
         ));
     }
 
+    if current_text.is_published && !claims.admin {
+        return Err(Error::create(
+            &format!("{}:{}", file!(), line!()),
+            "Cannot edit published text if not publisher!",
+            Status::Unauthorized,
+        ));
+    }
+
     let updated_text = Text::update_by_id(
         db,
         text_id,
