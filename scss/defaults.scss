@@ -20,11 +20,6 @@ body {
     font-size: 12pt;
 }
 
-body {
-    background-image: url("/static/bg_tile_plain.svg");
-    background-size: 60px;
-}
-
 /*
  * Since `font-weight` is set above, we need to re-define it
  * here for the <b> tag to bold text.
