@@ -5,7 +5,7 @@
 .news-item:visited {
     all: unset;
     border: 1px solid palette.$grey100;
-    border-top: 0 none transparent;
+    border-radius: settings.$border-radius-m;
     background-color: palette.$standout;
     cursor: pointer;
     display: block;
