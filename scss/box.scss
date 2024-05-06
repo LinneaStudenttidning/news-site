@@ -33,32 +33,47 @@
     }
 
     &.success {
+        color: palette.$green500;
         background-color: palette.$green100;
         border-color: palette.$green300;
 
-        > h2[icon]::before {
-            @include mixins.icon(2.4);
-            color: palette.$green400;
+        > h2 {
+            border-bottom-color: palette.$green300;
+
+            &[icon]::before {
+                @include mixins.icon(2.4);
+                color: palette.$green400;
+            }
         }
     }
 
     &.warning {
+        color: palette.$yellow500;
         background-color: palette.$yellow100;
         border-color: palette.$yellow300;
 
-        > h2[icon]::before {
-            @include mixins.icon(2.4);
-            color: palette.$yellow400;
+        > h2 {
+            border-bottom-color: palette.$yellow300;
+
+            &[icon]::before {
+                @include mixins.icon(2.4);
+                color: palette.$yellow400;
+            }
         }
     }
 
     &.error {
+        color: palette.$red500;
         background-color: palette.$red100;
         border-color: palette.$red300;
 
-        > h2[icon]::before {
-            @include mixins.icon(2.4);
-            color: palette.$red400;
+        > h2 {
+            border-bottom-color: palette.$red300;
+
+            &[icon]::before {
+                @include mixins.icon(2.4);
+                color: palette.$red400;
+            }
         }
     }
 }
