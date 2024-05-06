@@ -46,6 +46,16 @@ fn custom_tera(engines: &mut Engines) {
             Ok(tera::to_value(sanitized_html)?)
         },
     );
+
+    engines.tera.register_filter(
+        "sanitize",
+        |value: &tera::Value, _: &_| -> tera::Result<tera::Value> {
+            let html = tera::from_value::<String>(value.clone())?;
+            let sanitized_html = ammonia::clean(&html);
+            Ok(tera::to_value(sanitized_html)?)
+        },
+    );
+
     engines.tera.register_function(
         "t",
         |value: &HashMap<String, tera::Value>| -> tera::Result<tera::Value> {

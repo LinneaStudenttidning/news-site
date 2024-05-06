@@ -86,3 +86,17 @@ blockquote {
         text-align: center;
     }
 }
+
+mark {
+    display: inline;
+    background-color: palette.$yellow200;
+    padding: settings.$pad-fixed-xxs 0;
+
+    // I am using nonbreaking spaces (&nbsp;) instead of padding so that
+    // underlines are still rendered throughout all of the marking.
+    // A bit hacky, but it works! :>
+    &::after,
+    &::before {
+        content: ' ';
+    }
+}
