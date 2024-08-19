@@ -19,7 +19,7 @@ rocket_dyn_templates = { version = "0.1", features = ["tera"] }
 rust-i18n = "3"
 serde = "1"
 slug = "0.1"
-sqlx = { version = "0.7", features = [ "runtime-tokio-rustls", "postgres", "chrono", "uuid", "macros" ] }
+sqlx = { version = "0.8", features = [ "runtime-tokio-rustls", "postgres", "chrono", "uuid", "macros" ] }
 tokio-test = "0.4"
 uuid = { version = "1.8", features = ["v4", "fast-rng", "macro-diagnostics", "serde"]}
 webp = "0.3"
