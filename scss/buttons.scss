@@ -59,7 +59,8 @@
             background-color: palette.$danger100;
         }
 
-        &:active {
+        &:active,
+        &:focus {
             background-color: darken(palette.$danger100, 5%);
         }
 
