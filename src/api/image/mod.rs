@@ -1,4 +1,5 @@
 use std::str::FromStr;
+use tokio::task;
 
 use image::ImageFormat;
 use rocket::{form::Form, http::Status, response::Redirect, State};
@@ -39,7 +40,12 @@ pub async fn image_upload(
     let image = Image::create(&claims.sub, Some(form.description), tags);
     let image = image.save_to_db(db).await?;
 
-    let image_status = Image::save_to_file(image.id, &form.image.data, image_format);
+    // Spin up a thread for saving the image
+    let image_data = form.image.data.clone();
+    let image_status =
+        task::spawn_blocking(move || Image::save_to_file(image.id, &image_data, image_format))
+            .await;
+
     if image_status.is_err() {
         Image::delete(db, image.id).await?;
         return Err(Error::create(
