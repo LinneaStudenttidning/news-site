@@ -154,11 +154,9 @@ impl Image {
     /// Deletes ONE `Image` from the database and file stystem by its id.
     pub async fn delete(db: &DatabaseHandler, id: Uuid) -> Result<PgQueryResult, Error> {
         // Remove all files.
-        // FIXME: If for some reason the image files do not exist, but the metadata does,
-        // this will error out and the metadata won't be deleted.
-        fs::remove_file(format!("{}/images/s/{}.webp", DATA_DIR, id))?;
-        fs::remove_file(format!("{}/images/m/{}.webp", DATA_DIR, id))?;
-        fs::remove_file(format!("{}/images/l/{}.webp", DATA_DIR, id))?;
+        fs::remove_file(format!("{}/images/s/{}.webp", DATA_DIR, id)).ok();
+        fs::remove_file(format!("{}/images/m/{}.webp", DATA_DIR, id)).ok();
+        fs::remove_file(format!("{}/images/l/{}.webp", DATA_DIR, id)).ok();
 
         // Remove from database.
         sqlx::query!("DELETE FROM images WHERE id = $1", id)

@@ -41,7 +41,7 @@ pub async fn image_upload(
 
     let image_status = Image::save_to_file(image.id, &form.image.data, image_format);
     if image_status.is_err() {
-        Image::delete(db, image.id).await.ok();
+        Image::delete(db, image.id).await?;
         return Err(Error::create(
             "api::image::image_upload",
             format!(
