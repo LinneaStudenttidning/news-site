@@ -39,8 +39,13 @@ pub async fn image_upload(
     let image = Image::create(&claims.sub, Some(form.description), tags);
     let image = image.save_to_db(db).await?;
 
-    // FIXME: If this fails it should delete the database entry!
-    Image::save_to_file(image.id, &form.image.data, image_format)?;
+    // FIXME: Maybe this should yield an error as well?
+    match Image::save_to_file(image.id, &form.image.data, image_format) {
+        Ok(_) => (),
+        Err(_) => {
+            Image::delete(db, image.id).await.ok();
+        }
+    };
 
     Ok(Redirect::to("/control-panel/image-gallery"))
 }
