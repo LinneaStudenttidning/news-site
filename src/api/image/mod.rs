@@ -39,13 +39,19 @@ pub async fn image_upload(
     let image = Image::create(&claims.sub, Some(form.description), tags);
     let image = image.save_to_db(db).await?;
 
-    // FIXME: Maybe this should yield an error as well?
-    match Image::save_to_file(image.id, &form.image.data, image_format) {
-        Ok(_) => (),
-        Err(_) => {
-            Image::delete(db, image.id).await.ok();
-        }
-    };
+    let image_status = Image::save_to_file(image.id, &form.image.data, image_format);
+    if image_status.is_err() {
+        Image::delete(db, image.id).await.ok();
+        return Err(Error::create(
+            "api::image::image_upload",
+            format!(
+                "Sorry, failed to save the image. Error: {:?}",
+                image_status.err()
+            )
+            .as_str(),
+            Status::InternalServerError,
+        ));
+    }
 
     Ok(Redirect::to("/control-panel/image-gallery"))
 }
