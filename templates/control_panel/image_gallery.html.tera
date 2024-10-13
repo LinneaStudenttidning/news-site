@@ -6,7 +6,7 @@
 {% endblock head %}
 
 {% block main %}
-<h1>Bildgalleriet</h1>
+<h1 class="box pad">Bildgalleriet</h1>
 
 <form class="box pad margin-bottom" action="/api/image/upload" method="post" enctype="multipart/form-data">
     <label for="description">Beskriv bildens innehåll:</label>
@@ -29,6 +29,7 @@
     {% for image in images %}
     <div class="box pad flex wrap gap">
         <img src="/dynamic-data/images/m/{{ image.id }}.webp" alt="{{ image.description }}">
+        <p>{{ image.id }}</p>
         <p>{{ image.description }}</p>
         <p>{{ image.created_at | date(format="%F %T") }}</p>
         {% if is_admin %}

@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS articles (
     title_slug TEXT NOT NULL,
     /* Reference to the username of the creator. */
     author text NOT NULL,
+    thumbnail uuid DEFAULT NULL,
     lead_paragraph text NOT NULL,
     text_body text NOT NULL,
     text_type text_type NOT NULL,

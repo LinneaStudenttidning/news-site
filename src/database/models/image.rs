@@ -117,6 +117,14 @@ impl Image {
     }
 
     /// Gets ALL `Image`s from the database.
+    pub async fn get_by_id(db: &DatabaseHandler, id: Uuid) -> Result<Self, Error> {
+        sqlx::query_file_as!(Self, "sql/images/get_by_id.sql", id)
+            .fetch_one(&db.pool)
+            .await
+            .map_err(Error::from)
+    }
+
+    /// Gets ALL `Image`s from the database.
     pub async fn get_all(db: &DatabaseHandler) -> Result<Vec<Self>, Error> {
         sqlx::query_file_as!(Self, "sql/images/get_all.sql")
             .fetch_all(&db.pool)

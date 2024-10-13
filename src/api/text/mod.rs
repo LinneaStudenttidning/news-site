@@ -1,7 +1,13 @@
+use std::str::FromStr;
+
 use rocket::{form::Form, http::Status, response::Redirect, State};
+use uuid::Uuid;
 
 use crate::{
-    database::{models::article::Text, DatabaseHandler},
+    database::{
+        models::{article::Text, image::Image},
+        DatabaseHandler,
+    },
     error::Error,
     token::Claims,
 };
@@ -94,6 +100,13 @@ pub async fn text_edit(
         db,
         text_id,
         form.title,
+        match Uuid::from_str(form.thumbnail) {
+            Ok(thumbnail_id) => Image::get_by_id(db, thumbnail_id)
+                .await
+                .ok()
+                .map(|image| image.id),
+            _ => None,
+        },
         form.leading_paragraph,
         form.text_body,
         form.text_type,

@@ -3,6 +3,7 @@ SELECT
     ts_headline(title, search_query, 'StartSel=<mark>, StopSel=</mark>') AS "title!",title
     title_slug,
     author,
+    thumbnail,
     ts_headline(lead_paragraph, search_query, 'StartSel=<mark>, StopSel=</mark>') AS "lead_paragraph!",
     ts_headline(text_body, search_query, 'StartSel=<mark>, StopSel=</mark>') AS "text_body!",
     text_type AS "text_type!: TextType",

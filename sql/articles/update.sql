@@ -1,21 +1,23 @@
 UPDATE articles SET
     title = $1,
     title_slug = $2,
-    lead_paragraph = $3,
-    text_body = $4,
-    text_type = $5,
+    thumbnail = $3,
+    lead_paragraph = $4,
+    text_body = $5,
+    text_type = $6,
     updated_at = NOW(),
-    tags = $6
+    tags = $7
 FROM creators
 WHERE
     articles.author = creators.username
 AND
-    id = $7
+    id = $8
 RETURNING
     id,
     title,
     title_slug,
     author,
+    thumbnail,
     lead_paragraph,
     text_body,
     text_type AS "text_type!: TextType",

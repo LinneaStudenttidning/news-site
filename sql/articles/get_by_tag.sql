@@ -3,6 +3,7 @@ SELECT
     title,
     title_slug,
     author,
+    thumbnail,
     lead_paragraph,
     text_body,
     text_type AS "text_type!: TextType",

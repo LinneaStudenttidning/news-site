@@ -15,7 +15,10 @@
 {% endif %}
 
 <article class="box" itemscope itemtype="https://schema.org/NewsArticle">
-    <img itemprop="image" src="https://source.unsplash.com/random/1200x400?a" alt="Random image" loading="lazy">
+    {% if text.thumbnail %}
+    {# FIXME: The alt-text should be set from the alt-text specified in the database. #}
+    <img itemprop="image" src="/dynamic-data/images/m/{{ text.thumbnail }}.webp" alt="DRAGBILD" loading="lazy">
+    {% endif %}
     <h1 itemprop="headline">{{ text.title }}</h1>
     <p itemprop="description" class="lead-paragraph">{{ text.lead_paragraph }}</p>
     <div class="text-body" itemprop="articleBody">

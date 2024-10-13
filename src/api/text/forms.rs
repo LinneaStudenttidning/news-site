@@ -8,6 +8,7 @@ pub struct SaveOrEditText<'a> {
     #[field(name = "text-type")]
     pub text_type: TextType,
     pub title: &'a str,
+    pub thumbnail: &'a str,
     #[field(name = "leading-paragraph")]
     pub leading_paragraph: &'a str,
     #[field(name = "text-body")]

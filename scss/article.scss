@@ -10,6 +10,8 @@ article {
     > img:first-child {
         margin: 0;
         border-radius: settings.$border-radius-m settings.$border-radius-m 0 0;
+        aspect-ratio: 3 / 1;
+        object-fit: cover;
     }
 
     > h1 {

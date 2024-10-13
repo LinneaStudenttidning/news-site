@@ -5,6 +5,7 @@ WITH inserted_article AS (
             title,
             title_slug,
             author,
+            thumbnail,
             lead_paragraph,
             text_body,
             text_type,
@@ -15,13 +16,14 @@ WITH inserted_article AS (
             marked_as_done
         )
     VALUES
-        (DEFAULT, $1, $2, $3, $4, $5, $6, DEFAULT, DEFAULT, $7, $8, $9) RETURNING *
-) 
+        (DEFAULT, $1, $2, $3, $4, $5, $6, $7, DEFAULT, DEFAULT, $8, $9, $10) RETURNING *
+)
 SELECT
     id,
-    title, 
+    title,
     title_slug,
     author,
+    thumbnail,
     lead_paragraph,
     text_body,
     text_type AS "text_type!: TextType",
