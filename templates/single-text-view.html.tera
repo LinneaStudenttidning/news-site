@@ -17,7 +17,7 @@
 <article class="box" itemscope itemtype="https://schema.org/NewsArticle">
     {% if text.thumbnail %}
     {# FIXME: The alt-text should be set from the alt-text specified in the database. #}
-    <img itemprop="image" src="/dynamic-data/images/m/{{ text.thumbnail }}.webp" alt="DRAGBILD" loading="lazy">
+    <img itemprop="image" src="/dynamic-data/images/m/{{ text.thumbnail.id }}.webp" alt="{{ text.thumbnail.description }}" loading="lazy">
     {% endif %}
     <h1 itemprop="headline">{{ text.title }}</h1>
     <p itemprop="description" class="lead-paragraph">{{ text.lead_paragraph }}</p>

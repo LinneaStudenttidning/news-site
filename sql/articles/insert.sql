@@ -19,20 +19,23 @@ WITH inserted_article AS (
         (DEFAULT, $1, $2, $3, $4, $5, $6, $7, DEFAULT, DEFAULT, $8, $9, $10) RETURNING *
 )
 SELECT
-    id,
+    inserted_article.id,
     title,
     title_slug,
-    author,
-    thumbnail,
+    inserted_article.author,
+    thumbnail AS "thumbnail_id",
     lead_paragraph,
     text_body,
     text_type AS "text_type!: TextType",
-    created_at,
+    inserted_article.created_at,
     updated_at,
-    tags,
+    inserted_article.tags,
     is_published,
     marked_as_done,
-    creators AS "creator!: Creator"
+    creators AS "creator!: Creator",
+    images AS "thumbnail?: Image"
 FROM inserted_article
 JOIN creators ON
     inserted_article.author = creators.username
+LEFT JOIN images ON
+    inserted_article.thumbnail = images.id

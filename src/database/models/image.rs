@@ -21,7 +21,7 @@ const IMG_M_SIZE: u32 = 1200;
 /// * `s` - 600
 /// * `m` - 1200
 /// * `l` - Original image size
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize, sqlx::Type)]
 pub struct Image {
     pub id: Uuid,
     pub author: String,

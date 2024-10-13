@@ -1,21 +1,24 @@
 SELECT
-    id,
+    articles.id,
     title,
     title_slug,
-    author,
-    thumbnail,
+    articles.author,
+    thumbnail AS "thumbnail_id",
     lead_paragraph,
     text_body,
     text_type AS "text_type!: TextType",
-    created_at,
+    articles.created_at,
     updated_at,
-    tags,
+    articles.tags,
     is_published,
     marked_as_done,
-    creators AS "creator!: Creator"
+    creators AS "creator!: Creator",
+    images AS "thumbnail?: Image"
 FROM
     articles
 JOIN creators ON
     articles.author = creators.username
+LEFT JOIN images ON
+    articles.thumbnail = images.id
 WHERE
     marked_as_done = true AND is_published = false

@@ -9,7 +9,7 @@ use uuid::Uuid;
 
 use crate::{database::DatabaseHandler, error::Error};
 
-use super::creator::Creator;
+use super::{creator::Creator, image::Image};
 
 #[derive(Debug, Clone, Copy, Deserialize, Serialize, sqlx::Type, FromFormField)]
 #[sqlx(type_name = "text_type", rename_all = "lowercase")]
@@ -45,7 +45,7 @@ pub struct Text {
     pub title_slug: String,
     pub author: String,
     /// Reference to the an `Image` that is used as the thumbnail.
-    pub thumbnail: Option<Uuid>,
+    pub thumbnail_id: Option<Uuid>,
     pub lead_paragraph: String,
     pub text_body: String,
     pub text_type: TextType,
@@ -55,6 +55,7 @@ pub struct Text {
     pub is_published: bool,
     pub marked_as_done: bool,
     pub creator: Creator,
+    pub thumbnail: Option<Image>,
 }
 
 impl Default for Text {
@@ -64,7 +65,7 @@ impl Default for Text {
             title: "Missing title!".into(),
             title_slug: "Missing title slug!".into(),
             author: "NULL".into(),
-            thumbnail: None,
+            thumbnail_id: None,
             lead_paragraph: "Missing lead paragraph!".into(),
             text_body: "Missing text body!".into(),
             text_type: TextType::Other,
@@ -75,6 +76,7 @@ impl Default for Text {
             marked_as_done: false,
             creator: Creator::create("Missing name", "Missing Display name", "password", false)
                 .unwrap(),
+            thumbnail: None,
         }
     }
 }
@@ -108,7 +110,7 @@ impl Text {
             self.title,
             slugify(&self.title),
             self.author,
-            self.thumbnail,
+            self.thumbnail_id,
             self.lead_paragraph,
             self.text_body,
             &self.text_type as &TextType,
@@ -127,7 +129,7 @@ impl Text {
         db: &DatabaseHandler,
         id: i32,
         title: &str,
-        thumbnail: Option<Uuid>,
+        thumbnail_id: Option<Uuid>,
         lead_paragraph: &str,
         text_body: &str,
         text_type: TextType,
@@ -138,7 +140,7 @@ impl Text {
             "sql/articles/update.sql",
             title,
             slugify(title),
-            thumbnail,
+            thumbnail_id,
             lead_paragraph,
             text_body,
             text_type as TextType,

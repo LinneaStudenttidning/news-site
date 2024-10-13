@@ -61,7 +61,7 @@
         Här ska du skriva in det ID som den bild har. (<a href="/control-panel/image-gallery">Använd
             bild-galleriet.</a>)
     </p>
-    <input type="text" name="thumbnail" id="thumbnail" value="{% if text.thumbnail %}{{ text.thumbnail }}{% endif %}">
+    <input type="text" name="thumbnail" id="thumbnail" value="{% if text.thumbnail_id %}{{ text.thumbnail_id }}{% endif %}">
 
     <label for="leading-paragraph">Ingress:</label>
     <textarea name="leading-paragraph" id="leading-paragraph" rows="5" value=""
