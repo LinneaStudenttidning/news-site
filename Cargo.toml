@@ -11,17 +11,17 @@ argon2 = "0.5"
 chrono = { version = "0.4", features = ["serde"] }
 comrak = "0"
 dotenvy = "0.15"
-identicon-rs = "5"
+identicon-rs = "6"
 image = "0.25"
 jsonwebtoken = "9.3"
 rocket = { version = "0.5", features = ["json"] }
-rocket_dyn_templates = { version = "0.1", features = ["tera"] }
+rocket_dyn_templates = { version = "0.2", features = ["tera"] }
 rust-i18n = "3"
 serde = "1"
 slug = "0.1"
 sqlx = { version = "0.8", features = [ "runtime-tokio-rustls", "postgres", "chrono", "uuid", "macros" ] }
 tokio-test = "0.4"
-uuid = { version = "1.8", features = ["v4", "fast-rng", "macro-diagnostics", "serde"]}
+uuid = { version = "1.10", features = ["v4", "fast-rng", "macro-diagnostics", "serde"]}
 webp = "0.3"
 
 [profile.release]
