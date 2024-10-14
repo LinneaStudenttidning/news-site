@@ -23,15 +23,17 @@ pub mod error;
 pub mod flash_msg;
 pub mod token;
 
-use std::collections::HashMap;
+use std::{collections::HashMap, str::FromStr};
 
 use comrak::{markdown_to_html, Options};
-use database::DatabaseHandler;
+use database::{models::image::Image, DatabaseHandler};
 use rocket::{
     fs::FileServer,
     response::{Flash, Redirect},
 };
 use rocket_dyn_templates::{context, tera, Engines, Template};
+use tokio::runtime::Runtime;
+use uuid::Uuid;
 
 // Load locales.
 i18n!("locales", fallback = ["sv", "en"]);
@@ -77,6 +79,45 @@ fn custom_tera(engines: &mut Engines) {
             let text = format!("{}", t!(&gettext, locale = &locale));
 
             Ok(tera::to_value(text)?)
+        },
+    );
+
+    engines.tera.register_function(
+        "image",
+        |value: &HashMap<String, tera::Value>| -> tera::Result<tera::Value> {
+            // Initialize the database connection.
+            let database = match Runtime::new().unwrap().block_on(DatabaseHandler::create()) {
+                Ok(db) => db,
+                Err(err) => panic!(
+                    "Encountered an error while connecting to database!\n{:?}",
+                    err
+                ),
+            };
+
+            let image_id = value
+                .get("id")
+                .expect("Argument `id` (image id) not defined!")
+                .as_str()
+                .ok_or("NOT A STRING!")
+                .expect("NOT A STRING!");
+
+            let caption = value
+                .get("id")
+                .expect("Argument `caption` (image caption) not defined!")
+                .as_str()
+                .ok_or("NOT A STRING!")
+                .expect("NOT A STRING!");
+
+            let image_uuid = Uuid::from_str(image_id).expect("Invalid UUID!");
+
+            let image = Runtime::new()
+                .unwrap()
+                .block_on(Image::get_by_id(&database, image_uuid))
+                .expect("Image not found!");
+
+            let image_html = format!(r#"<img src="/dynamic-data/images/m/{}.webp" alt="{}"><p class="caption">{} <span>Foto: {}</span></p> | safe"#, image.id, image.description.unwrap_or_default(), caption, image.author);
+
+            Ok(tera::to_value(image_html)?)
         },
     );
 }
