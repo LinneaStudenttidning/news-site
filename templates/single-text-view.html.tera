@@ -16,7 +16,9 @@
 
 <article class="box" itemscope itemtype="https://schema.org/NewsArticle">
     {% if text.thumbnail %}
-    <img itemprop="image" src="/dynamic-data/images/m/{{ text.thumbnail.id }}.webp" alt="{{ text.thumbnail.description }}" loading="lazy">
+    <img itemprop="image" src="/dynamic-data/images/m/{{ text.thumbnail.id }}.webp"
+        alt="{{ text.thumbnail.description }}" loading="lazy">
+    <p class="caption">{{ text.thumbnail.description }} <span>Foto: {{ text.thumbnail.author }}</span></p>
     {% endif %}
     <h1 itemprop="headline">{{ text.title }}</h1>
     <p itemprop="description" class="lead-paragraph">{{ text.lead_paragraph }}</p>
