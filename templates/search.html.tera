@@ -16,7 +16,10 @@
     {% if q %}
     {% for text in texts %}
     <a href="/t/{{ text.id }}/{{ text.title_slug }}" class="news-item">
-        <img src="https://source.unsplash.com/random/600x200?{{ text.id }}" alt="Random image" loading="lazy">
+        {% if text.thumbnail %}
+        <img itemprop="image" src="/dynamic-data/images/m/{{ text.thumbnail.id }}.webp"
+            alt="{{ text.thumbnail.description }}" loading="lazy">
+        {% endif %}
         <h2>{{ text.title | sanitize | safe }}</h2>
         <p><span
                 class="type">{{ t(t="text_types." ~ text.text_type) }}</span>{{ text.lead_paragraph | sanitize | safe }}
