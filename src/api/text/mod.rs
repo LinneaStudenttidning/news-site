@@ -31,6 +31,9 @@ pub async fn text_save(
             .collect::<Vec<String>>(),
     };
 
+    // TODO: check if its valid
+    // let parsed_body_json: Vec<Block> = serde_json::from_str(form.text_body).unwrap();
+
     let text = Text::create(
         form.title,
         &claims.data.username,

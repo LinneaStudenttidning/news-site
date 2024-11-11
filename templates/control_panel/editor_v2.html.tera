@@ -3,6 +3,13 @@
 
 {% block head %}
 <title>Textredigerare – {{ get_env(name="SITE_TITLE") }}</title>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script><!-- Header -->
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/list@latest"></script><!-- List -->
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script><!-- Quote -->
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/link@latest"></script><!-- Link -->
+
+<!-- Load Editor.js's Core -->
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
 <script type="module" src="/static/scripts/editor.js" async defer></script>
 {% endblock head %}
 
@@ -38,7 +45,7 @@
 </div>
 {% endif %}
 
-<form class="box pad margin-bottom" action="{% if text %}/api/text/edit{% else %}/api/text/save{% endif %}"
+<form id="text-form" class="box pad margin-bottom" action="{% if text %}/api/text/edit{% else %}/api/text/save{% endif %}"
     method="post">
     <h2 icon="edit_note">{% if is_editing %}Redigera text{% else  %}Skapa text{% endif %}</h2>
     <label for="text-type">Texttyp:</label>
@@ -67,9 +74,12 @@
     <textarea name="leading-paragraph" id="leading-paragraph" rows="5" value=""
         required>{% if text.lead_paragraph %}{{ text.lead_paragraph }}{% endif %}</textarea>
 
-    <label for="text-body">Brödtext:</label>
+    <div id="editorjs"></div>
+    <input type="hidden" name="text-body" id="text-body">
+
+    {# <label for="text-body">Brödtext:</label>
     <textarea name="text-body" id="text-body" rows="15"
-        required>{% if text.text_body %}{{ text.text_body }}{% endif %}</textarea>
+        required>{% if text.text_body %}{{ text.text_body }}{% endif %}</textarea> #}
 
     <label for="tags">Taggar, separera med semikolon (;):</label>
     <input type="text" name="tags" value="{% if text.tags %}{{ text.tags | join(sep=";") }}{% endif %}" id="tags">
@@ -78,6 +88,7 @@
         <button class="btn" icon="save" type="submit">Spara</button>
     </div>
 </form>
+
 {% endblock main %}
 
 {% block aside %}
