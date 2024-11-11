@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS articles (
     author text NOT NULL,
     thumbnail uuid DEFAULT NULL,
     lead_paragraph text NOT NULL,
-    text_body text NOT NULL,
+    text_body jsonb NOT NULL,
     text_type text_type NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,

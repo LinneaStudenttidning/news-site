@@ -25,7 +25,7 @@ SELECT
     inserted_article.author,
     thumbnail AS "thumbnail_id",
     lead_paragraph,
-    text_body,
+    text_body AS "text_body!: Json<Vec<Block>>",
     text_type AS "text_type!: TextType",
     inserted_article.created_at,
     updated_at,

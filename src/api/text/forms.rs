@@ -1,4 +1,4 @@
-use crate::database::models::article::TextType;
+use crate::{block_editor::Block, database::models::article::TextType};
 
 #[derive(Debug, FromForm)]
 pub struct SaveOrEditText<'a> {
@@ -12,7 +12,7 @@ pub struct SaveOrEditText<'a> {
     #[field(name = "leading-paragraph")]
     pub leading_paragraph: &'a str,
     #[field(name = "text-body")]
-    pub text_body: &'a str,
+    pub text_body: Vec<Block>,
     pub tags: &'a str,
 }
 

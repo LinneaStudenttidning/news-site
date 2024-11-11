@@ -3,13 +3,6 @@
 
 {% block head %}
 <title>Textredigerare – {{ get_env(name="SITE_TITLE") }}</title>
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script><!-- Header -->
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/list@latest"></script><!-- List -->
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script><!-- Quote -->
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/link@latest"></script><!-- Link -->
-
-<!-- Load Editor.js's Core -->
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
 <script type="module" src="/static/scripts/editor.js" async defer></script>
 {% endblock head %}
 
@@ -45,8 +38,8 @@
 </div>
 {% endif %}
 
-<form id="text-form" class="box pad margin-bottom" action="{% if text %}/api/text/edit{% else %}/api/text/save{% endif %}"
-    method="post">
+<form id="text-form" class="box pad margin-bottom"
+    action="{% if text %}/api/text/edit{% else %}/api/text/save{% endif %}" method="post">
     <h2 icon="edit_note">{% if is_editing %}Redigera text{% else  %}Skapa text{% endif %}</h2>
     <label for="text-type">Texttyp:</label>
     <select name="text-type" id="text-type">
@@ -68,18 +61,24 @@
         Här ska du skriva in det ID som den bild har. (<a href="/control-panel/image-gallery">Använd
             bild-galleriet.</a>)
     </p>
-    <input type="text" name="thumbnail" id="thumbnail" value="{% if text.thumbnail_id %}{{ text.thumbnail_id }}{% endif %}">
+    <input type="text" name="thumbnail" id="thumbnail"
+        value="{% if text.thumbnail_id %}{{ text.thumbnail_id }}{% endif %}">
 
     <label for="leading-paragraph">Ingress:</label>
     <textarea name="leading-paragraph" id="leading-paragraph" rows="5" value=""
         required>{% if text.lead_paragraph %}{{ text.lead_paragraph }}{% endif %}</textarea>
 
-    <div id="editorjs"></div>
-    <input type="hidden" name="text-body" id="text-body">
+    <div class="block-editor">
+        <div class="block block-paragraph">
+            <textarea name="blocks[]Paragraph.body_text" id="blocks[]Paragraph.body_text"
+                placeholder="Skriv din text här..."></textarea>
+        </div>
 
-    {# <label for="text-body">Brödtext:</label>
-    <textarea name="text-body" id="text-body" rows="15"
-        required>{% if text.text_body %}{{ text.text_body }}{% endif %}</textarea> #}
+        <div class="block block-image">
+            <input type="text" textarea name="blocks[]Image.id" id="blocks[]Image.id">
+        </div>
+    </div>
+    <button type="button" class="btn add-block" icon="add">Lägg till ett nytt block</button>
 
     <label for="tags">Taggar, separera med semikolon (;):</label>
     <input type="text" name="tags" value="{% if text.tags %}{{ text.tags | join(sep=";") }}{% endif %}" id="tags">

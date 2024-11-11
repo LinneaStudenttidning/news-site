@@ -1,5 +1,6 @@
 use std::str::FromStr;
 
+use rocket::form::{self, Errors, FromFormField, ValueField};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -9,28 +10,28 @@ use crate::{
 };
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
-enum Block<'a> {
+pub enum Block {
     Paragraph {
-        body_text: &'a str,
+        body_text: String,
     },
     Image {
-        id: &'a str,
-        caption: &'a str,
+        id: String,
+        caption: String,
         image_data: Option<Image>,
     },
     Quote {
-        quote: &'a str,
-        citation: &'a str,
+        quote: String,
+        citation: String,
     },
     Heading {
-        heading: &'a str,
+        heading: String,
     },
     RawHtml {
-        html: &'a str,
+        html: String,
     },
 }
 
-impl Block<'_> {
+impl Block {
     pub async fn _render(&self, db: &DatabaseHandler) -> Result<String, Error> {
         match self {
             Block::Heading { heading } => Ok(format!("<h2>{}</h2>", heading)),
@@ -60,6 +61,14 @@ impl Block<'_> {
     }
 }
 
+#[rocket::async_trait]
+impl<'a> FromFormField<'a> for Block {
+    fn from_value(field: ValueField<'a>) -> form::Result<'a, Self> {
+        // FIXME: Maybe find a way to define a better error message...
+        serde_json::from_str::<Block>(field.value).map_err(|_| Errors::default())
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -70,16 +79,16 @@ mod tests {
     fn test_syntax() {
         let article = [
             Block::Paragraph {
-                body_text: "Hello, world!",
+                body_text: "Hello, world!".to_string(),
             },
             Block::Image {
-                id: "1",
-                caption: "Hello, world!",
+                id: "1".to_string(),
+                caption: "Hello, world!".to_string(),
                 image_data: None,
             },
             Block::Quote {
-                quote: "Hello, world!",
-                citation: "Hello, world!",
+                quote: "Hello, world!".to_string(),
+                citation: "Hello, world!".to_string(),
             },
         ];
 

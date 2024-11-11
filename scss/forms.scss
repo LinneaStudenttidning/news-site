@@ -1,7 +1,8 @@
 @use "palette";
 @use "settings";
 
-form {
+form,
+.block-editor > .block {
     display: flex;
     flex-direction: column;
     background-color: palette.$standout;
@@ -52,4 +53,9 @@ form {
     &.hidden-form {
         display: none;
     }
+}
+
+.block-editor > .block {
+    padding: 0;
+    margin-bottom: settings.$pad-fixed-m;
 }

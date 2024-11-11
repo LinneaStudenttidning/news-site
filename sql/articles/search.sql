@@ -5,7 +5,7 @@ SELECT
     articles.author,
     thumbnail AS "thumbnail_id",
     ts_headline(lead_paragraph, search_query, 'StartSel=<mark>, StopSel=</mark>') AS "lead_paragraph!",
-    ts_headline(text_body, search_query, 'StartSel=<mark>, StopSel=</mark>') AS "text_body!",
+    ts_headline(text_body, search_query, 'StartSel=<mark>, StopSel=</mark>') AS "text_body!: Json<Vec<Block>>",
     text_type AS "text_type!: TextType",
     articles.created_at,
     updated_at,

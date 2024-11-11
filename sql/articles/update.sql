@@ -41,7 +41,7 @@ RETURNING
     updated_row.author,
     updated_row.thumbnail AS "thumbnail_id",
     updated_row.lead_paragraph,
-    updated_row.text_body,
+    updated_row.text_body AS "text_body!: Json<Vec<Block>>",
     updated_row.text_type AS "text_type!: TextType",
     updated_row.created_at,
     updated_row.updated_at,

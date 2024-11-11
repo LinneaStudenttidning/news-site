@@ -4,10 +4,10 @@ use chrono::{DateTime, Local};
 use rocket::{http::Status, request::FromParam};
 use serde::{Deserialize, Serialize};
 use slug::slugify;
-use sqlx::{self, postgres::PgQueryResult};
+use sqlx::{self, postgres::PgQueryResult, types::Json};
 use uuid::Uuid;
 
-use crate::{database::DatabaseHandler, error::Error};
+use crate::{block_editor::Block, database::DatabaseHandler, error::Error};
 
 use super::{creator::Creator, image::Image};
 
@@ -47,7 +47,7 @@ pub struct Text {
     /// Reference to the an `Image` that is used as the thumbnail.
     pub thumbnail_id: Option<Uuid>,
     pub lead_paragraph: String,
-    pub text_body: String,
+    pub text_body: Json<Vec<Block>>,
     pub text_type: TextType,
     pub created_at: DateTime<Local>,
     pub updated_at: DateTime<Local>,
@@ -67,7 +67,7 @@ impl Default for Text {
             author: "NULL".into(),
             thumbnail_id: None,
             lead_paragraph: "Missing lead paragraph!".into(),
-            text_body: "Missing text body!".into(),
+            text_body: Json(Vec::new()),
             text_type: TextType::Other,
             created_at: Local::now(),
             updated_at: Local::now(),
@@ -87,7 +87,7 @@ impl Text {
         title: &str,
         author: &str,
         lead_paragraph: &str,
-        text_body: &str,
+        text_body: Vec<Block>,
         text_type: TextType,
         tags: Vec<String>,
     ) -> Self {
@@ -95,7 +95,7 @@ impl Text {
             title: title.into(),
             author: author.into(),
             lead_paragraph: lead_paragraph.into(),
-            text_body: text_body.into(),
+            text_body: Json(text_body),
             text_type,
             tags,
             ..Default::default()
@@ -112,7 +112,7 @@ impl Text {
             self.author,
             self.thumbnail_id,
             self.lead_paragraph,
-            self.text_body,
+            serde_json::to_value(self.text_body.clone())?,
             &self.text_type as &TextType,
             &self.tags,
             self.is_published,
@@ -131,7 +131,7 @@ impl Text {
         title: &str,
         thumbnail_id: Option<Uuid>,
         lead_paragraph: &str,
-        text_body: &str,
+        text_body: Json<Vec<Block>>,
         text_type: TextType,
         tags: &Vec<String>,
     ) -> Result<Text, Error> {
@@ -142,7 +142,7 @@ impl Text {
             slugify(title),
             thumbnail_id,
             lead_paragraph,
-            text_body,
+            serde_json::to_value(text_body)?,
             text_type as TextType,
             tags,
             id,
@@ -343,7 +343,7 @@ mod tests {
                 "Katter och hundar",
                 "sven.svensson",
                 "Lead paragraph",
-                "Text body",
+                Vec::new(),
                 TextType::Article,
                 vec![],
             );

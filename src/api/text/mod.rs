@@ -1,6 +1,7 @@
 use std::str::FromStr;
 
 use rocket::{form::Form, http::Status, response::Redirect, State};
+use sqlx::types::Json;
 use uuid::Uuid;
 
 use crate::{
@@ -38,7 +39,7 @@ pub async fn text_save(
         form.title,
         &claims.data.username,
         form.leading_paragraph,
-        form.text_body,
+        form.text_body.clone(),
         form.text_type,
         tags,
     );
@@ -111,7 +112,7 @@ pub async fn text_edit(
             _ => None,
         },
         form.leading_paragraph,
-        form.text_body,
+        Json(form.text_body.clone()),
         form.text_type,
         &tags,
     )
