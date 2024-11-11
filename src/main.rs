@@ -16,6 +16,7 @@ extern crate rust_i18n;
 pub mod anyresponder;
 pub mod api;
 pub mod app;
+pub mod block_editor;
 pub mod data_dir;
 pub mod database;
 pub mod defaults;
