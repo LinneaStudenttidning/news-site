@@ -85,6 +85,18 @@ blockquote {
         font-size: 8rem;
         text-align: center;
     }
+
+    &[cite] {
+        margin-bottom: 3rem;
+
+        &::after {
+            content: '– ' attr(cite);
+            position: absolute;
+            bottom: -2.5rem;
+            right: 3rem;
+            color: palette.$grey400;
+        }
+    }
 }
 
 mark {
