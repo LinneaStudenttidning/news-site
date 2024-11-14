@@ -68,15 +68,17 @@
     <textarea name="leading-paragraph" id="leading-paragraph" rows="5" value=""
         required>{% if text.lead_paragraph %}{{ text.lead_paragraph }}{% endif %}</textarea>
 
+    <label for="text-body">Brödtext:</label>
     <div class="block-editor">
-        <div class="block block-paragraph">
-            <textarea name="blocks[]Paragraph.body_text" id="blocks[]Paragraph.body_text"
-                placeholder="Skriv din text här..."></textarea>
+        {% if text.text_body %}
+        {% for block in text.text_body %}
+        {{ editor::render_block_for_editor(block=block) }}
+        {% endfor %}
+        {% else %}
+        <div class="block" data-block-type="Paragraph">
+            <textarea class="body_text" placeholder="Skriv brödtext här..."></textarea>
         </div>
-
-        <div class="block block-image">
-            <input type="text" textarea name="blocks[]Image.id" id="blocks[]Image.id">
-        </div>
+        {% endif %}
     </div>
     <button type="button" class="btn add-block" icon="add">Lägg till ett nytt block</button>
 
@@ -88,6 +90,23 @@
     </div>
 </form>
 
+<dialog class="add-block">
+    <form action="#">
+        <label for="block-type">Vilken typ av block vill du lägga till?</label>
+        <select name="block-type">
+            <option value="Paragraph">Brödtext</option>
+            <option value="Image">Bild</option>
+            <option value="Quote">Citat</option>
+            <option value="Heading">Rubrik</option>
+            <option value="RawHtml">HTML</option>
+        </select>
+
+        <div class="flex wrap gap">
+            <button class="btn" icon="add" type="submit">Lägg till block</button>
+            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
+        </div>
+    </form>
+</dialog>
 {% endblock main %}
 
 {% block aside %}

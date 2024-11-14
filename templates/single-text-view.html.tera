@@ -23,7 +23,7 @@
     <h1 itemprop="headline">{{ text.title }}</h1>
     <p itemprop="description" class="lead-paragraph">{{ text.lead_paragraph }}</p>
     <div class="text-body" itemprop="articleBody">
-        {{ text.text_body | markdown | safe }}
+        {{ rendered_blocks | safe }}
     </div>
     <div class="info">
         <div class="author" itemprop="author" itemscope itemtype="https://schema.org/Person">

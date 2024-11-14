@@ -1,6 +1,5 @@
 use std::str::FromStr;
 
-use rocket::form::{self, Errors, FromFormField, ValueField};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -10,6 +9,7 @@ use crate::{
 };
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
+#[serde(tag = "type")]
 pub enum Block {
     Paragraph {
         body_text: String,
@@ -32,10 +32,10 @@ pub enum Block {
 }
 
 impl Block {
-    pub async fn _render(&self, db: &DatabaseHandler) -> Result<String, Error> {
+    pub async fn render(&self, db: &DatabaseHandler) -> Result<String, Error> {
         match self {
             Block::Heading { heading } => Ok(format!("<h2>{}</h2>", heading)),
-            Block::Paragraph { body_text } => Ok(body_text.to_string()),
+            Block::Paragraph { body_text } => Ok(format!("<p>{}</p>", &body_text)),
             Block::Quote { quote, citation } => Ok(format!(
                 r#"<blockquote cite="{}">{}</blockquote>"#,
                 citation, quote
@@ -58,14 +58,6 @@ impl Block {
             }
             Block::RawHtml { html } => Ok(html.to_string()),
         }
-    }
-}
-
-#[rocket::async_trait]
-impl<'a> FromFormField<'a> for Block {
-    fn from_value(field: ValueField<'a>) -> form::Result<'a, Self> {
-        // FIXME: Maybe find a way to define a better error message...
-        serde_json::from_str::<Block>(field.value).map_err(|_| Errors::default())
     }
 }
 

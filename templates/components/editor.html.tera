@@ -23,4 +23,22 @@
         <p>Ord: <span id="word-count">0</span></p>
     </div>
 </div>
-{% endmacro editor %}
+{% endmacro wysiwyg %}
+
+{% macro render_block_for_editor(block) %}
+<div class="block" data-block-type="{{ block.type }}">
+    {% if block.type == "Paragraph" %}
+    <textarea class="body_text" placeholder="Skriv brödtext här...">{{ block.body_text }}</textarea>
+    {% elif block.type == "Image" %}
+    <input class="id" value="{{ block.id }}" placeholder="Skriv bildens id här">
+    <input class="caption" value="{{ block.caption }}" placeholder="Skriv bildtext här...">
+    {% elif block.type == "Quote" %}
+    <input class="quote" value="{{ block.quote }}" placeholder="Skriv citat här...">
+    <input class="citation" value="{{ block.citation }}" placeholder="Skriv vem som sa/skrev det här...">
+    {% elif block.type == "Heading" %}
+    <input class="heading" value="{{ block.heading }}" placeholder="Skriv rubrik här...">
+    {% elif block.type == "RawHtml" %}
+    <textarea class="html" placeholder="Bädda in din HTML här.">{{ block.html }}</textarea>
+    {% endif %}
+</div>
+{% endmacro render_block_for_editor %}

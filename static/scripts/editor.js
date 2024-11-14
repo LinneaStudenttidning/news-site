@@ -1,147 +1,105 @@
-/* eslint-disable no-undef */
-
-// eslint-disable-next-line no-unused-vars
-const editor = new EditorJS({ 
-    /** 
-    * Id of Element that should contain the Editor 
-    */ 
-    holder: "editorjs", 
-
-    /** 
-    * Available Tools list. 
-    * Pass Tool's class or Settings object for each Tool you want to use 
-    */ 
-    tools: {
-        /**
-        * Each Tool is a Plugin. Pass them via 'class' option with necessary settings {@link docs/tools.md}
-        */
-        header: {
-            class: Header,
-            config: {
-                levels: [2],
-                defaultLevel: 2,
-                placeholder: "Header"
-            },
-            shortcut: "CMD+SHIFT+H"
-        },
-
-        /**
-        * Or pass class directly without any configuration
-        */
-        list: {
-            class: List,
-            inlineToolbar: true,
-            shortcut: "CMD+SHIFT+L"
-        },
-
-        quote: {
-            class: Quote,
-            inlineToolbar: true,
-            config: {
-                quotePlaceholder: "Enter a quote",
-                captionPlaceholder: "Quote's author",
-            },
-            shortcut: "CMD+SHIFT+O"
-        }
-    }
+/**
+ * @constant {Object} BLOCK_TYPE_TO_FIELDS
+ * Maps block types to field names for that block type.
+ */
+const BLOCK_TYPE_TO_FIELDS = Object.freeze({
+    "Paragraph": ["body_text"],
+    "Image": ["id", "caption"],
+    "Quote": ["quote", "citation"],
+    "Heading": ["heading"],
+    "RawHtml": ["html"],
 })
 
-function processForm(e) {
-    editor.save().then((outputData) => {
-        console.log("Article data: ", outputData)
-        document.getElementById("text-body").value = JSON.stringify(outputData)
-        return true
-    }).catch((error) => {
-        if(e.preventDefault)
-            e.preventDefault()
-        console.log("Saving failed: ", error)
-        return false
-    })
-}
+const textForm = document.querySelector("#text-form")
+textForm.addEventListener(
+    "submit",
+    event => {
+        event.preventDefault()
+        let formData = new FormData(textForm)
 
-let form = document.getElementById("text-form")
-if (form.attachEvent) {
-    form.attachEvent("submit", processForm)
-} else {
-    form.addEventListener("submit", processForm)
-}
+        const blockDivs = Array.from(textForm.querySelectorAll(".block-editor > .block"))
 
-// const editors = document.querySelectorAll(".editor")
+        const blocks = blockDivs.map(blockDiv => {
+            const blockType = blockDiv.getAttribute("data-block-type")
+            if (!BLOCK_TYPE_TO_FIELDS[blockType]) {
+                alert(`Unknown block type: ${blockType}`)
+                throw new Error(`Unknown block type: ${blockType}`)
+            }
 
-// editors.forEach(editor => {
-//     const actions = editor.querySelector(".actions")
-//     const textbox = editor.querySelector(".textbox")
+            let blockData = {}
+            BLOCK_TYPE_TO_FIELDS[blockType].forEach(fieldName => {
+                const fieldData = blockDiv.querySelector(`.${fieldName}`).value
+                blockData[fieldName] = fieldData
+            })
 
-//     const charCount = editor.querySelector("#char-count")
-//     const charCountNoWs = editor.querySelector("#char-count-no-ws")
-//     const wordCount = editor.querySelector("#word-count")
+            blockData.type = blockType
 
-//     function setupAction(htmlClass, commands) {
-//         actions.querySelector(htmlClass)?.addEventListener("click", event => {
-//             event.preventDefault()
-//             textbox?.focus()
-//             document.execCommand(...commands
-//                 .map(command =>
-//                     // If a command is a function, execute it.
-//                     Object.prototype.toString.call(command) == "[object Function]"
-//                         ? command()
-//                         : command
-//                 )
-//             )
-//         })
-//     }
+            return blockData
+        })
 
-//     setupAction("[icon=\"undo\"]", ["undo"])
-//     setupAction("[icon=\"redo\"]", ["redo"])
-//     setupAction("[icon=\"format_clear\"]", ["removeFormar"])
-//     setupAction("[icon=\"format_h1\"]", ["formatBlock", false, "<h1>"])
-//     setupAction("[icon=\"format_h2\"]", ["formatBlock", false, "<h2>"])
-//     setupAction("[icon=\"format_paragraph\"]", ["formatBlock", false, "<p>"])
-//     setupAction("[icon=\"format_bold\"]", ["bold"])
-//     setupAction("[icon=\"format_italic\"]", ["italic"])
-//     setupAction("[icon=\"format_list_bulleted\"]", ["insertUnorderedList"])
-//     setupAction("[icon=\"format_list_numbered\"]", ["insertOrderedList"])
-//     setupAction("[icon=\"add_photo_alternate\"]", ["insertImage", false, () => prompt("Länk till bild?")])
-//     setupAction("[icon=\"chat\"]", ["insertText", false, () => "– "])
+        let textData = {}
 
-//     document.execCommand("defaultParagraphSeparator", false, "p")
+        for (const key of formData.keys()) {
+            textData[key] = formData.get(key)
+        }
 
-//     const keyMap = {
-//         "CtrlB": ["bold"],
-//         "CtrlI": ["italic"],
-//     }
+        textData.blocks = blocks
 
-//     textbox.addEventListener("keyup", event => {
-//         event.preventDefault()
-//         event.stopPropagation()
-//         event.stopImmediatePropagation()
+        fetch(
+            textForm.action,
+            {
+                method: textForm.method,
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(textData)
+            }
+        ).then(
+            result => result.json()
+        ).then(
+            response => window.location.replace(response.redirect)
+        ).catch(
+            error => {
+                alert("Encountered an error! Check the console for more information.")
+                console.error(error)
+            }
+        )
+    }
+)
 
-//         const keyCombo = [
-//             event.ctrlKey ? "Ctrl" : "",
-//             event.altKey ? "Alt" : "",
-//             event.shiftKey ? "Shift" : "",
-//             event.key.toUpperCase()
-//         ].join("")
+const BLOCK_TEMPLATES = Object.freeze({
+    "Paragraph": `<div class="block" data-block-type="Paragraph">
+        <textarea class="body_text" placeholder="Skriv brödtext här..."></textarea>
+    </div>`,
+    "Image": `<div class="block" data-block-type="Image">
+        <input class="id" placeholder="Skriv bildens id här">
+        <input class="caption" placeholder="Skriv bildtext här...">
+    </div>`,
+    "Quote": `<div class="block" data-block-type="Quote">
+        <input class="quote" placeholder="Skriv citat här...">
+        <input class="citation" placeholder="Skriv vem som sa/skrev det här...">
+    </div>`,
+    "Heading": `<div class="block" data-block-type="Heading">
+        <input class="heading" placeholder="Skriv rubrik här...">
+    </div>`,
+    "RawHtml": `<div class="block" data-block-type="RawHtml">
+        <textarea class="html" placeholder="Bädda in din HTML här."></textarea>
+    </div>`,
+})
 
-//         if (keyMap[keyCombo]) {
-//             document.execCommand(...keyMap[keyCombo]
-//                 .map(command =>
-//                     // If a command is a function, execute it.
-//                     Object.prototype.toString.call(command) == "[object Function]"
-//                         ? command()
-//                         : command
-//                 )
-//             )
-//         }
-
-//         console.dir({ keyCombo }, { depth: null })
-//     })
-
-//     textbox.addEventListener("input", () => {
-//         charCount.textContent = textbox.textContent.length
-//         charCountNoWs.textContent = textbox.textContent.replace(/\s+/g, "").length
-//         wordCount.textContent = textbox.textContent.split(/\s+/).filter(word => word !== "").length
-//     })
-
-//     textbox.dispatchEvent(new Event("input"))
-// })
+const addBlockButton = document.querySelector("button.add-block")
+const addBlockDialog = document.querySelector("dialog.add-block")
+const closeButton = addBlockDialog.querySelector("button.close-dialog")
+const blockEditor = document.querySelector(".block-editor")
+addBlockButton.addEventListener("click", () => addBlockDialog.showModal())
+closeButton.addEventListener("click", event => {
+    event.preventDefault()
+    addBlockDialog.close()
+})
+addBlockDialog.addEventListener("submit", event => {
+    event.preventDefault()
+    const blockType = addBlockDialog.querySelector("select[name=block-type]").value
+    const blockTemplate = BLOCK_TEMPLATES[blockType]
+    blockEditor.insertAdjacentHTML("beforeend", blockTemplate)
+    addBlockDialog.close()
+})

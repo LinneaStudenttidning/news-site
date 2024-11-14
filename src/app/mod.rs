@@ -67,6 +67,15 @@ async fn text_by_id(
 
     // Logged in users can view unpublished texts
     let text = Text::get_by_id(db, id, !is_logged_in).await?;
+    let mut rendered_blocks: Vec<String> = Vec::new();
+    for block in text.text_body.iter() {
+        rendered_blocks.push(
+            block
+                .render(db)
+                .await
+                .unwrap_or("INVALID BLOCK!".to_string()),
+        );
+    }
 
     if title_slug != text.title_slug {
         let redirect = Redirect::found(uri!(text_by_id(id, text.title_slug)));
@@ -98,7 +107,7 @@ async fn text_by_id(
 
     let template = Template::render(
         "single-text-view",
-        context! { text, tags, authors, is_logged_in, can_edit_text, can_mark_as_done, can_unmark_as_done, can_publish_text, can_unpublish_text },
+        context! { text, rendered_blocks: rendered_blocks.join(""),tags, authors, is_logged_in, can_edit_text, can_mark_as_done, can_unmark_as_done, can_publish_text, can_unpublish_text },
     );
     Ok(AnyResponder::from(template))
 }
