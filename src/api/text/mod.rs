@@ -58,7 +58,7 @@ pub async fn text_edit(
     data: Json<SaveOrEditText<'_>>,
     db: &State<DatabaseHandler>,
     claims: Claims,
-) -> Result<Redirect, Error> {
+) -> Result<Json<ReturnRedirect>, Error> {
     let tags = match data.tags.is_empty() {
         true => Vec::new(),
         false => data
@@ -115,10 +115,9 @@ pub async fn text_edit(
     )
     .await?;
 
-    Ok(Redirect::to(format!(
-        "/t/{}/{}",
-        updated_text.id, updated_text.title_slug
-    )))
+    Ok(Json(ReturnRedirect {
+        redirect: format!("/t/{}/{}", updated_text.id, updated_text.title_slug),
+    }))
 }
 
 #[post("/text/set-publish-status/<publish_status>", data = "<form>")]

@@ -43,6 +43,8 @@ textForm.addEventListener(
             textData[key] = formData.get(key)
         }
 
+        textData["text-id"] = Number(textData["text-id"])
+
         textData.blocks = blocks
 
         fetch(
