@@ -20,25 +20,24 @@
 </div>
 {% endif %}
 
-{% if creator.role == "Publisher" %}
 <div class="box pad margin-bottom">
+    {% if is_admin %}
     <h2 icon="admin_panel_settings">Administrativa verktyg</h2>
+    {% else %}
+    <h2 icon="settings">Verktyg</h2>
+    {% endif %}
+
     <div class="flex wrap gap">
-        <button class="btn" icon="person_add" data-dialog-button="create-user">Skapa ny användare</button>
-        <button class="btn" icon="person_edit" data-dialog-button="change-password-any">Byt lösenord för annan
-            användare</button>
-        <button class="btn dangerous" icon="lock_person" data-dialog-button="lock-creator">Lås användare</button>
-        <button class="btn dangerous" icon="add_moderator" data-dialog-button="promote-to-publisher">Lägg till ansvarig
-            utgivare</button>
-        <button class="btn dangerous" icon="remove_moderator" data-dialog-button="demote-to-creator">Ta bort ansvarig
-            utgivare</button>
-        <div class="sep"></div>
+        {% if is_admin %}
+        <a href="/control-panel/account-manager" class="btn" icon="group">Kontohantering</a>
         <button class="btn" icon="edit_note" data-dialog-button="change-about-us">Ändra "om oss"</button>
+
+        <div class="sep"></div>
+        {% endif %}
         <a href="/control-panel/image-gallery" class="btn" icon="gallery_thumbnail">Bildgalleriet</a>
         <a href="/control-panel/preview-done-unpublished" class="btn" icon="preview">Granska och godkänn nya texter</a>
     </div>
 </div>
-{% endif %}
 
 <div class="box pad">
     <h2 icon="feed">Dina texter</h2>
@@ -113,120 +112,6 @@
     {% endif %}
 </div>
 
-{% if creator.role == "Publisher" %}
-<dialog data-dialog-box="create-user">
-    <form action="/api/creator/new" method="post">
-        <label>Användarnamn</label>
-        <input name="username" placeholder="bob_andersen" type="text" autocomplete="new-password" required>
-
-        <label>Namn (visningsnamn)</label>
-        <input name="display-name" placeholder="Bob Andersen" type="text" autocomplete="new-password" required>
-
-        <label>Lösenord</label>
-        <input name="password" placeholder="SuperSecret" type="password" autocomplete="new-password" required>
-
-        <label>Skapa som ansvarig utgivare</label>
-        <div>
-            <input id="as-publisher" name="as-publisher" type="checkbox">
-            <label for="as-publisher">Klicka i rutan för att skapa som ansvarig utgivare.</label>
-        </div>
-
-        <div class="flex wrap gap">
-            <button class="btn" icon="person_add" type="submit">Skapa</button>
-            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
-        </div>
-    </form>
-</dialog>
-
-<dialog data-dialog-box="change-password-any">
-    <form action="/api/auth/change-password-other" method="post">
-        <label>Användare att ge nytt lösenord</label>
-        <input name="username" type="text" list="usernames" autocomplete="new-password">
-        <datalist id="usernames">
-            {% for username in all_creator_usernames %}
-            <option value="{{username}}"></option>
-            {% endfor %}
-        </datalist>
-
-        <label>Nytt lösenord</label>
-        <input name="new-password" placeholder="SuperSecret" type="text" autocomplete="off"
-            onfocus="this.type = 'password'" required>
-
-        <div class="flex wrap gap">
-            <button class="btn" icon="password" type="submit">Byt lösenord</button>
-            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
-        </div>
-    </form>
-</dialog>
-
-<dialog data-dialog-box="lock-creator">
-    <form action="/api/creator/lock" method="post">
-        <label>
-            Användarnamn på det konto du vill låsa. Ett låst konto kommer att finnas kvar,
-            men användare kommer inte kunna logga in. Om du vill låsa upp ett konto igen,
-            så måste du ändra lösenord för dem.
-        </label>
-        <input name="username" type="text" list="usernames" autocomplete="new-password">
-        <datalist id="usernames">
-            {% for username in all_creator_usernames %}
-            <option value="{{username}}"></option>
-            {% endfor %}
-        </datalist>
-
-        <div class="flex wrap gap">
-            <button class="btn" icon="add_moderator" type="submit">Lås användare</button>
-            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
-        </div>
-    </form>
-</dialog>
-
-<dialog data-dialog-box="promote-to-publisher">
-    <form action="/api/creator/promote" method="post">
-        <label>Användarnamn på den som ska bli ansvarig utgivare</label>
-        <input name="username" type="text" list="usernames" autocomplete="new-password">
-        <datalist id="usernames">
-            {% for username in all_creator_usernames %}
-            <option value="{{username}}"></option>
-            {% endfor %}
-        </datalist>
-
-        <div class="flex wrap gap">
-            <button class="btn" icon="add_moderator" type="submit">Lägg till som ansvarig utgivare</button>
-            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
-        </div>
-    </form>
-</dialog>
-
-<dialog data-dialog-box="demote-to-creator">
-    <form action="/api/creator/demote" method="post">
-        <label>Användarnamn på den som ska sluta vara ansvarig utgivare</label>
-        <input name="username" type="text" list="usernames" autocomplete="new-password">
-        <datalist id="usernames">
-            {% for username in all_creator_usernames %}
-            <option value="{{username}}"></option>
-            {% endfor %}
-        </datalist>
-        <p>OBS! Du kan inte ta bort dig själv som ansvarig utgivare.</p>
-
-        <div class="flex wrap gap">
-            <button class="btn" icon="remove_moderator" type="submit">Ta bort som ansvarig utgivare</button>
-            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
-        </div>
-    </form>
-</dialog>
-
-<dialog data-dialog-box="change-about-us">
-    <form action="/api/site-settings/update-about-us" method="post">
-        <label>Om oss</label>
-        <textarea name="about-us" rows="20">{{ about_us }}</textarea>
-        <div class="flex wrap gap">
-            <button class="btn" icon="edit_note" type="submit">Ändra "om oss"</button>
-            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
-        </div>
-    </form>
-</dialog>
-
-{% endif %}
 {% endblock main %}
 
 {% block aside %}

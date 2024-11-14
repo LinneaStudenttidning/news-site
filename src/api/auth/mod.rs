@@ -113,7 +113,7 @@ pub async fn auth_change_password_other(
     Creator::change_password(db, &creator.username, form.new_password).await?;
 
     Ok(Flash::success(
-        Redirect::to("/control-panel"),
+        Redirect::to("/control-panel/account-manager"),
         format!(
             "Updaterad lösenordet för användaren: {} ({})",
             creator.username, creator.display_name

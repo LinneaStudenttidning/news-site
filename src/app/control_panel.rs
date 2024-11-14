@@ -31,7 +31,7 @@ async fn control_panel(
 
     Ok(Template::render(
         "control_panel/main",
-        context! { creator, published_texts, unpublished_texts, all_creator_usernames, about_us, flash },
+        context! { creator, published_texts, unpublished_texts, all_creator_usernames, about_us, flash, is_admin: claims.data.is_publisher() },
     ))
 }
 
@@ -78,6 +78,27 @@ async fn image_gallery(claims: Claims, db: &State<DatabaseHandler>) -> Result<Te
     ))
 }
 
+#[get("/account-manager")]
+async fn account_manager(
+    claims: Claims,
+    db: &State<DatabaseHandler>,
+    flash: Option<FlashMessage<'_>>,
+) -> Result<Template, Error> {
+    if !claims.admin {
+        return Err(Error::create(
+            &format!("{}:{}", file!(), line!()),
+            "You need to be an admin to access this view!",
+            Status::Unauthorized,
+        ));
+    };
+    let creators = Creator::get_all(db).await?;
+
+    Ok(Template::render(
+        "control_panel/account_manager",
+        context! { creator: &claims.data, creators, flash },
+    ))
+}
+
 #[get("/editor")]
 fn editor(claims: Claims) -> Template {
     Template::render(
@@ -106,6 +127,7 @@ pub fn get_all_routes() -> Vec<Route> {
         control_panel,
         login_page,
         image_gallery,
+        account_manager,
         preview_done_unpublished,
         editor,
         editor_text_id,

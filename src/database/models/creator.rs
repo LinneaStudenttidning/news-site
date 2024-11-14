@@ -298,8 +298,8 @@ impl Creator {
 
         sqlx::query!(
             "UPDATE creators SET password = $1 WHERE username = $2",
+            new_password,
             creator.username,
-            new_password
         )
         .execute(&db.pool)
         .await?;

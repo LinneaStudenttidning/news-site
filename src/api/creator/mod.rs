@@ -40,7 +40,7 @@ pub async fn creator_new(
     let saved_creator = creator.save_to_db(db).await?;
 
     Ok(Flash::success(
-        Redirect::to("/control-panel"),
+        Redirect::to("/control-panel/account-manager"),
         format!(
             "Lyckades med att skapa ny användare: {} ({})",
             saved_creator.username, saved_creator.display_name
@@ -103,7 +103,7 @@ pub async fn creator_promote(
     Creator::promote(db, form.username).await?;
 
     Ok(Flash::success(
-        Redirect::to("/control-panel"),
+        Redirect::to("/control-panel/account-manager"),
         format!("Gjorde {} till ansvarig utgivare.", form.username),
     ))
 }
@@ -133,7 +133,7 @@ pub async fn creator_demote(
     Creator::demote(db, form.username).await?;
 
     Ok(Flash::success(
-        Redirect::to("/control-panel"),
+        Redirect::to("/control-panel/account-manager"),
         format!("Tog bort {} som ansvarig utgivare.", form.username),
     ))
 }
@@ -163,7 +163,7 @@ pub async fn creator_lock(
     Creator::lock(db, form.username).await?;
 
     Ok(Flash::success(
-        Redirect::to("/control-panel"),
+        Redirect::to("/control-panel/account-manager"),
         format!("Användaren {} är nu låst.", form.username),
     ))
 }

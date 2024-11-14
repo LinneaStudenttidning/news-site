@@ -1,0 +1,149 @@
+{% extends "templates/app" %}
+
+{% block head %}
+<title>Kontohantering – {{ get_env(name="SITE_TITLE") }}</title>
+<script type="module" src="/static/scripts/control-panel.js" async defer></script>
+{% endblock head %}
+
+{% block main %}
+<h1 class="box pad">Kontohantering</h1>
+
+{% if flash.message %}
+<div class="box pad margin-bottom {{ flash.kind }}">
+    {% if flash.kind == "success" %}
+    <h2 icon="info">Meddelande</h2>
+    <p>{{ flash.message }}</p>
+    {% else %}
+    <h2 icon="error">Felmeddelande</h2>
+    <p>{{ flash.message }}</p>
+    {% endif %}
+</div>
+{% endif %}
+
+<form action="/api/creator/new" method="post">
+    <label>Användarnamn</label>
+    <input name="username" placeholder="bob_andersen" type="text" autocomplete="new-password" required>
+
+    <label>Namn (visningsnamn)</label>
+    <input name="display-name" placeholder="Bob Andersen" type="text" autocomplete="new-password" required>
+
+    <label>Lösenord</label>
+    <input name="password" placeholder="SuperSecret" type="password" autocomplete="new-password" required>
+
+    <label>Skapa som ansvarig utgivare</label>
+    <div>
+        <input id="as-publisher" name="as-publisher" type="checkbox">
+        <label for="as-publisher">Klicka i rutan för att skapa som ansvarig utgivare.</label>
+    </div>
+
+    <div class="flex wrap gap">
+        <button class="btn" icon="person_add" type="submit">Skapa</button>
+    </div>
+</form>
+
+<div class="box pad">
+    <h2 icon="group">Alla användare:</h2>
+    {% if creators | length > 0 %}
+    {% for user in creators %}
+    <div class="box pad flex wrap gap">
+        <img src="/dynamic-data/profile-pictures/{{ user.username }}.webp" alt="Profilbild" class="pfp">
+        <p>{{ user.display_name }}</p>
+        <p>{{ user.username }}</p>
+        <p>{{ user.role }}</p>
+        <p>{{ user.joined_at | date(format="%F %T") }}</p>
+        {% if creator.username != user.username %}
+        {% if user.password != "LOCKED" %}
+        <button class="btn dangerous" icon="lock_person" data-dialog-button="lock-creator-{{ user.username }}">Lås användare</button>
+        {% endif %}
+        <button class="btn dangerous" icon="add_moderator" data-dialog-button="change-role-{{ user.username }}">Ändra roll</button>
+        {% endif %}
+        <button class="btn" icon="password" data-dialog-button="change-password-{{ user.username }}">Ändra lösenord</button>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>Det finns inga användare!</p>
+    {% endif %}
+</div>
+
+{# This solution will come back to haunt us, kind regards furo #}
+{% for user in creators %}
+{% if user.password != "LOCKED" and creator.username != user.username %}
+<dialog data-dialog-box="lock-creator-{{ user.username }}">
+    <form action="/api/creator/lock" method="post">
+        <label>
+            Är du säker att du vill låsa detta konto? Ett låst konto kommer att finnas kvar,
+            men användaren kommer inte kunna logga in. Om du vill låsa upp ett konto igen,
+            så måste du ändra lösenord för dem.
+        </label>
+        <input name="username" type="hidden" value="{{ user.username }}">
+
+        <div class="flex wrap gap">
+            <button class="btn" icon="add_moderator" type="submit">Lås användare</button>
+            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
+        </div>
+    </form>
+</dialog>
+{% endif %}
+<dialog data-dialog-box="change-password-{{ user.username }}">
+    <form action="/api/auth/change-password-other" method="post">
+        <input name="username" type="hidden" value="{{ user.username }}">
+
+        <label>Nytt lösenord</label>
+        <input name="new-password" placeholder="SuperSecret" type="text" autocomplete="off"
+            onfocus="this.type = 'password'" required>
+
+        <div class="flex wrap gap">
+            <button class="btn" icon="password" type="submit">Byt lösenord</button>
+            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
+        </div>
+    </form>
+</dialog>
+<dialog data-dialog-box="change-role-{{ user.username }}">
+    {% if user.role == "publisher" %}
+    <form action="/api/creator/demote" method="post">
+        <input name="username" type="hidden" value="{{ user.username }}">
+
+        <div class="flex wrap gap">
+            <button class="btn" icon="password" type="submit">Ta bort som ansvarig utgivare</button>
+            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
+        </div>
+    </form>
+    {% else %}
+    <form action="/api/creator/promote" method="post">
+        <input name="username" type="hidden" value="{{ user.username }}">
+
+        <div class="flex wrap gap">
+            <button class="btn" icon="password" type="submit">Lägg till som ansvarig utgivare</button>
+            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
+        </div>
+    </form>
+    {% endif %}
+</dialog>
+{% endfor %}
+
+{% endblock main %}
+
+{% block aside %}
+<div class="box pad">
+    <h2 icon="badge">Din profil</h2>
+    <div class="content profile">
+        <img src="/dynamic-data/profile-pictures/{{ creator.username }}.webp" alt="Profilbild" class="pfp">
+        <h3 class="name">{{ creator.display_name }}</h3>
+        <div class="info-table">
+            <p class="prop">Användarnamn</p>
+            <p class="value">{{ creator.username }}</p>
+            <p class="prop">Beskrivning</p>
+            <p class="value">{{ creator.biography }}</p>
+            <p class="prop">Konto skapat</p>
+            <p class="value">{{ creator.joined_at | date(format="%-d %B %Y, %R") }}</p>
+            <p class="prop">Roll</p>
+            <p class="value">{{ creator.role }}</p>
+        </div>
+    </div>
+    <div class="flex wrap gap">
+        <a href="/control-panel" class="btn" icon="settings">Kontrollpanelen</a>
+        <form class="hidden-form" id="logout-form" action="/api/auth/logout" method="post"></form>
+        <button form="logout-form" type="submit" class="btn dangerous" icon="logout">Logga ut</button>
+    </div>
+</div>
+{% endblock aside %}
