@@ -20,6 +20,7 @@ async fn control_panel(
     let published_texts = Text::get_by_author(db, &claims.data.username, true).await?;
     let unpublished_texts = Text::get_by_author(db, &claims.data.username, false).await?;
     let about_us = data_dir::get_about_us();
+    let done_unpublished_texts_count = Text::get_all_done_unpublished_count(db).await?;
 
     let all_creator_usernames = Creator::get_all(db)
         .await?
@@ -31,7 +32,7 @@ async fn control_panel(
 
     Ok(Template::render(
         "control_panel/main",
-        context! { creator, published_texts, unpublished_texts, all_creator_usernames, about_us, flash, is_admin: claims.data.is_publisher() },
+        context! { creator, published_texts, unpublished_texts, all_creator_usernames, done_unpublished_texts_count, about_us, flash, is_admin: claims.data.is_publisher() },
     ))
 }
 

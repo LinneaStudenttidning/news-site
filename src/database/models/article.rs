@@ -164,10 +164,18 @@ impl Text {
             .map_err(Error::from)
     }
 
-    /// Gets all done, but unpublished, articles.
+    /// Gets all done, but unpublished articles.
     pub async fn get_all_done_unpublished(db: &DatabaseHandler) -> Result<Vec<Self>, Error> {
         sqlx::query_file_as!(Self, "sql/articles/get_all_done_unpublished.sql")
             .fetch_all(&db.pool)
+            .await
+            .map_err(Error::from)
+    }
+
+    /// Gets the count of unpublished articles.
+    pub async fn get_all_done_unpublished_count(db: &DatabaseHandler) -> Result<i64, Error> {
+        sqlx::query_file_scalar!("sql/articles/get_all_done_unpublished-count.sql")
+            .fetch_one(&db.pool)
             .await
             .map_err(Error::from)
     }

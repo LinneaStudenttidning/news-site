@@ -35,7 +35,7 @@
         <div class="sep"></div>
         {% endif %}
         <a href="/control-panel/image-gallery" class="btn" icon="gallery_thumbnail">Bildgalleriet</a>
-        <a href="/control-panel/preview-done-unpublished" class="btn" icon="preview">Granska och godkänn nya texter</a>
+        <a href="/control-panel/preview-done-unpublished" class="btn" icon="preview">Granska och godkänn nya texter ({{ done_unpublished_texts_count}})</a>
     </div>
 </div>
 
