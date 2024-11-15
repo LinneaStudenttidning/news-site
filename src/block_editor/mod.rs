@@ -88,7 +88,7 @@ mod tests {
 
         let article_parsed: Vec<Block> = serde_json::from_str(&article_json).unwrap();
 
-        let expected_article_json = r#"[{"Paragraph":{"body_text":"Hello, world!"}},{"Image":{"id":"1","caption":"Hello, world!","image_data":null}},{"Quote":{"quote":"Hello, world!","citation":"Hello, world!"}}]"#;
+        let expected_article_json = r#"[{"type":"Paragraph","body_text":"Hello, world!"},{"type":"Image","id":"1","caption":"Hello, world!","image_data":null},{"type":"Quote","quote":"Hello, world!","citation":"Hello, world!"}]"#;
         let expected_article_parsed = r#"[Paragraph { body_text: "Hello, world!" }, Image { id: "1", caption: "Hello, world!", image_data: None }, Quote { quote: "Hello, world!", citation: "Hello, world!" }]"#;
 
         let article_parsed_string = format!("{:?}", article_parsed);
