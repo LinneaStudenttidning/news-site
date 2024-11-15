@@ -12,6 +12,9 @@
     <label for="description">Beskriv bildens innehåll:</label>
     <textarea name="description" id="description" placeholder="En katt som äter mat ur en skål"></textarea>
 
+    <label for="tags">Fotograf:</label>
+    <input type="text" name="author" id="author">
+
     <label for="image">Ladda upp bild:</label>
     <input type="file" name="image" id="image">
 

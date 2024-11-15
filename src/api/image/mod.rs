@@ -17,15 +17,14 @@ mod forms;
 
 #[post("/image/upload", format = "multipart/form-data", data = "<form>")]
 pub async fn image_upload(
-    claims: Claims,
     db: &State<DatabaseHandler>,
     form: Form<UploadImage<'_>>,
 ) -> Result<Redirect, Error> {
     let content_type = form.image.content_type.to_string();
     let image_format = ImageFormat::from_mime_type(content_type).ok_or(Error::create(
         &format!("{}:{}", file!(), line!()),
-        "Sorry, the action you are performing requires admin access!",
-        Status::Forbidden,
+        "Sorry, failed to determine the mine-type of the image!",
+        Status::InternalServerError,
     ))?;
 
     let tags = match form.tags.is_empty() {
@@ -37,7 +36,7 @@ pub async fn image_upload(
             .collect::<Vec<String>>(),
     };
 
-    let image = Image::create(&claims.sub, Some(form.description), tags);
+    let image = Image::create(form.author, Some(form.description), tags);
     let image = image.save_to_db(db).await?;
 
     // Spin up a thread for saving the image

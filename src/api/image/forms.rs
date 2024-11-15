@@ -27,6 +27,7 @@ impl<'a> FromFormField<'a> for File {
 #[derive(Debug, FromForm)]
 pub struct UploadImage<'a> {
     pub description: &'a str,
+    pub author: &'a str,
     pub image: File,
     pub tags: &'a str,
 }
