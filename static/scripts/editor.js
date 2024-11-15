@@ -105,3 +105,11 @@ addBlockDialog.addEventListener("submit", event => {
     blockEditor.insertAdjacentHTML("beforeend", blockTemplate)
     addBlockDialog.close()
 })
+
+// Automatically rescale textareas to fit the text
+window.onload = function() {
+    const textAreas = document.querySelectorAll("textarea")
+    textAreas.forEach(textArea => {
+        textArea.style.height = textArea.scrollHeight + 10 + "px"
+    })
+}
