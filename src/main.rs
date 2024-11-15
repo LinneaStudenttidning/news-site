@@ -1,5 +1,5 @@
-// Don't build with warnings.
-#![deny(warnings)]
+// Don't build with warnings if you used with feature flag "fail-on-warnings"
+#![cfg_attr(feature = "fail-on-warnings", deny(warnings))]
 // This leads to false positives from clippy, if not allowed
 // See: https://github.com/rust-lang/rust-clippy/issues/12642
 // TL;DR: It breaks src/app/control_panel.rs at `struct PublishTextForm<'a>`

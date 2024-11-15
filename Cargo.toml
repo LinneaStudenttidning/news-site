@@ -37,3 +37,6 @@ opt-level = 3
 
 [build]
 rustflags = ["-C", "target-cpu=native"]
+
+[features]
+fail-on-warnings = []

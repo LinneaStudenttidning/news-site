@@ -32,7 +32,7 @@ jobs:
     - name: Prepare directories
       run: mkdir -p data/profile-pictures
     - name: Check code
-      run: cargo check --quiet
+      run: cargo check --quiet --features=fail-on-warnings
       env:
         DATABASE_URL: "postgres://news:news@localhost/news"
     - name: Check format
