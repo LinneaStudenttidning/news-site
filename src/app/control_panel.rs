@@ -35,12 +35,16 @@ async fn control_panel(
     ))
 }
 
-#[get("/login")]
-fn login_page(flash: Option<FlashMessage>, claims: Option<Claims>) -> Result<AnyResponder, Error> {
+#[get("/login?<referer>")]
+fn login_page(
+    flash: Option<FlashMessage>,
+    claims: Option<Claims>,
+    referer: Option<String>,
+) -> Result<AnyResponder, Error> {
     // Render template if logged out, else redirect to control panel
     if claims.is_none() {
         let flash = flash.map(FlashMsg::from);
-        let template = Template::render("control_panel/login", context! { flash });
+        let template = Template::render("control_panel/login", context! { flash, referer });
         return Ok(AnyResponder::from(template));
     }
     let redirect = Redirect::found("/control-panel");

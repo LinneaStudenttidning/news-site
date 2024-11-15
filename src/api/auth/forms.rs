@@ -2,6 +2,7 @@
 pub struct Login<'a> {
     pub username: &'a str,
     pub password: &'a str,
+    pub referer: Option<&'a str>,
 }
 
 #[derive(FromForm)]

@@ -31,6 +31,7 @@ use database::{models::image::Image, DatabaseHandler};
 use rocket::{
     fs::FileServer,
     response::{Flash, Redirect},
+    Request,
 };
 use rocket_dyn_templates::{context, tera, Engines, Template};
 use tokio::runtime::Runtime;
@@ -130,9 +131,9 @@ async fn not_found() -> Template {
 }
 
 #[catch(401)]
-fn unauthorized() -> Flash<Redirect> {
+fn unauthorized(req: &Request) -> Flash<Redirect> {
     Flash::error(
-        Redirect::to("/control-panel/login"),
+        Redirect::to(format!("/control-panel/login?referer={}", req.uri())),
         "Du har ingen giltig session, var vänlig och logga in.",
     )
 }

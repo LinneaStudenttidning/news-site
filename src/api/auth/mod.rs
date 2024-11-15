@@ -57,7 +57,12 @@ pub async fn auth_login(
 
     jar.add(cookie);
 
-    Ok(Flash::success(Redirect::to("/control-panel"), ""))
+    let redirect = match form.referer {
+        Some(referer) => Redirect::found(referer.to_string()),
+        None => Redirect::found("/control-panel"),
+    };
+
+    Ok(Flash::success(redirect, ""))
 }
 
 #[post("/auth/logout")]
