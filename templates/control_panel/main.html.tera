@@ -24,18 +24,18 @@
     {% if is_admin %}
     <h2 icon="admin_panel_settings">Administrativa verktyg</h2>
     {% else %}
-    <h2 icon="settings">Verktyg</h2>
+    <h2 icon="handyman">Verktyg</h2>
     {% endif %}
 
     <div class="flex wrap gap">
         {% if is_admin %}
         <a href="/control-panel/account-manager" class="btn" icon="group">Kontohantering</a>
         <button class="btn" icon="edit_note" data-dialog-button="change-about-us">Ändra "om oss"</button>
+        <a href="/control-panel/preview-done-unpublished" class="btn" icon="preview">Granska och godkänn nya texter ({{ done_unpublished_texts_count}})</a>
 
         <div class="sep"></div>
         {% endif %}
         <a href="/control-panel/image-gallery" class="btn" icon="gallery_thumbnail">Bildgalleriet</a>
-        <a href="/control-panel/preview-done-unpublished" class="btn" icon="preview">Granska och godkänn nya texter ({{ done_unpublished_texts_count}})</a>
     </div>
 </div>
 
