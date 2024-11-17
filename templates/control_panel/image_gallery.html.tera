@@ -26,6 +26,13 @@
     </div>
 </form>
 
+<form class="box pad margin-bottom" action="/control-panel/image-gallery" method="get">
+    <h2 icon="search">Sök</h2>
+    <input type="text" placeholder="Ange sökord" name="q" id="q" value="{% if q %}{{ q }}{% endif %}"
+        autofocus>
+    <button type="submit" icon="search" class="btn">Sök</button>
+</form>
+
 <div class="box pad">
     <h2 icon="gallery_thumbnail">Bilder i galleriet:</h2>
     {% if images | length > 0 %}
@@ -33,7 +40,7 @@
     <div class="box pad flex wrap gap">
         <img src="/dynamic-data/images/m/{{ image.id }}.webp" alt="{{ image.description }}">
         <p>{{ image.id }}</p>
-        <p>{{ image.description }}</p>
+        <p>{{ image.description | sanitize | safe }}</p>
         <p>{{ image.created_at | date(format="%F %T") }}</p>
         {% if is_admin %}
         {# FIXME: THIS SHOULD REALLY BE DOUBLE CHECKED BEFORE GOING THROUGH!  #}

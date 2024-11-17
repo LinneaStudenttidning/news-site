@@ -151,6 +151,14 @@ impl Image {
             .map_err(Error::from)
     }
 
+    /// Gets ALL `Image`s from the database matching the search query.
+    pub async fn search(db: &DatabaseHandler, query: &str) -> Result<Vec<Self>, Error> {
+        sqlx::query_file_as!(Self, "sql/images/search.sql", query)
+            .fetch_all(&db.pool)
+            .await
+            .map_err(Error::from)
+    }
+
     /// Deletes ONE `Image` from the database and file stystem by its id.
     pub async fn delete(db: &DatabaseHandler, id: Uuid) -> Result<PgQueryResult, Error> {
         // Remove all files.

@@ -73,13 +73,26 @@ async fn preview_done_unpublished(
     ))
 }
 
-#[get("/image-gallery")]
-async fn image_gallery(claims: Claims, db: &State<DatabaseHandler>) -> Result<Template, Error> {
-    let images = Image::get_all(db).await?;
+#[get("/image-gallery?<q>")]
+async fn image_gallery(
+    claims: Claims,
+    db: &State<DatabaseHandler>,
+    q: Option<String>,
+) -> Result<Template, Error> {
+    let images = match q {
+        Some(ref q) => {
+            if !q.is_empty() {
+                Image::search(db, q).await?
+            } else {
+                Image::get_all(db).await?
+            }
+        }
+        None => Image::get_all(db).await?,
+    };
 
     Ok(Template::render(
         "control_panel/image_gallery",
-        context! { creator: &claims.data, images, is_admin: claims.data.is_publisher() },
+        context! { creator: &claims.data, images, q, is_admin: claims.data.is_publisher() },
     ))
 }
 
