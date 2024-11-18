@@ -103,10 +103,6 @@
     }
 }
 
-.page-box {
-    width: 45%;
-}
-
 @container (width < 60ch) {
     .profile {
         grid-template-areas: 'pfp' 'name' 'info';
@@ -123,9 +119,5 @@
         grid-template-areas: 'pfp' 'displayname' 'username' 'joined' 'actions';
         grid-template-columns: auto;
         grid-template-rows: repeat(auto, 5);
-    }
-
-    .page-box {
-        width: 100%;
     }
 }
