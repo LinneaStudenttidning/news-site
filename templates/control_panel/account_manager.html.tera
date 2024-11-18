@@ -23,16 +23,16 @@
 <form class="box pad margin-bottom" action="/api/creator/new" method="post">
     <h2 icon="person_add">Skapa ny användare</h2>
 
-    <label>Användarnamn</label>
+    <label for="username">Användarnamn</label>
     <input name="username" placeholder="bob_andersen" type="text" autocomplete="new-password" required>
 
-    <label>Namn (visningsnamn)</label>
+    <label for="display-name">Namn (visningsnamn)</label>
     <input name="display-name" placeholder="Bob Andersen" type="text" autocomplete="new-password" required>
 
-    <label>Lösenord</label>
+    <label for="password">Lösenord</label>
     <input name="password" placeholder="SuperSecret" type="password" autocomplete="new-password" required>
 
-    <label>Skapa som ansvarig utgivare</label>
+    <label for="as-publisher">Skapa som ansvarig utgivare</label>
     <div>
         <input id="as-publisher" name="as-publisher" type="checkbox">
         <label for="as-publisher">Klicka i rutan för att skapa som ansvarig utgivare.</label>
