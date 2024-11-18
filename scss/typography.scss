@@ -112,3 +112,29 @@ mark {
         content: ' ';
     }
 }
+
+@media screen and (max-width: 600px) {
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+    }
+
+    h3 {
+        font-size: 1.2rem;
+    }
+
+    h4 {
+        font-size: 1rem;
+    }
+
+    h5 {
+        font-size: 0.8rem;
+    }
+
+    h6 {
+        font-size: 0.6rem;
+    }
+}
