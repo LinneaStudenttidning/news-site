@@ -20,7 +20,7 @@
         <published>{{ text.created_at | date(format="%+") }}</published>
         <updated>{{ text.updated_at | date(format="%+") }}</updated>
         <summary>{{ text.lead_paragraph }}</summary>
-        <content type="html"><![CDATA[<p><b>{{ text.lead_paragraph }}</b></p>{{ text.text_body | markdown | safe }}]]></content>
+        <content type="html"><![CDATA[<p><b>{{ text.lead_paragraph }}</b></p>{{ all_rendered_blocks[loop.index0] | safe }}]]></content>
         {% for tag in text.tags %}
         <category term="{{ tag }}"/>
         {% endfor %}

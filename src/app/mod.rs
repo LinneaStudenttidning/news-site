@@ -101,8 +101,25 @@ async fn text_by_id(
 #[get("/feed/atom.xml")]
 async fn feed_atom(db: &State<DatabaseHandler>) -> Result<Template, Error> {
     let texts = Text::get_n_latest(db, 50, true).await?;
+    let mut all_rendered_blocks: Vec<String> = Vec::new();
 
-    Ok(Template::render("atom", context! { texts }))
+    for text in texts.iter() {
+        let mut rendered_blocks: Vec<String> = Vec::new();
+        for block in text.text_body.iter() {
+            rendered_blocks.push(
+                block
+                    .render(db)
+                    .await
+                    .unwrap_or("INVALID BLOCK!".to_string()),
+            );
+        }
+        all_rendered_blocks.push(rendered_blocks.join(""));
+    }
+
+    Ok(Template::render(
+        "atom",
+        context! { all_rendered_blocks, texts },
+    ))
 }
 
 /// This should be mounted on `/`!
