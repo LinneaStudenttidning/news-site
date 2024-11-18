@@ -17,7 +17,6 @@ pub mod anyresponder;
 pub mod api;
 pub mod app;
 pub mod block_editor;
-pub mod data_dir;
 pub mod database;
 pub mod defaults;
 pub mod error;

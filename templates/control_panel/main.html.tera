@@ -31,7 +31,6 @@
         {% if is_admin %}
         <a href="/control-panel/account-manager" class="btn" icon="group">Kontohantering</a>
         <a href="/control-panel/pages" class="btn" icon="pages">Sidhanteraren</a>
-        <button class="btn" icon="edit_note" data-dialog-button="change-about-us">Ändra "om oss"</button>
         <a href="/control-panel/preview-done-unpublished" class="btn" icon="preview">Granska och godkänn nya texter ({{ done_unpublished_texts_count}})</a>
 
         <div class="sep"></div>
@@ -112,19 +111,6 @@
     <p>Du har inga publicerade texter.</p>
     {% endif %}
 </div>
-
-{% if is_admin %}
-<dialog data-dialog-box="change-about-us">
-    <form action="/api/site-settings/update-about-us" method="post">
-        <label>Om oss</label>
-        <textarea name="about-us" rows="20">{{ about_us }}</textarea>
-        <div class="flex wrap gap">
-            <button class="btn" icon="edit_note" type="submit">Ändra "om oss"</button>
-            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
-        </div>
-    </form>
-</dialog>
-{% endif %}
 
 {% endblock main %}
 

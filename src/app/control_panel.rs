@@ -1,5 +1,4 @@
 use crate::anyresponder::AnyResponder;
-use crate::data_dir;
 use crate::database::models::image::Image;
 use crate::database::models::page::Page;
 use crate::database::{models::article::Text, DatabaseHandler};
@@ -20,7 +19,6 @@ async fn control_panel(
     let creator = Creator::get_by_username(db, &claims.data.username).await?;
     let published_texts = Text::get_by_author(db, &claims.data.username, true).await?;
     let unpublished_texts = Text::get_by_author(db, &claims.data.username, false).await?;
-    let about_us = data_dir::get_about_us();
     let done_unpublished_texts_count = Text::get_all_done_unpublished_count(db).await?;
 
     let all_creator_usernames = Creator::get_all(db)
@@ -33,7 +31,7 @@ async fn control_panel(
 
     Ok(Template::render(
         "control_panel/main",
-        context! { creator, published_texts, unpublished_texts, all_creator_usernames, done_unpublished_texts_count, about_us, flash, is_admin: claims.data.is_publisher() },
+        context! { creator, published_texts, unpublished_texts, all_creator_usernames, done_unpublished_texts_count, flash, is_admin: claims.data.is_publisher() },
     ))
 }
 

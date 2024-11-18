@@ -1,6 +1,5 @@
 use crate::{
     anyresponder::AnyResponder,
-    data_dir,
     database::{
         models::{article::Text, creator::Creator},
         DatabaseHandler,
@@ -24,19 +23,6 @@ async fn landing(db: &State<DatabaseHandler>) -> Result<Template, Error> {
     Ok(Template::render(
         "landing",
         context! { tags, authors, texts },
-    ))
-}
-
-#[get("/about-us")]
-async fn about_us(db: &State<DatabaseHandler>) -> Result<Template, Error> {
-    let tags = Text::get_all_tags(db, None).await?;
-    let authors = Creator::get_all_authors(db).await?;
-
-    let about_us_md = data_dir::get_about_us();
-
-    Ok(Template::render(
-        "about",
-        context! { tags, authors, about_us_md },
     ))
 }
 
@@ -121,5 +107,5 @@ async fn feed_atom(db: &State<DatabaseHandler>) -> Result<Template, Error> {
 
 /// This should be mounted on `/`!
 pub fn get_all_routes() -> Vec<Route> {
-    routes![landing, about_us, search, text_by_id, feed_atom]
+    routes![landing, search, text_by_id, feed_atom]
 }

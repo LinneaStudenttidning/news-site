@@ -9,7 +9,6 @@ use crate::api::{
         creator_update_profile_picture,
     },
     image::{image_delete, image_upload},
-    site_settings::site_settings_update_about_us,
     text::{text_edit, text_save, text_set_done_status, text_set_publish_status},
 };
 
@@ -17,7 +16,6 @@ pub mod auth;
 pub mod creator;
 pub mod image;
 pub mod page;
-pub mod site_settings;
 pub mod text;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -43,8 +41,6 @@ pub fn get_all_routes() -> Vec<Route> {
         // -> /image
         image_upload,
         image_delete,
-        // ->  /site-settings
-        site_settings_update_about_us,
         // -> /text
         text_save,
         text_edit,
