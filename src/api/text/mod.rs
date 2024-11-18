@@ -1,6 +1,5 @@
 use std::str::FromStr;
 
-use forms::ReturnRedirect;
 use rocket::{form::Form, http::Status, response::Redirect, serde::json::Json, State};
 use uuid::Uuid;
 
@@ -14,6 +13,8 @@ use crate::{
 };
 
 use self::forms::{OnlyTextId, SaveOrEditText};
+
+use super::ReturnRedirect;
 
 pub mod forms;
 

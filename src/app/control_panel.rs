@@ -1,6 +1,7 @@
 use crate::anyresponder::AnyResponder;
 use crate::data_dir;
 use crate::database::models::image::Image;
+use crate::database::models::page::Page;
 use crate::database::{models::article::Text, DatabaseHandler};
 use crate::flash_msg::FlashMsg;
 use crate::{database::models::creator::Creator, error::Error, token::Claims};
@@ -117,6 +118,65 @@ async fn account_manager(
     ))
 }
 
+#[get("/pages")]
+async fn page_manager(
+    claims: Claims,
+    db: &State<DatabaseHandler>,
+    flash: Option<FlashMessage<'_>>,
+) -> Result<Template, Error> {
+    if !claims.admin {
+        return Err(Error::create(
+            &format!("{}:{}", file!(), line!()),
+            "You need to be an admin to access this view!",
+            Status::Unauthorized,
+        ));
+    };
+    let pages = Page::get_all(db).await?;
+
+    Ok(Template::render(
+        "control_panel/page_manager",
+        context! { creator: &claims.data, pages, flash },
+    ))
+}
+
+#[get("/pages/new")]
+fn page_editor(claims: Claims) -> Result<Template, Error> {
+    if !claims.admin {
+        return Err(Error::create(
+            &format!("{}:{}", file!(), line!()),
+            "You need to be an admin to access this view!",
+            Status::Unauthorized,
+        ));
+    };
+
+    Ok(Template::render(
+        "control_panel/page_editor",
+        context! { is_publisher: claims.data.is_publisher() },
+    ))
+}
+
+#[get("/pages/edit?<path>")]
+async fn page_editor_path(
+    path: String,
+    db: &State<DatabaseHandler>,
+    claims: Claims,
+) -> Result<Template, Error> {
+    if !claims.admin {
+        return Err(Error::create(
+            &format!("{}:{}", file!(), line!()),
+            "You need to be an admin to access this view!",
+            Status::Unauthorized,
+        ));
+    };
+
+    let page = Page::get_by_path(db, &path).await?;
+
+    Ok(Template::render(
+        "control_panel/page_editor",
+        context! { page },
+    ))
+}
+
 #[get("/editor")]
 fn editor(claims: Claims) -> Template {
     Template::render(
@@ -146,6 +206,9 @@ pub fn get_all_routes() -> Vec<Route> {
         login_page,
         image_gallery,
         account_manager,
+        page_manager,
+        page_editor,
+        page_editor_path,
         preview_done_unpublished,
         editor,
         editor_text_id,

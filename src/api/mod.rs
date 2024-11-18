@@ -1,4 +1,6 @@
+use page::{page_edit, page_save};
 use rocket::Route;
+use serde::{Deserialize, Serialize};
 
 use crate::api::{
     auth::{auth_change_password, auth_change_password_other, auth_login, auth_logout},
@@ -14,8 +16,14 @@ use crate::api::{
 pub mod auth;
 pub mod creator;
 pub mod image;
+pub mod page;
 pub mod site_settings;
 pub mod text;
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ReturnRedirect {
+    pub redirect: String,
+}
 
 /// These should be mounted on `/api`.
 pub fn get_all_routes() -> Vec<Route> {
@@ -42,5 +50,8 @@ pub fn get_all_routes() -> Vec<Route> {
         text_edit,
         text_set_done_status,
         text_set_publish_status,
+        // -> /page
+        page_save,
+        page_edit,
     ]
 }

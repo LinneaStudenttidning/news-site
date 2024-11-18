@@ -1,0 +1,35 @@
+{% extends "templates/app" %}
+
+{% block head %}
+<title>{{ page.title }} – {{ get_env(name="SITE_TITLE") }}</title>
+{# <meta name="description" content="{{ text.lead_paragraph }}"> #}
+{% endblock head %}
+
+{% block main %}
+
+{# {% if is_logged_in and not text.is_published %}
+<div class="box pad warning">
+    <h2 icon="warning">Artikeln är inte publicerad</h2>
+    <p>Denna artikel är inte publicerad. Endast inloggade skribenter kan se den.</p>
+</div>
+{% endif %} #}
+
+<article class="box">
+    <h1 itemprop="headline">{{ page.title }}</h1>
+    <div class="text-body" itemprop="articleBody">
+        {{ rendered_blocks | safe }}
+    </div>
+</article>
+{% endblock main %}
+
+{% block aside %}
+{% if is_admin %}
+<div class="box pad margin-bottom">
+    <h2 icon="construction">Verktygslåda</h2>
+    <div class="flex wrap gap">
+        <a href="/control-panel/pages/edit?path={{ page.path | urlencode }}" class="btn" icon="edit_note">Redigera</a>
+    </div>
+</div>
+{% endif %}
+{{ super() }}
+{% endblock aside %}

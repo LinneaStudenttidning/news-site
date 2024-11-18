@@ -17,10 +17,6 @@ pub struct SaveOrEditText<'a> {
     pub blocks: Vec<Block>,
     pub tags: &'a str,
 }
-#[derive(Debug, Serialize, Deserialize)]
-pub struct ReturnRedirect {
-    pub redirect: String,
-}
 
 #[derive(Debug, FromForm)]
 pub struct OnlyTextId {

@@ -107,7 +107,7 @@ async fn text_by_id(
 
     let template = Template::render(
         "single-text-view",
-        context! { text, rendered_blocks: rendered_blocks.join(""),tags, authors, is_logged_in, can_edit_text, can_mark_as_done, can_unmark_as_done, can_publish_text, can_unpublish_text },
+        context! { text, rendered_blocks: rendered_blocks.join(""), tags, authors, is_logged_in, can_edit_text, can_mark_as_done, can_unmark_as_done, can_publish_text, can_unpublish_text },
     );
     Ok(AnyResponder::from(template))
 }

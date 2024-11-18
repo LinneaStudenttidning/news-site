@@ -30,6 +30,7 @@
     <div class="flex wrap gap">
         {% if is_admin %}
         <a href="/control-panel/account-manager" class="btn" icon="group">Kontohantering</a>
+        <a href="/control-panel/pages" class="btn" icon="pages">Sidhanteraren</a>
         <button class="btn" icon="edit_note" data-dialog-button="change-about-us">Ändra "om oss"</button>
         <a href="/control-panel/preview-done-unpublished" class="btn" icon="preview">Granska och godkänn nya texter ({{ done_unpublished_texts_count}})</a>
 

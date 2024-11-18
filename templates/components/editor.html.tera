@@ -42,3 +42,23 @@
     {% endif %}
 </div>
 {% endmacro render_block_for_editor %}
+
+{% macro editor_dialog() %}
+<dialog class="add-block">
+    <form action="#">
+        <label for="block-type">Vilken typ av block vill du lägga till?</label>
+        <select name="block-type">
+            <option value="Paragraph">Brödtext</option>
+            <option value="Image">Bild</option>
+            <option value="Quote">Citat</option>
+            <option value="Heading">Rubrik</option>
+            <option value="RawHtml">HTML</option>
+        </select>
+
+        <div class="flex wrap gap">
+            <button class="btn" icon="add" type="submit">Lägg till block</button>
+            <button class="btn dangerous close-dialog" icon="cancel">Avbryt</button>
+        </div>
+    </form>
+</dialog>
+{% endmacro %}

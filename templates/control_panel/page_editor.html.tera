@@ -1,0 +1,53 @@
+{% extends "templates/app" %}
+{% import "components/editor" as editor %}
+
+{% block head %}
+<title>Sidredigerare – {{ get_env(name="SITE_TITLE") }}</title>
+<script type="module" src="/static/scripts/editor.js" async defer></script>
+{% endblock head %}
+
+{% block main %}
+{% if is_editing %}
+<div class="box pad margin-bottom">
+    <h2 icon="handyman">Verktyg</h2>
+    <div class="flex wrap gap">
+        {# no tools currently #}
+    </div>
+</div>
+{% endif %}
+
+<form id="text-form" class="box pad margin-bottom"
+    action="{% if page %}/api/page/edit{% else %}/api/page/save{% endif %}" method="post">
+    <h2 icon="edit_note">{% if is_editing %}Redigera sida{% else  %}Skapa sida{% endif %}</h2>
+
+    {% if page %}
+    <input type="hidden" id="old-path" name="old-path" value="{{ page.path }}">
+    {% endif %}
+
+    <label for="title">Rubrik:</label>
+    <input type="text" name="title" id="title" value="{% if page.title %}{{ page.title }}{% endif %}" required>
+
+    <label for="title">Path:</label>
+    <input type="text" name="path" id="path" value="{% if page.path %}{{ page.path }}{% endif %}" placeholder="my-custom-path/test" required>
+
+    <label for="text-body">Brödtext:</label>
+    <div class="block-editor">
+        {% if page.text_body %}
+        {% for block in page.text_body %}
+        {{ editor::render_block_for_editor(block=block) }}
+        {% endfor %}
+        {% else %}
+        <div class="block" data-block-type="Paragraph">
+            <textarea class="body_text" placeholder="Skriv brödtext här..."></textarea>
+        </div>
+        {% endif %}
+    </div>
+    <button type="button" class="btn add-block" icon="add">Lägg till ett nytt block</button>
+
+    <div class="flex wrap gap">
+        <button class="btn" icon="save" type="submit">Spara</button>
+    </div>
+</form>
+
+{{ editor::editor_dialog() }}
+{% endblock main %}

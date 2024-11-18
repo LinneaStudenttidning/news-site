@@ -24,16 +24,20 @@ pub mod error;
 pub mod flash_msg;
 pub mod token;
 
-use std::{collections::HashMap, str::FromStr};
+use std::{collections::HashMap, path::PathBuf, str::FromStr};
 
 use comrak::{markdown_to_html, Options};
-use database::{models::image::Image, DatabaseHandler};
+use database::{
+    models::{image::Image, page::Page},
+    DatabaseHandler,
+};
 use rocket::{
     fs::FileServer,
     response::{Flash, Redirect},
-    Request,
+    Request, State,
 };
 use rocket_dyn_templates::{context, tera, Engines, Template};
+use token::Claims;
 use tokio::runtime::Runtime;
 use uuid::Uuid;
 
@@ -138,6 +142,39 @@ fn unauthorized(req: &Request) -> Flash<Redirect> {
     )
 }
 
+#[get("/<path..>", rank = 999)]
+async fn page_finder(
+    path: PathBuf,
+    claims: Option<Claims>,
+    db: &State<DatabaseHandler>,
+) -> Option<Template> {
+    println!("{}", path.to_str().unwrap());
+    let page = match Page::get_by_path(db, path.to_str().unwrap()).await {
+        Ok(page) => page,
+        Err(_) => return None,
+    };
+
+    let mut rendered_blocks: Vec<String> = Vec::new();
+    for block in page.text_body.iter() {
+        rendered_blocks.push(
+            block
+                .render(db)
+                .await
+                .unwrap_or("INVALID BLOCK!".to_string()),
+        );
+    }
+
+    let is_admin = match claims {
+        Some(claims) => claims.data.is_publisher(),
+        None => false,
+    };
+
+    Some(Template::render(
+        "single-page-view",
+        context! { rendered_blocks: rendered_blocks.join(""), page, is_admin },
+    ))
+}
+
 #[rocket::main]
 async fn main() {
     // Initialize the database connection.
@@ -164,6 +201,7 @@ async fn main() {
             FileServer::from("./data/profile-pictures"),
         )
         .mount("/dynamic-data/images", FileServer::from("./data/images"))
+        .mount("/", routes![page_finder])
         .register("/", catchers![not_found])
         .register("/", catchers![unauthorized])
         .launch()

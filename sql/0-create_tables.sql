@@ -69,6 +69,12 @@ CREATE TABLE IF NOT EXISTS images (
     ) STORED
 );
 
+CREATE TABLE IF NOT EXISTS pages (
+    path text NOT NULL PRIMARY KEY,
+    title text NOT NULL,
+    text_body jsonb NOT NULL
+);
+
 CREATE INDEX IF NOT EXISTS idx_articles_title ON articles (title);
 CREATE INDEX IF NOT EXISTS idx_articles_tags ON articles USING GIN (tags);
 CREATE INDEX IF NOT EXISTS idx_articles_search ON articles USING GIN (search_vec);
