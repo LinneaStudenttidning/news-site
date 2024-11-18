@@ -26,6 +26,14 @@ pub async fn page_save(
         ));
     };
 
+    if data.path.starts_with("/") {
+        return Err(Error::create(
+            &format!("{}:{}", file!(), line!()),
+            "Field `path` should not start with a slash!",
+            Status::BadRequest,
+        ));
+    }
+
     let page = Page::create(data.path, data.title, data.blocks.clone());
 
     page.save_to_db(db).await.map(|page| {
@@ -48,6 +56,14 @@ pub async fn page_edit(
             Status::Unauthorized,
         ));
     };
+
+    if data.path.starts_with("/") {
+        return Err(Error::create(
+            &format!("{}:{}", file!(), line!()),
+            "Field `path` should not start with a slash!",
+            Status::BadRequest,
+        ));
+    }
 
     let old_path = match data.old_path {
         Some(text_id) => text_id,
