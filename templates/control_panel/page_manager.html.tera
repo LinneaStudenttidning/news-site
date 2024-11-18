@@ -20,29 +20,29 @@
 </div>
 {% endif %}
 
-<div class="box pad margin-bottom">
-    <h2 icon="handyman">Verktyg</h2>
+<div class="box pad">
+    <h2 icon="pages">Alla sidor:</h2>
+    <div class="flex wrap gap center">
+        {% if pages | length > 0 %}
+        {% for page in pages %}
+        <div class="box pad margin-bottom page-box">
+            <h3 class="title">{{ page.title }}</h3>
+            <p class="path">{{ page.path }}</p>
+            <div class="actions flex wrap gap">
+                <a class="btn icon-only" icon="edit_note"
+                    href="/control-panel/pages/edit?path={{ page.path | urlencode }}"></a>
+                <a class="btn icon-only" icon="open_in_new" href="/{{ page.path }}" target="_blank"></a>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>Det finns inga skapade sidor!</p>
+        {% endif %}
+    </div>
 
     <div class="flex wrap gap">
         <a href="/control-panel/pages/new" class="btn" icon="post_add">Skapa ny sida</a>
     </div>
-</div>
-
-<div class="box pad">
-    <h2 icon="pages">Alla sidor:</h2>
-    {% if pages | length > 0 %}
-    {% for page in pages %}
-    <div class="box pad flex wrap gap">
-        <p>{{ page.title }}</p>
-        <p>{{ page.path }}</p>
-        <a class="btn icon-only" icon="edit_note" href="/control-panel/pages/edit?path={{ page.path | urlencode }}"></a>
-        <a class="btn icon-only" icon="open_in_new" href="/{{ page.path }}"
-            target="_blank"></a>
-    </div>
-    {% endfor %}
-    {% else %}
-    <p>Det finns inga skapade sidor!</p>
-    {% endif %}
 </div>
 {% endblock main %}
 
