@@ -59,6 +59,50 @@
     }
 }
 
+.user-box {
+    display: grid;
+    grid-template-areas: 'pfp displayname' 'pfp username' 'pfp joined' 'pfp actions';
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: repeat(auto, 4);
+    gap: settings.$pad-fixed-m;
+
+    > * {
+        margin: 0;
+    }
+
+    > img.pfp {
+        grid-area: pfp;
+        aspect-ratio: 1 / 1;
+    }
+
+    > .displayname {
+        grid-area: displayname;
+    }
+
+    > .username {
+        grid-area: username;
+
+        > .role {
+            font-family: settings.$font-family-default;
+            font-size: .85em;
+            font-weight: 400;
+            padding: settings.$pad-relative-xxs settings.$pad-relative-xs;
+            margin-right: .5em;
+            color: palette.$primary400;
+            background-color: palette.$primary100;
+            grid-area: role;
+        }
+    }
+
+    .joined {
+        grid-area: joined;
+    }
+
+    > .actions {
+        grid-area: actions;
+    }
+}
+
 @container (width < 60ch) {
     .profile {
         grid-template-areas: 'pfp' 'name' 'info';
@@ -69,5 +113,11 @@
             margin: 0 auto;
             width: min(45ch, 100%);
         }
+    }
+
+    .user-box {
+        grid-template-areas: 'pfp' 'displayname' 'username' 'joined' 'actions';
+        grid-template-columns: auto;
+        grid-template-rows: repeat(auto, 5);
     }
 }

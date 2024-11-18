@@ -20,7 +20,9 @@
 </div>
 {% endif %}
 
-<form action="/api/creator/new" method="post">
+<form class="box pad margin-bottom" action="/api/creator/new" method="post">
+    <h2 icon="person_add">Skapa ny användare</h2>
+
     <label>Användarnamn</label>
     <input name="username" placeholder="bob_andersen" type="text" autocomplete="new-password" required>
 
@@ -45,19 +47,24 @@
     <h2 icon="group">Alla användare:</h2>
     {% if creators | length > 0 %}
     {% for user in creators %}
-    <div class="box pad flex wrap gap">
+    <div class="box pad margin-bottom user-box">
         <img src="/dynamic-data/profile-pictures/{{ user.username }}.webp" alt="Profilbild" class="pfp">
-        <p>{{ user.display_name }}</p>
-        <p>{{ user.username }}</p>
-        <p>{{ user.role }}</p>
-        <p>{{ user.joined_at | date(format="%F %T") }}</p>
+        <h3 class="displayname">{{ user.display_name }}</h3>
+        <p class="username"><span class="role">{{ user.role }}</span> {{ user.username }}</p>
+        <p class="joined">Kontot skapades {{ user.joined_at | date(format="%F %T") }}.</p>
         {% if creator.username != user.username %}
-        {% if user.password != "LOCKED" %}
-        <button class="btn dangerous" icon="lock_person" data-dialog-button="lock-creator-{{ user.username }}">Lås användare</button>
-        {% endif %}
-        <button class="btn dangerous" icon="add_moderator" data-dialog-button="change-role-{{ user.username }}">Ändra roll</button>
-        {% endif %}
-        <button class="btn" icon="password" data-dialog-button="change-password-{{ user.username }}">Ändra lösenord</button>
+        <div class="actions flex wrap gap">
+            {% if user.password != "LOCKED" %}
+            <button class="btn dangerous" icon="lock_person" data-dialog-button="lock-creator-{{ user.username }}">Lås
+                användare</button>
+            {% endif %}
+            <button class="btn dangerous" icon="add_moderator"
+                data-dialog-button="change-role-{{ user.username }}">Ändra
+                roll</button>
+            {% endif %}
+            <button class="btn" icon="password" data-dialog-button="change-password-{{ user.username }}">Ändra
+                lösenord</button>
+        </div>
     </div>
     {% endfor %}
     {% else %}
