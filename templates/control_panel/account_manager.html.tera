@@ -77,7 +77,7 @@
 {% if user.password != "LOCKED" and creator.username != user.username %}
 <dialog data-dialog-box="lock-creator-{{ user.username }}">
     <form action="/api/creator/lock" method="post">
-        <label>
+        <label for="username">
             Är du säker att du vill låsa detta konto? Ett låst konto kommer att finnas kvar,
             men användaren kommer inte kunna logga in. Om du vill låsa upp ett konto igen,
             så måste du ändra lösenord för dem.
@@ -95,7 +95,7 @@
     <form action="/api/auth/change-password-other" method="post">
         <input name="username" type="hidden" value="{{ user.username }}">
 
-        <label>Nytt lösenord</label>
+        <label for="new-password">Nytt lösenord</label>
         <input name="new-password" placeholder="SuperSecret" type="text" autocomplete="off"
             onfocus="this.type = 'password'" required>
 

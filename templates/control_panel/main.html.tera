@@ -31,7 +31,8 @@
         {% if is_admin %}
         <a href="/control-panel/account-manager" class="btn" icon="group">Kontohantering</a>
         <a href="/control-panel/pages" class="btn" icon="pages">Sidhanteraren</a>
-        <a href="/control-panel/preview-done-unpublished" class="btn" icon="preview">Granska och godkänn nya texter ({{ done_unpublished_texts_count}})</a>
+        <a href="/control-panel/preview-done-unpublished" class="btn" icon="preview">Granska och godkänn nya texter
+            ({{ done_unpublished_texts_count}})</a>
 
         <div class="sep"></div>
         {% endif %}
@@ -145,7 +146,7 @@
 
 <dialog data-dialog-box="change-display-name">
     <form action="/api/creator/update-profile" method="post">
-        <label>Visningsnamn</label>
+        <label for="display-name">Visningsnamn</label>
         <input name="display-name" value="{{ creator.display_name }}" type="text" required>
 
         <div class="flex wrap gap">
@@ -157,7 +158,7 @@
 
 <dialog data-dialog-box="change-biography">
     <form action="/api/creator/update-profile" method="post">
-        <label>Beskrivning</label>
+        <label for="biography">Beskrivning</label>
         <input name="biography" value="{{ creator.biography }}" type="text" required>
 
         <div class="flex wrap gap">
@@ -169,13 +170,13 @@
 
 <dialog data-dialog-box="change-password">
     <form action="/api/auth/change-password" method="post">
-        <label>Nuvarande lösenord</label>
+        <label for="current-password">Nuvarande lösenord</label>
         <input name="current-password" value="" type="password" required>
 
-        <label>Nytt lösenord</label>
+        <label for="new-password">Nytt lösenord</label>
         <input name="new-password" value="" type="password" required>
 
-        <label>Upprepa nytt lösenord</label>
+        <label for="confirm-new-password">Upprepa nytt lösenord</label>
         <input name="confirm-new-password" value="" type="password" required>
 
         <div class="flex wrap gap">
@@ -187,7 +188,7 @@
 
 <dialog data-dialog-box="update-profile-picture">
     <form action="/api/creator/update-profile-picture" method="post" enctype="multipart/form-data">
-        <label>Välj ny profilbild:</label>
+        <label for="image">Välj ny profilbild:</label>
         <input id="image" name="image" type="file" required>
 
         <div class="flex wrap gap">
