@@ -3,7 +3,7 @@
     <id>{{ get_env(name="SITE_URL") }}/</id>
     <title>{{ get_env(name="SITE_TITLE") }}</title>
     <subtitle>De senaste artiklarna från >{{ get_env(name="SITE_TITLE") }}</subtitle>
-    <updated>{{ texts[0].updated_at | date(format="%+") }}</updated>
+    <updated>{{ now() | date(format="%+") }}</updated>
     <rights>copyright something</rights>
     <link rel="alternate" type="text/html" hreflang="sv" href="{{ get_env(name="SITE_URL") }}/"/>
     <link rel="self" type="application/atom+xml" hreflang="sv" href="{{ get_env(name="SITE_URL") }}/feed/atom.xml"/>
