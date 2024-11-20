@@ -2,7 +2,11 @@ use std::{env::VarError, fmt};
 
 use identicon_rs::error::IdenticonError;
 use image::ImageError;
-use rocket::{http::Status, Request, Response};
+use rocket::{
+    http::{ContentType, Status},
+    serde::json::Json,
+    Request, Response,
+};
 use rocket_dyn_templates::{context, Template};
 use serde::{Deserialize, Serialize};
 use webp::WebPEncodingError;
@@ -145,18 +149,16 @@ impl From<serde_json::Error> for Error {
 
 impl<'a> rocket::response::Responder<'a, 'static> for Error {
     fn respond_to(self, request: &'a Request<'_>) -> rocket::response::Result<'static> {
-        // let headers = request
-        //     .headers()
-        //     .iter()
-        //     .map(|h| (h.name().to_string(), h.value().to_string()))
-        //     .collect::<Vec<(String, String)>>();
-
         Response::build_from(
-            Template::render(
-                "errors/generic",
-                context! { error: self.to_string(), status: self.status, uri: request.uri()},
-            )
-            .respond_to(request)?,
+            if request.content_type().unwrap_or(&ContentType::HTML) == &ContentType::JSON {
+                Json(self.clone()).respond_to(request)?
+            } else {
+                Template::render(
+                    "errors/generic",
+                    context! { error: self.to_string(), status: self.status, uri: request.uri()},
+                )
+                .respond_to(request)?
+            },
         )
         .status(self.status)
         .ok()
