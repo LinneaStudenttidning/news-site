@@ -1,30 +1,3 @@
-{% macro wysiwyg(id) %}
-<div class="editor">
-    <div class="actions flex wrap gap">
-        <button class="btn icon-only" icon="undo" title="Ångra"></button>
-        <button class="btn icon-only" icon="redo" title="Gör om"></button>
-        <button class="btn icon-only" icon="format_clear" title="Ta bort formatering"></button>
-        {# <button class="btn icon-only" icon="format_h1" title="Rubrik 1"></button> #}
-        <button class="btn icon-only" icon="format_h2" title="Mellanrubrik"></button>
-        <button class="btn icon-only" icon="format_paragraph" title="Brödtext"></button>
-        <button class="btn icon-only" icon="format_bold" title="Fetstil"></button>
-        <button class="btn icon-only" icon="format_italic" title="Kursiv stil"></button>
-        {# <button class="btn icon-only" icon="format_list_bulleted" title="Punktlista"></button> #}
-        {# <button class="btn icon-only" icon="format_list_numbered" title="Numrerad lista"></button> #}
-        <button class="btn icon-only" icon="add_photo_alternate" title="Lägg till bild"></button>
-        <button class="btn icon-only" icon="chat" title="Infoga talstreck"></button>
-    </div>
-    <div role="textbox" class="textbox" contenteditable id="{{ id }}" name="{{ id }}">
-        <p>Skriv din text här.</p>
-    </div>
-    <div class="info flex wrap gap">
-        <p>Tecken (inklusive mellanrum): <span id="char-count">0</span></p>
-        <p>Tecken (exklusive mellanrum): <span id="char-count-no-ws">0</span></p>
-        <p>Ord: <span id="word-count">0</span></p>
-    </div>
-</div>
-{% endmacro wysiwyg %}
-
 {% macro render_block_for_editor(block) %}
 <div class="block" data-block-type="{{ block.type }}">
     {% if block.type == "Paragraph" %}

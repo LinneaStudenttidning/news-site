@@ -178,7 +178,7 @@ async fn page_editor_path(
 #[get("/editor")]
 fn editor(claims: Claims) -> Template {
     Template::render(
-        "control_panel/editor_v2",
+        "control_panel/editor",
         context! { is_publisher: claims.data.is_publisher() },
     )
 }
@@ -192,7 +192,7 @@ async fn editor_text_id(
     let text = Text::get_by_id(db, text_id, false).await?;
 
     Ok(Template::render(
-        "control_panel/editor_v2",
+        "control_panel/editor",
         context! { text, is_publisher: claims.data.is_publisher(), is_editing: true, creator: claims.data },
     ))
 }
