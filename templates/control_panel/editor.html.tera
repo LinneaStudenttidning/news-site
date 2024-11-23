@@ -38,7 +38,7 @@
 </div>
 {% endif %}
 
-<form id="text-form" class="box pad margin-bottom"
+<form id="text-form" class="editor box pad margin-bottom"
     action="{% if text %}/api/text/edit{% else %}/api/text/save{% endif %}" method="post">
     <h2 icon="edit_note">{% if is_editing %}Redigera text{% else  %}Skapa text{% endif %}</h2>
     <label for="text-type">Texttyp:</label>
@@ -54,7 +54,8 @@
     {% endif %}
 
     <label for="title">Rubrik:</label>
-    <input type="text" name="title" id="title" value="{% if text.title %}{{ text.title }}{% endif %}" required>
+    <input class="heading" type="text" name="title" id="title" value="{% if text.title %}{{ text.title }}{% endif %}"
+        required>
 
     <label for="thumbnail">Dragbild:</label>
     <p>
@@ -65,11 +66,11 @@
         value="{% if text.thumbnail_id %}{{ text.thumbnail_id }}{% endif %}">
 
     <label for="leading-paragraph">Ingress:</label>
-    <textarea name="leading-paragraph" id="leading-paragraph" rows="5" value=""
+    <textarea class="leading-paragraph" name="leading-paragraph" id="leading-paragraph" rows="5" value=""
         required>{% if text.lead_paragraph %}{{ text.lead_paragraph }}{% endif %}</textarea>
 
-    <label for="text-body">Brödtext:</label>
-    <div class="block-editor">
+    <label for="text-body">Artikel:</label>
+    <div class="block-editor box pad">
         {% if text.text_body %}
         {% for block in text.text_body %}
         {{ editor::render_block_for_editor(block=block) }}

@@ -2,63 +2,57 @@
 @use "settings";
 
 .editor {
-    width: 100%;
-    height: fit-content;
-    padding: settings.$pad-fixed-m;
-    background-color: palette.$surface;
-
-    .actions {
-        height: fit-content;
-        margin-bottom: settings.$pad-fixed-m;
+    > .heading {
+        font-size: 2rem;
+        font-weight: 400;
+        padding: settings.$pad-fixed-xs settings.$pad-fixed-s;
     }
 
-    .textbox {
-        background-color: palette.$standout;
-        height: fit-content;
-        min-height: 60vh;
-        padding: settings.$pad-fixed-m;
+    .leading-paragraph {
+        font-weight: 400;
+    }
+}
 
-        > * {
-            margin-bottom: settings.$pad-fixed-xs;
-        }
+.block-editor {
+    .block {
+        position: relative;
+        padding-right: 2rem !important;
+        background-color: transparent !important;
 
-        h1 {
-            font-size: 2rem;
-            font-weight: 400;
+        > .block-actions {
+            height: 0;
+            opacity: 0;
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            gap: settings.$pad-fixed-xxs;
+            top: 50%;
+            right: -2rem;
+            translate: 0 -50%;
+            padding: settings.$pad-fixed-xxs;
+            background-color: palette.$standout;
+            border: 1px solid palette.$grey100;
+            border-radius: settings.$border-radius-m;
+            box-shadow: 0 .25rem .5rem palette.$shadow200;
 
-            &:not(:first-child) {
-                color: palette.$white;
-                background-color: palette.$red;
+            > .btn {
+                font-size: .75em;
+                padding: settings.$pad-relative-xs settings.$pad-relative-s;
             }
         }
 
-        h2 {
-            font-size: 1rem;
-            font-weight: 400;
+        &:hover > .block-actions {
+            height: auto;
+            opacity: 1;
+            transition: opacity .3s;
         }
 
-        :not(h1, h2) {
-            font-family: settings.$font-family-paragraph;
+        &:first-child > .block-actions [icon="keyboard_arrow_up"] {
+            display: none;
         }
 
-        ul,
-        ol {
-            margin-left: settings.$pad-fixed-xl;
-        }
-    }
-
-    .info {
-        margin-top: settings.$pad-fixed-m;
-
-        p {
-            font-family: settings.$font-family-default;
-            font-size: .85rem;
-
-            &:not(:last-child) {
-                // padding-right: .5em;
-                // border-right: 1px solid palette.$text;
-                margin-right: settings.$pad-fixed-m;
-            }
+        &:last-child > .block-actions [icon="keyboard_arrow_down"] {
+            display: none;
         }
     }
 }

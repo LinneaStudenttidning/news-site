@@ -3,16 +3,26 @@
     {% if block.type == "Paragraph" %}
     <textarea class="body_text" placeholder="Skriv brödtext här...">{{ block.body_text }}</textarea>
     {% elif block.type == "Image" %}
+    <p>Bildens ID:</p>
     <input class="id" value="{{ block.id }}" placeholder="Skriv bildens id här">
+    <p>Bildtext:</p>
     <input class="caption" value="{{ block.caption }}" placeholder="Skriv bildtext här...">
     {% elif block.type == "Quote" %}
+    <label for="quote">Citat:</label>
     <input class="quote" value="{{ block.quote }}" placeholder="Skriv citat här...">
+    <label for="citation">Referens:</label>
     <input class="citation" value="{{ block.citation }}" placeholder="Skriv vem som sa/skrev det här...">
     {% elif block.type == "Heading" %}
     <input class="heading" value="{{ block.heading }}" placeholder="Skriv rubrik här...">
     {% elif block.type == "RawHtml" %}
     <textarea class="html" placeholder="Bädda in din HTML här.">{{ block.html }}</textarea>
     {% endif %}
+    <div class="block-actions">
+        <button class="btn icon-only" type="button" icon="keyboard_arrow_up" title="Flytta blocket uppåt"></button>
+        <button class="btn icon-only" type="button" icon="keyboard_arrow_down" title="Flytta blocket nedåt"></button>
+        <button class="btn dangerous icon-only" type="button" icon="delete" title="Radera blocket"></button>
+        <button class="btn icon-only" type="button" icon="add" title="Lägg till block under"></button>
+    </div>
 </div>
 {% endmacro render_block_for_editor %}
 
