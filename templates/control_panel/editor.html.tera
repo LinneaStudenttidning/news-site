@@ -91,6 +91,10 @@
         </form>
         <button form="publish-text-form" class="btn" icon="publish">Publicera</button>
         {% endif %}
+
+        {% if is_publisher or not text.is_published %}
+        <button class="btn" icon="save" type="submit" form="text-form">Spara</button>
+        {% endif %}
     </div>
 </div>
 {% endif %}
