@@ -58,7 +58,7 @@
 {% block aside %}
 {% if is_logged_in %}
 <div class="box pad margin-bottom">
-    <h2 icon="construction">Verktygslåda</h2>
+    <h2 icon="handyman">Verktygslåda</h2>
     <div class="flex wrap gap">
         {% if can_mark_as_done %}
         <form class="hidden-form" id="mark-text-done-form" action="/api/text/set-done-status/true" method="post">
