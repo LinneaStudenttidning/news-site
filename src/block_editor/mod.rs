@@ -1,5 +1,6 @@
 use std::str::FromStr;
 
+use comrak::{markdown_to_html, Options};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -35,7 +36,7 @@ impl Block {
     pub async fn render(&self, db: &DatabaseHandler) -> Result<String, Error> {
         match self {
             Block::Heading { heading } => Ok(format!("<h2>{}</h2>", heading)),
-            Block::Paragraph { body_text } => Ok(format!("<p>{}</p>", &body_text)),
+            Block::Paragraph { body_text } => Ok(markdown_to_html(body_text, &Options::default())),
             Block::Quote { quote, citation } => Ok(format!(
                 r#"<blockquote cite="{}">{}</blockquote>"#,
                 citation, quote

@@ -142,13 +142,13 @@ main > h1:first-child {
     &.gap {
         gap: settings.$pad-fixed-xs;
     }
+}
 
-    > .sep {
-        background-color: palette.$grey100;
-        height: 1px;
-        width: 90%;
-        margin: settings.$pad-fixed-xs 5%;
-    }
+.sep {
+    background-color: palette.$grey100;
+    height: 1px;
+    width: 90%;
+    margin: settings.$pad-fixed-xs 5%;
 }
 
 @container (width < 115ch) {

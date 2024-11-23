@@ -1,4 +1,33 @@
 /**
+ * Rigs up all `block-actions` on a block.
+ * @param {HTMLElement} block The block to rig.
+ */
+function rigBlock(block) {
+    const moveUpButton = block.querySelector("[icon=\"keyboard_arrow_up\"]")
+    const moveDownButton = block.querySelector("[icon=\"keyboard_arrow_down\"]")
+    const deleteButton = block.querySelector("[icon=\"delete\"]")
+    const addButton = block.querySelector("[icon=\"add\"]")
+
+    deleteButton.addEventListener("click", () => block.remove())
+    moveUpButton.addEventListener("click", () => {
+        const prevBlock = block.previousElementSibling
+        if (prevBlock) {
+            blockEditor.insertBefore(block, prevBlock)
+        }
+    })
+    moveDownButton.addEventListener("click", () => {
+        const nextBlock = block.nextElementSibling
+        if (nextBlock) {
+            blockEditor.insertBefore(nextBlock, block)
+        }
+    })
+    addButton.addEventListener("click", () => {
+        alert("Not implemented yet!")
+    })
+
+}
+
+/**
  * @constant {Object} BLOCK_TYPE_TO_FIELDS
  * Maps block types to field names for that block type.
  */
@@ -68,25 +97,39 @@ textForm.addEventListener(
         )
     }
 )
+const BLOCK_TEMPLATE = `<div class="block" data-block-type="__BLOCK_TYPE__">
+    __BLOCK_DATA__
+    <div class="block-actions">
+        <button class="btn icon-only" type="button" icon="keyboard_arrow_up" title="Flytta blocket uppåt"></button>
+        <button class="btn icon-only" type="button" icon="keyboard_arrow_down" title="Flytta blocket nedåt"></button>
+        <div class="sep"></div>
+        <button class="btn dangerous icon-only" type="button" icon="delete" title="Radera blocket"></button>
+        <button class="btn icon-only" type="button" icon="add" title="Lägg till block under"></button>
+    </div>
+</div>`
 
 const BLOCK_TEMPLATES = Object.freeze({
-    "Paragraph": `<div class="block" data-block-type="Paragraph">
+    "Paragraph": `
         <textarea class="body_text" placeholder="Skriv brödtext här..."></textarea>
-    </div>`,
-    "Image": `<div class="block" data-block-type="Image">
-        <input class="id" placeholder="Skriv bildens id här">
-        <input class="caption" placeholder="Skriv bildtext här...">
-    </div>`,
-    "Quote": `<div class="block" data-block-type="Quote">
-        <input class="quote" placeholder="Skriv citat här...">
-        <input class="citation" placeholder="Skriv vem som sa/skrev det här...">
-    </div>`,
-    "Heading": `<div class="block" data-block-type="Heading">
+    `,
+    "Image": `
+        <p>Bildens ID:</p>
+        <input class="id" value="{{ block.id }}" placeholder="Skriv bildens id här">
+        <p>Bildtext:</p>
+        <input class="caption" value="{{ block.caption }}" placeholder="Skriv bildtext här...">
+    `,
+    "Quote": `
+        <label for="quote">Citat:</label>
+        <input class="quote" value="{{ block.quote }}" placeholder="Skriv citat här...">
+        <label for="citation">Referens:</label>
+        <input class="citation" value="{{ block.citation }}" placeholder="Skriv vem som sa/skrev det här...">
+    `,
+    "Heading": `
         <input class="heading" placeholder="Skriv rubrik här...">
-    </div>`,
-    "RawHtml": `<div class="block" data-block-type="RawHtml">
+    `,
+    "RawHtml": `
         <textarea class="html" placeholder="Bädda in din HTML här."></textarea>
-    </div>`,
+    `,
 })
 
 const addBlockButton = document.querySelector("button.add-block")
@@ -102,14 +145,21 @@ addBlockDialog.addEventListener("submit", event => {
     event.preventDefault()
     const blockType = addBlockDialog.querySelector("select[name=block-type]").value
     const blockTemplate = BLOCK_TEMPLATES[blockType]
-    blockEditor.insertAdjacentHTML("beforeend", blockTemplate)
+
+    const block = BLOCK_TEMPLATE.replace("__BLOCK_TYPE__", blockType).replace("__BLOCK_DATA__", blockTemplate)
+    blockEditor.insertAdjacentHTML("beforeend", block)
+    rigBlock(blockEditor.lastChild)
     addBlockDialog.close()
 })
 
 // Automatically rescale textareas to fit the text
-window.onload = function() {
-    const textAreas = document.querySelectorAll("textarea")
-    textAreas.forEach(textArea => {
-        textArea.style.height = textArea.scrollHeight + 10 + "px"
+const textAreas = document.querySelectorAll("textarea")
+textAreas.forEach(textArea => {
+    textArea.style.height = textArea.scrollHeight + "px"
+    textArea.addEventListener("input", () => {
+        textArea.style.height = textArea.scrollHeight + "px"
     })
-}
+})
+
+const blocks = document.querySelectorAll(".block")
+blocks.forEach(rigBlock)

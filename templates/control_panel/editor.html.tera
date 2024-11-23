@@ -7,37 +7,6 @@
 {% endblock head %}
 
 {% block main %}
-{% if is_editing %}
-<div class="box pad margin-bottom">
-    <h2 icon="handyman">Verktyg</h2>
-    <div class="flex wrap gap">
-        {% if text.author == creator.username and not text.marked_as_done %}
-        <form class="hidden-form" id="mark-text-done-form" action="/api/text/set-done-status/true" method="post">
-            <input type="hidden" name="text-id" value="{{ text.id }}">
-        </form>
-        <button form="mark-text-done-form" type="submit" class="btn" icon="done">Markera som klar</button>
-        {% elif text.author == creator.username and text.marked_as_done %}
-        <form class="hidden-form" id="mark-text-not-done-form" action="/api/text/set-done-status/false" method="post">
-            <input type="hidden" name="text-id" value="{{ text.id }}">
-        </form>
-        <button form="mark-text-not-done-form" class="btn" icon="close">Markera som inte klar</button>
-        {% endif %}
-
-        {% if is_publisher and text.is_published %}
-        <form class="hidden-form" id="unpublish-text-form" action="/api/text/set-publish-status/false" method="post">
-            <input type="hidden" name="text-id" value="{{ text.id }}">
-        </form>
-        <button form="unpublish-text-form" class="btn dangerous" icon="unpublished">Avpublicera</button>
-        {% elif is_publisher and not text.is_published %}
-        <form class="hidden-form" id="publish-text-form" action="/api/text/set-publish-status/true" method="post">
-            <input type="hidden" name="text-id" value="{{ text.id }}">
-        </form>
-        <button form="publish-text-form" class="btn" icon="publish">Publicera</button>
-        {% endif %}
-    </div>
-</div>
-{% endif %}
-
 <form id="text-form" class="editor box pad margin-bottom"
     action="{% if text %}/api/text/edit{% else %}/api/text/save{% endif %}" method="post">
     <h2 icon="edit_note">{% if is_editing %}Redigera text{% else  %}Skapa text{% endif %}</h2>
@@ -70,7 +39,7 @@
         required>{% if text.lead_paragraph %}{{ text.lead_paragraph }}{% endif %}</textarea>
 
     <label for="text-body">Artikel:</label>
-    <div class="block-editor box pad">
+    <div class="block-editor box margin-bottom pad">
         {% if text.text_body %}
         {% for block in text.text_body %}
         {{ editor::render_block_for_editor(block=block) }}
@@ -95,6 +64,37 @@
 {% endblock main %}
 
 {% block aside %}
+{% if is_editing %}
+<div class="box pad margin-bottom">
+    <h2 icon="handyman">Verktyg</h2>
+    <div class="flex wrap gap">
+        {% if text.author == creator.username and not text.marked_as_done %}
+        <form class="hidden-form" id="mark-text-done-form" action="/api/text/set-done-status/true" method="post">
+            <input type="hidden" name="text-id" value="{{ text.id }}">
+        </form>
+        <button form="mark-text-done-form" type="submit" class="btn" icon="done">Markera som klar</button>
+        {% elif text.author == creator.username and text.marked_as_done %}
+        <form class="hidden-form" id="mark-text-not-done-form" action="/api/text/set-done-status/false" method="post">
+            <input type="hidden" name="text-id" value="{{ text.id }}">
+        </form>
+        <button form="mark-text-not-done-form" class="btn" icon="close">Markera som inte klar</button>
+        {% endif %}
+
+        {% if is_publisher and text.is_published %}
+        <form class="hidden-form" id="unpublish-text-form" action="/api/text/set-publish-status/false" method="post">
+            <input type="hidden" name="text-id" value="{{ text.id }}">
+        </form>
+        <button form="unpublish-text-form" class="btn dangerous" icon="unpublished">Avpublicera</button>
+        {% elif is_publisher and not text.is_published %}
+        <form class="hidden-form" id="publish-text-form" action="/api/text/set-publish-status/true" method="post">
+            <input type="hidden" name="text-id" value="{{ text.id }}">
+        </form>
+        <button form="publish-text-form" class="btn" icon="publish">Publicera</button>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
 <div class="box pad">
     <h2 icon="help">Guide</h2>
     <div>

@@ -20,6 +20,7 @@
     <div class="block-actions">
         <button class="btn icon-only" type="button" icon="keyboard_arrow_up" title="Flytta blocket uppåt"></button>
         <button class="btn icon-only" type="button" icon="keyboard_arrow_down" title="Flytta blocket nedåt"></button>
+        <div class="sep"></div>
         <button class="btn dangerous icon-only" type="button" icon="delete" title="Radera blocket"></button>
         <button class="btn icon-only" type="button" icon="add" title="Lägg till block under"></button>
     </div>
