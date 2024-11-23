@@ -30,6 +30,10 @@ pub enum Block {
     RawHtml {
         html: String,
     },
+    YouTube {
+        video_id: String,
+        caption: Option<String>,
+    },
 }
 
 impl Block {
@@ -50,7 +54,7 @@ impl Block {
                 let image_data = Image::get_by_id(db, image_id).await?;
 
                 Ok(format!(
-                    r#"<img src="/dynamic-data/images/m/{}.webp" alt="{}" /><p class="img-caption"><span>Foto: {}.</span> {}</p>"#,
+                    r#"<img src="/dynamic-data/images/m/{}.webp" alt="{}" /><p class="caption"><span>Foto: {}.</span> {}</p>"#,
                     image_data.id,
                     image_data.description.unwrap_or_default(),
                     image_data.author,
@@ -58,6 +62,11 @@ impl Block {
                 ))
             }
             Block::RawHtml { html } => Ok(html.to_string()),
+            Block::YouTube { video_id, caption } => Ok(format!(
+                r#"<iframe class="youtube-video" src="https://www.youtube.com/embed/{}" title="YouTube video player" frameborder="0" allowfullscreen></iframe><p class="caption">{}</p>"#,
+                video_id,
+                caption.as_ref().unwrap_or(&"".to_string())
+            )),
         }
     }
 }

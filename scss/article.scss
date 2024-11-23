@@ -14,19 +14,6 @@ article {
         object-fit: cover;
     }
 
-    > .caption {
-        color: palette.$grey500;
-        margin-top: 0;
-        font-family: settings.$font-family-default;
-        font-size: .85rem;
-
-        > span {
-            color: palette.$grey300;
-            font-weight: 400;
-            letter-spacing: -.25px;
-        }
-    }
-
     > h1 {
         font-size: 2.5rem;
     }
@@ -36,7 +23,9 @@ article {
     }
 
     > .text-body {
-        * {
+
+        p,
+        .caption {
             margin-bottom: settings.$pad-fixed-m;
         }
 
@@ -49,8 +38,25 @@ article {
                 margin-top: 0;
             }
         }
+
+        .caption {
+            color: palette.$grey500;
+            margin-top: 0;
+            font-family: settings.$font-family-default;
+            font-size: .85rem;
+
+            > span {
+                color: palette.$grey300;
+                font-weight: 400;
+                letter-spacing: -.25px;
+            }
+        }
     }
 
+    .youtube-video {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+    }
 
     > .info * {
         font-family: settings.$font-family-default;

@@ -16,6 +16,11 @@
     <input class="heading" value="{{ block.heading }}" placeholder="Skriv rubrik här...">
     {% elif block.type == "RawHtml" %}
     <textarea class="html" placeholder="Bädda in din HTML här.">{{ block.html }}</textarea>
+    {% elif block.type == "YouTube" %}
+    <p>YouTube-videons ID:</p>
+    <input class="video_id" value="{{ block.video_id }}" placeholder="Skriv YouTube-videons id här">
+    <p>Bildtext:</p>
+    <input class="caption" value="{{ block.caption }}" placeholder="Skriv bildtext här...">
     {% endif %}
     <div class="block-actions">
         <button class="btn icon-only" type="button" icon="keyboard_arrow_up" title="Flytta blocket uppåt"></button>
@@ -37,6 +42,7 @@
             <option value="Quote">Citat</option>
             <option value="Heading">Rubrik</option>
             <option value="RawHtml">HTML</option>
+            <option value="YouTube">YouTube-video</option>
         </select>
 
         <div class="flex wrap gap">
