@@ -161,7 +161,7 @@ addBlockDialog.addEventListener("submit", event => {
 
 // Automatically rescale textareas to fit the text
 const textAreas = document.querySelectorAll("textarea")
-textAreas.forEach(textArea => {
+window.onload = () => textAreas.forEach(textArea => {
     textArea.style.height = textArea.scrollHeight + "px"
     textArea.addEventListener("input", () => {
         textArea.style.height = textArea.scrollHeight + "px"
