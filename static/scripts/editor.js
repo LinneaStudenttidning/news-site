@@ -115,15 +115,15 @@ const BLOCK_TEMPLATES = Object.freeze({
     `,
     "Image": `
         <p>Bildens ID:</p>
-        <input class="id" value="{{ block.id }}" placeholder="Skriv bildens id här">
+        <input class="id" placeholder="Skriv bildens id här">
         <p>Bildtext:</p>
-        <input class="caption" value="{{ block.caption }}" placeholder="Skriv bildtext här...">
+        <input class="caption" placeholder="Skriv bildtext här...">
     `,
     "Quote": `
         <label for="quote">Citat:</label>
-        <input class="quote" value="{{ block.quote }}" placeholder="Skriv citat här...">
+        <input class="quote" placeholder="Skriv citat här...">
         <label for="citation">Referens:</label>
-        <input class="citation" value="{{ block.citation }}" placeholder="Skriv vem som sa/skrev det här...">
+        <input class="citation" placeholder="Skriv vem som sa/skrev det här...">
     `,
     "Heading": `
         <input class="heading" placeholder="Skriv rubrik här...">
