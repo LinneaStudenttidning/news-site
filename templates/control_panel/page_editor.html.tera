@@ -28,10 +28,11 @@
     <input type="text" name="title" id="title" value="{% if page.title %}{{ page.title }}{% endif %}" required>
 
     <label for="title">Path:</label>
-    <input type="text" name="path" id="path" value="{% if page.path %}{{ page.path }}{% endif %}" placeholder="my-custom-path/test" required>
+    <input type="text" name="path" id="path" value="{% if page.path %}{{ page.path }}{% endif %}"
+        placeholder="my-custom-path/test" required>
 
     <label for="text-body">Brödtext:</label>
-    <div class="block-editor">
+    <div class="block-editor box pad margin-bottom">
         {% if page.text_body %}
         {% for block in page.text_body %}
         {{ editor::render_block_for_editor(block=block) }}
@@ -42,9 +43,9 @@
         </div>
         {% endif %}
     </div>
-    <button type="button" class="btn add-block" icon="add">Lägg till ett nytt block</button>
 
     <div class="flex wrap gap">
+        <button type="button" class="btn add-block" icon="add">Lägg till ett nytt block</button>
         <button class="btn" icon="save" type="submit">Spara</button>
     </div>
 </form>
