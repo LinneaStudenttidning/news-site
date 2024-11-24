@@ -1,6 +1,7 @@
 use std::str::FromStr;
 
 use comrak::{markdown_to_html, Options};
+use regex::Regex;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -31,7 +32,7 @@ pub enum Block {
         html: String,
     },
     YouTube {
-        video_id: String,
+        video_link: String,
         caption: Option<String>,
     },
 }
@@ -62,11 +63,20 @@ impl Block {
                 ))
             }
             Block::RawHtml { html } => Ok(html.to_string()),
-            Block::YouTube { video_id, caption } => Ok(format!(
-                r#"<iframe class="youtube-video" src="https://www.youtube.com/embed/{}" title="YouTube video player" frameborder="0" allowfullscreen></iframe><p class="caption">{}</p>"#,
-                video_id,
-                caption.as_ref().unwrap_or(&"".to_string())
-            )),
+            Block::YouTube {
+                video_link,
+                caption,
+            } => {
+                let video_id_re = Regex::new(
+                    r"(https://)?(youtu\.be|youtube\.com|www\.youtube\.com)/(watch\?v=|shorts|live)?\/?",
+                )?;
+                let video_id = video_id_re.replace(video_link, "");
+                Ok(format!(
+                    r#"<iframe class="youtube-video" src="https://www.youtube.com/embed/{}" title="YouTube video player" frameborder="0" allowfullscreen></iframe><p class="caption">{}</p>"#,
+                    video_id,
+                    caption.as_ref().unwrap_or(&"".to_string())
+                ))
+            }
         }
     }
 }

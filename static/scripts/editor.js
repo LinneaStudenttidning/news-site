@@ -37,7 +37,7 @@ const BLOCK_TYPE_TO_FIELDS = Object.freeze({
     "Quote": ["quote", "citation"],
     "Heading": ["heading"],
     "RawHtml": ["html"],
-    "YouTube": ["video_id", "caption"],
+    "YouTube": ["video_link", "caption"],
 })
 
 const textForm = document.querySelector("#text-form")
@@ -132,8 +132,8 @@ const BLOCK_TEMPLATES = Object.freeze({
         <textarea class="html" placeholder="Bädda in din HTML här."></textarea>
     `,
     "YouTube": `
-        <p>YouTube-videons ID:</p>
-        <input class="video_id" placeholder="Skriv YouTube-videons id här">
+        <p>Länk till YouTube-videon:</p>
+        <input class="video_link" placeholder="Skriv YouTube-länken här">
         <p>Bildtext:</p>
         <input class="caption" placeholder="Skriv bildtext här...">
     `,

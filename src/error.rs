@@ -147,6 +147,16 @@ impl From<serde_json::Error> for Error {
     }
 }
 
+impl From<regex::Error> for Error {
+    fn from(value: regex::Error) -> Self {
+        Error {
+            source: "regex::Error".to_string(),
+            err_string: value.to_string(),
+            status: Status::InternalServerError,
+        }
+    }
+}
+
 impl<'a> rocket::response::Responder<'a, 'static> for Error {
     fn respond_to(self, request: &'a Request<'_>) -> rocket::response::Result<'static> {
         Response::build_from(
