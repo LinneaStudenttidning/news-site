@@ -7,35 +7,35 @@ $grey300: #86868D;
 $grey400: #5F5F66;
 $grey500: #393940;
 
-$green100: #BFEED7;
-$green200: #58D599;
+$green100: #C3EEDA;
+$green200: #63D49E;
 $green300: #0EB866;
 $green400: #078347;
 $green500: #024B28;
 $green: $green300;
 
-$yellow100: #F8F2C4;
-$yellow200: #EFDF67;
-$yellow300: #E6CD0F;
-$yellow400: #AA9703;
-$yellow500: #5C5100;
+$yellow100: #F8E6C4;
+$yellow200: #EFC267;
+$yellow300: #E69D0F;
+$yellow400: #AA7203;
+$yellow500: #5C3D00;
 $yellow: $yellow300;
 
-$red100: #F8C4B9;
-$red200: #F35D3F;
-$red300: #D72704;
-$red400: #A71D02;
-$red500: #701300;
+$red100: #F2B5B9;
+$red200: #EA6C74;
+$red300: #E42531;
+$red400: #BD0F1B;
+$red500: #6D030A;
 $red: $red300;
 
-$blue100: #A8CDF0;
-$blue200: #318BDD;
-$blue300: #0E66B8;
-$blue400: #074A88;
-$blue500: #003261;
+$blue100: #ADC3F0;
+$blue200: #5281E0;
+$blue300: #2B66DA;
+$blue400: #073288;
+$blue500: #00194D;
 $blue: $blue300;
 
-$purple300: #d020cd;
+$purple300: #D020CD;
 $purple: $purple300;
 
 $primary100: $green100;
@@ -43,35 +43,35 @@ $primary200: $green200;
 $primary300: $green300;
 $primary400: $green400;
 $primary500: $green500;
-$primary: $green;
+$primary: $primary300;
 
 $success100: $green100;
 $success200: $green200;
 $success300: $green300;
 $success400: $green400;
 $success500: $green500;
-$success: $green;
+$success: $success300;
 
 $danger100: $red100;
 $danger200: $red200;
 $danger300: $red300;
 $danger400: $red400;
 $danger500: $red500;
-$danger: $red;
+$danger: $danger300;
 
 $warning100: $yellow100;
 $warning200: $yellow200;
 $warning300: $yellow300;
 $warning400: $yellow400;
 $warning500: $yellow500;
-$warning: $yellow;
+$warning: $warning300;
 
 $info100: $blue100;
 $info200: $blue200;
 $info300: $blue300;
 $info400: $blue400;
 $info500: $blue500;
-$info: $blue;
+$info: $info300;
 
 $text: $black;
 $surface: #E8E8EF;
