@@ -11,29 +11,55 @@ use crate::{
 };
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
+pub enum TextBoxColor {
+    Grey,
+    Blue,
+    Green,
+    Red,
+    Yellow,
+}
+
+impl TextBoxColor {
+    fn as_str(&self) -> &'static str {
+        match self {
+            TextBoxColor::Grey => "grey",
+            TextBoxColor::Blue => "blue",
+            TextBoxColor::Green => "green",
+            TextBoxColor::Red => "red",
+            TextBoxColor::Yellow => "yellow",
+        }
+    }
+}
+
+/**
+ * These are all the different types of blocks supported by the block editor.
+ */
+#[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(tag = "type")]
 pub enum Block {
-    Paragraph {
-        body_text: String,
-    },
+    /// A paragraph of text, it is stored as markdown, so formatting is possible.
+    Paragraph { body_text: String },
+    /// An image with a caption.
     Image {
         id: String,
         caption: String,
         image_data: Option<Image>,
     },
-    Quote {
-        quote: String,
-        citation: String,
-    },
-    Heading {
-        heading: String,
-    },
-    RawHtml {
-        html: String,
-    },
+    /// A quote with a citation.
+    Quote { quote: String, citation: String },
+    /// Heading is a simple H2.
+    Heading { heading: String },
+    /// Raw html blocks. This should preferably be used as little as possible...
+    RawHtml { html: String },
+    /// Embeds a Youtube video.
     YouTube {
         video_link: String,
         caption: Option<String>,
+    },
+    /// A text box; a paragraph with a background color plate.
+    TextBox {
+        text: String,
+        color: Option<TextBoxColor>,
     },
 }
 
@@ -77,6 +103,11 @@ impl Block {
                     caption.as_ref().unwrap_or(&"".to_string())
                 ))
             }
+            Block::TextBox { text, color } => Ok(format!(
+                "<div class=\"textbox {}\">{}</div>",
+                color.as_ref().map(|color| color.as_str()).unwrap_or(""),
+                markdown_to_html(text, &Options::default())
+            )),
         }
     }
 }

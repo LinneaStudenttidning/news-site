@@ -58,6 +58,38 @@ article {
         aspect-ratio: 16 / 9;
     }
 
+    .textbox {
+        border: 1px solid palette.$grey100;
+        border-radius: settings.$border-radius-m;
+        padding: settings.$pad-fixed-xs settings.$pad-fixed-m;
+        margin: settings.$pad-fixed-m 0;
+        background-color: palette.$surface;
+
+        &.green {
+            border-color: palette.$green200;
+            background-color: palette.$green100;
+            color: palette.$green500;
+        }
+
+        &.yellow {
+            border-color: palette.$yellow200;
+            background-color: palette.$yellow100;
+            color: palette.$yellow500;
+        }
+
+        &.red {
+            border-color: palette.$red200;
+            background-color: palette.$red100;
+            color: palette.$red500;
+        }
+
+        &.blue {
+            border-color: palette.$blue200;
+            background-color: palette.$blue100;
+            color: palette.$blue500;
+        }
+    }
+
     > .info * {
         font-family: settings.$font-family-default;
         font-size: .85rem;

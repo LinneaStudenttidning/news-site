@@ -21,6 +21,17 @@
     <input class="video_link" value="{{ block.video_link }}" placeholder="Skriv YouTube-länken ">
     <p>Bildtext:</p>
     <input class="caption" value="{{ block.caption }}" placeholder="Skriv bildtext här...">
+    {% elif block.type == "TextBox" %}
+    <p>Text:</p>
+    <textarea class="text">{{ block.text }}</textarea>
+    <p>Färg:</p>
+    <select class="color">
+        <option value="Grey" {% if block.color == "Grey" %}selected{% endif %}>Grå</option>
+        <option value="Green" {% if block.color == "Green" %}selected{% endif %}>Grön</option>
+        <option value="Yellow" {% if block.color == "Yellow" %}selected{% endif %}>Gul</option>
+        <option value="Red" {% if block.color == "Red" %}selected{% endif %}>Röd</option>
+        <option value="Blue" {% if block.color == "Blue" %}selected{% endif %}>Blå</option>
+    </select>
     {% endif %}
     <div class="block-actions">
         <button class="btn icon-only" type="button" icon="keyboard_arrow_up" title="Flytta blocket uppåt"></button>
@@ -43,6 +54,7 @@
             <option value="Heading">Rubrik</option>
             <option value="RawHtml">HTML</option>
             <option value="YouTube">YouTube-video</option>
+            <option value="TextBox">Textruta / faktaruta</option>
         </select>
 
         <div class="flex wrap gap">

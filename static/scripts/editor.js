@@ -38,6 +38,7 @@ const BLOCK_TYPE_TO_FIELDS = Object.freeze({
     "Heading": ["heading"],
     "RawHtml": ["html"],
     "YouTube": ["video_link", "caption"],
+    "TextBox": ["text", "color"],
 })
 
 const textForm = document.querySelector("#text-form")
@@ -136,6 +137,18 @@ const BLOCK_TEMPLATES = Object.freeze({
         <input class="video_link" placeholder="Skriv YouTube-länken här">
         <p>Bildtext:</p>
         <input class="caption" placeholder="Skriv bildtext här...">
+    `,
+    "TextBox": `
+        <p>Text:</p>
+        <textarea class="text"></textarea>
+        <p>Färg:</p>
+        <select class="color">
+            <option value="Grey">Grå</option>
+            <option value="Green">Grön</option>
+            <option value="Yellow">Gul</option>
+            <option value="Red">Röd</option>
+            <option value="Blue">Blå</option>
+        </select>
     `,
 })
 
