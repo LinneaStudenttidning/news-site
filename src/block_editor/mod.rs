@@ -81,11 +81,11 @@ impl Block {
                 let image_data = Image::get_by_id(db, image_id).await?;
 
                 Ok(format!(
-                    r#"<img src="/dynamic-data/images/m/{}.webp" alt="{}" /><p class="caption"><span>Foto: {}.</span> {}</p>"#,
+                    r#"<img src="/dynamic-data/images/m/{}.webp" alt="{}" /><p class="caption">{} <span>Foto: {}.</span></p>"#,
                     image_data.id,
                     image_data.description.unwrap_or_default(),
+                    caption,
                     image_data.author,
-                    caption
                 ))
             }
             Block::RawHtml { html } => Ok(html.to_string()),
