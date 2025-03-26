@@ -10,6 +10,10 @@ use crate::{
     error::Error,
 };
 
+/// Different colors that can be used for the text box.
+/// These reflect the colors in our graphical profile.
+///
+/// The color names should be self explanatory.
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub enum TextBoxColor {
     Grey,
@@ -31,9 +35,7 @@ impl TextBoxColor {
     }
 }
 
-/**
- * These are all the different types of blocks supported by the block editor.
- */
+/// These are all the different types of blocks supported by the block editor.
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(tag = "type")]
 pub enum Block {
@@ -111,6 +113,10 @@ impl Block {
         }
     }
 }
+
+// FIXME: This should be a trait, and all the different types should implement it.
+// It will probably take some time to change it, but it's worth it to have a more modular way of adding modules.
+// It would also (maybe?) make it possible to add in external modules for the block editor.
 
 #[cfg(test)]
 mod tests {

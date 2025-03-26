@@ -11,6 +11,9 @@ use crate::database::DatabaseHandler;
 use crate::defaults::DATA_DIR;
 use crate::error::Error;
 
+/// Reads a token from a token secret file.
+/// If the token secret file does not exist, a command to generate it will be suggested.
+/// This file is expected to be generated with the command suggested, or similar.
 fn read_token_secret() -> Vec<u8> {
     dotenv().ok();
     let data_dir = env::var("DATA_DIR").unwrap_or(DATA_DIR.into());
@@ -20,13 +23,17 @@ fn read_token_secret() -> Vec<u8> {
     token_key.as_bytes().into()
 }
 
+/// Gets the `EncodingKey` from the token secret.
 pub fn get_encoding_key() -> EncodingKey {
     EncodingKey::from_secret(&read_token_secret())
 }
+
+/// Gets the `DecodingKey` from the token secret.
 pub fn get_decoding_key() -> DecodingKey {
     DecodingKey::from_secret(&read_token_secret())
 }
 
+/// `Claims` is basically the payload for the JWTs.
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Claims {
     pub exp: usize,
