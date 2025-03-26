@@ -49,25 +49,29 @@ async fn text_by_id(
     let tags = Text::get_all_tags(db, None).await?;
     let authors = Creator::get_all_authors(db).await?;
 
-    let is_logged_in = claims.is_some();
-
     // Logged in users can view unpublished texts
+    let is_logged_in = claims.is_some();
     let text = Text::get_by_id(db, id, !is_logged_in).await?;
-    let mut rendered_blocks: Vec<String> = Vec::new();
-    for block in text.text_body.iter() {
-        rendered_blocks.push(
-            block
-                .render(db)
-                .await
-                .unwrap_or("INVALID BLOCK!".to_string()),
-        );
-    }
 
+    // If slug in url is incorrect, redirect to the correct one.
     if title_slug != text.title_slug {
         let redirect = Redirect::found(uri!(text_by_id(id, text.title_slug)));
         return Ok(AnyResponder::from(redirect));
     }
 
+    // Render all the blocks in the article body.
+    let mut rendered_blocks: Vec<String> = Vec::new();
+    for block in text.text_body.iter() {
+        rendered_blocks.push(
+            block
+                .render(db)
+                .await // FIXME: A non-mutable solution might be more elegant, but this await keyword might make that difficult.
+                .unwrap_or("INVALID BLOCK!".to_string()),
+        );
+    }
+
+    // Bellow follows some bools used in the template to show different options/buttons.
+    // FIXME: Maybe these can be generated in a more elegant way? E.g. as a struct generated from the claims?
     let can_edit_text = match &claims {
         Some(claims) => {
             claims.data.is_publisher() || (claims.sub == text.author && !text.is_published)
@@ -109,7 +113,7 @@ async fn feed_atom(db: &State<DatabaseHandler>) -> Result<Template, Error> {
             rendered_blocks.push(
                 block
                     .render(db)
-                    .await
+                    .await // FIXME: A non-mutable solution might be more elegant, but this await keyword might make that difficult.
                     .unwrap_or("INVALID BLOCK!".to_string()),
             );
         }
