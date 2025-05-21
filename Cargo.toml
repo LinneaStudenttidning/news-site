@@ -1,7 +1,7 @@
 [package]
 name = "news-site"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -9,7 +9,7 @@ edition = "2021"
 ammonia = "4"
 argon2 = "0.5"
 chrono = { version = "0.4", features = ["serde"] }
-comrak = "0"
+comrak = { version = "0", default-features = false, features = ["bon", "cli"] }
 dotenvy = "0.15"
 identicon-rs = "6"
 image = "0.25"
@@ -21,23 +21,32 @@ rust-i18n = "3"
 serde = "1"
 serde_json = "1"
 slug = "0.1"
-sqlx = { version = "0.8", features = [ "runtime-tokio-rustls", "postgres", "chrono", "uuid", "macros", "json" ] }
-tokio = "1.40"
+sqlx = { version = "0.8", features = [
+    "chrono",
+    "json",
+    "macros",
+    "postgres",
+    "runtime-tokio-rustls",
+    "uuid",
+] }
+tokio = "1.45"
 tokio-test = "0.4"
-uuid = { version = "1.10", features = ["v4", "fast-rng", "macro-diagnostics", "serde"]}
+uuid = { version = "1.10", features = [
+    "fast-rng",
+    "macro-diagnostics",
+    "serde",
+    "v4",
+] }
 webp = "0.3"
+
+[features]
+fail-on-warnings = []
 
 [profile.release]
 debug = false
-codegen-units = 1
 lto = true
+codegen-units = 1
 
 # From: https://github.com/launchbadge/sqlx?tab=readme-ov-file#compile-time-verification
 [profile.dev.package.sqlx-macros]
 opt-level = 3
-
-[build]
-rustflags = ["-C", "target-cpu=native"]
-
-[features]
-fail-on-warnings = []
