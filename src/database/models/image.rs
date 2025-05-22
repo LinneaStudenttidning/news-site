@@ -1,7 +1,7 @@
 use std::{fs, io::Cursor};
 
 use chrono::{DateTime, Local};
-use image::{imageops::FilterType::Triangle, load, ImageFormat};
+use image::{ImageFormat, imageops::FilterType::Triangle, load};
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgQueryResult;
 use uuid::Uuid;
@@ -48,7 +48,7 @@ impl Image {
         Self {
             author: author.into(),
             description: description.map(Into::into),
-            tags: tags.into_iter().map(Into::into).collect(),
+            tags: tags.into_iter().collect(),
             ..Default::default()
         }
     }

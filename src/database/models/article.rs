@@ -181,8 +181,7 @@ impl Text {
     }
 
     /// Gets ONE `Text` from the database by its id.
-    /// * `must_be_published` if `true`, returns only if published.
-    ///     If false, returns article so long it exists.
+    /// * `must_be_published` if `true`, returns only if published. If false, returns article so long it exists.
     pub async fn get_by_id(
         db: &DatabaseHandler,
         id: i32,
@@ -259,8 +258,7 @@ impl Text {
     }
 
     /// Changes the `is_published` field of a text in the database.
-    /// * `executor` is the person who wants to publish the text,
-    ///     must be a `Publisher`.
+    /// * `executor` is the person who wants to publish the text, must be a `Publisher`.
     /// * `id` text's id.
     /// * `status` publish status; `true` for published, `false` for not published.
     pub async fn set_publish_status(
@@ -289,8 +287,7 @@ impl Text {
     }
 
     /// Changes the `marked_as_done` field of a text in the database.
-    /// * `executor` is the person who wants to publish the text,
-    ///     must be a `Publisher`.
+    /// * `executor` is the person who wants to publish the text, must be a `Publisher`.
     /// * `id` text's id.
     /// * `status` done status; `true` for done, `false` for not done.
     pub async fn set_done_status(
