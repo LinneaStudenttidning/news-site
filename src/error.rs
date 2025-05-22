@@ -3,11 +3,11 @@ use std::{env::VarError, fmt};
 use identicon_rs::error::IdenticonError;
 use image::ImageError;
 use rocket::{
+    Request, Response,
     http::{ContentType, Status},
     serde::json::Json,
-    Request, Response,
 };
-use rocket_dyn_templates::{context, Template};
+use rocket_dyn_templates::{Template, context};
 use serde::{Deserialize, Serialize};
 use webp::WebPEncodingError;
 

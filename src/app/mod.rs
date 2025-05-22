@@ -1,14 +1,14 @@
 use crate::{
     anyresponder::AnyResponder,
     database::{
-        models::{article::Text, creator::Creator},
         DatabaseHandler,
+        models::{article::Text, creator::Creator},
     },
     error::Error,
     token::Claims,
 };
-use rocket::{response::Redirect, Route, State};
-use rocket_dyn_templates::{context, Template};
+use rocket::{Route, State, response::Redirect};
+use rocket_dyn_templates::{Template, context};
 
 pub mod control_panel;
 pub mod texts;

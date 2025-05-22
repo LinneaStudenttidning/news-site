@@ -1,12 +1,12 @@
 use std::str::FromStr;
 
-use comrak::{markdown_to_html, Options};
+use comrak::{Options, markdown_to_html};
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use crate::{
-    database::{models::image::Image, DatabaseHandler},
+    database::{DatabaseHandler, models::image::Image},
     error::Error,
 };
 

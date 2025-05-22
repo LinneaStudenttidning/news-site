@@ -6,8 +6,8 @@ use rocket::http::Status;
 use rocket::request::{FromRequest, Outcome, Request};
 use serde::{Deserialize, Serialize};
 
-use crate::database::models::creator::Creator;
 use crate::database::DatabaseHandler;
+use crate::database::models::creator::Creator;
 use crate::defaults::DATA_DIR;
 use crate::error::Error;
 
@@ -58,7 +58,7 @@ impl<'a> FromRequest<'a> for Claims {
                 return Outcome::Error((
                     Status::Unauthorized,
                     Error::create("Claims Guard", "No 'token' cookie!", Status::BadRequest),
-                ))
+                ));
             }
         };
 
@@ -68,7 +68,7 @@ impl<'a> FromRequest<'a> for Claims {
                 return Outcome::Error((
                     Status::Unauthorized,
                     Error::create("Claims Guard", "Invalid token!", Status::Unauthorized),
-                ))
+                ));
             }
         };
 
@@ -82,7 +82,7 @@ impl<'a> FromRequest<'a> for Claims {
                         "Could not connect to database!",
                         Status::InternalServerError,
                     ),
-                ))
+                ));
             }
         };
 
@@ -92,7 +92,7 @@ impl<'a> FromRequest<'a> for Claims {
                 return Outcome::Error((
                     Status::InternalServerError,
                     Error::create("Claims Guard", &e.to_string(), Status::InternalServerError),
-                ))
+                ));
             }
         };
 

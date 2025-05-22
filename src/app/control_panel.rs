@@ -1,14 +1,14 @@
 use crate::anyresponder::AnyResponder;
 use crate::database::models::image::Image;
 use crate::database::models::page::Page;
-use crate::database::{models::article::Text, DatabaseHandler};
+use crate::database::{DatabaseHandler, models::article::Text};
 use crate::flash_msg::FlashMsg;
 use crate::{database::models::creator::Creator, error::Error, token::Claims};
 use rocket::http::Status;
 use rocket::request::FlashMessage;
 use rocket::response::Redirect;
 use rocket::{Route, State};
-use rocket_dyn_templates::{context, Template};
+use rocket_dyn_templates::{Template, context};
 
 #[get("/")]
 async fn control_panel(

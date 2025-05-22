@@ -25,17 +25,17 @@ pub mod token;
 
 use std::{collections::HashMap, path::PathBuf, str::FromStr};
 
-use comrak::{markdown_to_html, Options};
+use comrak::{Options, markdown_to_html};
 use database::{
-    models::{image::Image, page::Page},
     DatabaseHandler,
+    models::{image::Image, page::Page},
 };
 use rocket::{
+    Request, State,
     fs::FileServer,
     response::{Flash, Redirect},
-    Request, State,
 };
-use rocket_dyn_templates::{context, tera, Engines, Template};
+use rocket_dyn_templates::{Engines, Template, context, tera};
 use token::Claims;
 use tokio::runtime::Runtime;
 use uuid::Uuid;

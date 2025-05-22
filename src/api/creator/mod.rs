@@ -1,13 +1,13 @@
 use image::ImageFormat;
 use rocket::{
+    State,
     form::Form,
     http::Status,
     response::{Flash, Redirect},
-    State,
 };
 
 use crate::{
-    database::{models::creator::Creator, DatabaseHandler},
+    database::{DatabaseHandler, models::creator::Creator},
     error::Error,
     token::Claims,
 };

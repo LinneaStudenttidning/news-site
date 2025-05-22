@@ -2,11 +2,11 @@ use std::str::FromStr;
 use tokio::task;
 
 use image::ImageFormat;
-use rocket::{form::Form, http::Status, response::Redirect, State};
+use rocket::{State, form::Form, http::Status, response::Redirect};
 use uuid::Uuid;
 
 use crate::{
-    database::{models::image::Image, DatabaseHandler},
+    database::{DatabaseHandler, models::image::Image},
     error::Error,
     token::Claims,
 };

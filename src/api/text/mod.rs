@@ -1,12 +1,12 @@
 use std::str::FromStr;
 
-use rocket::{form::Form, http::Status, response::Redirect, serde::json::Json, State};
+use rocket::{State, form::Form, http::Status, response::Redirect, serde::json::Json};
 use uuid::Uuid;
 
 use crate::{
     database::{
-        models::{article::Text, image::Image},
         DatabaseHandler,
+        models::{article::Text, image::Image},
     },
     error::Error,
     token::Claims,
@@ -76,7 +76,7 @@ pub async fn text_edit(
                 &format!("{}:{}", file!(), line!()),
                 "Field `text-id` (`text_id`) not specified!",
                 Status::BadRequest,
-            ))
+            ));
         }
     };
 

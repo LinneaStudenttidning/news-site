@@ -2,24 +2,24 @@ use std::io::Cursor;
 
 use crate::defaults::DATA_DIR;
 use crate::error::Error;
-use argon2::password_hash::rand_core::OsRng;
-use argon2::password_hash::SaltString;
 use argon2::Argon2;
 use argon2::PasswordHash;
 use argon2::PasswordHasher;
 use argon2::PasswordVerifier;
+use argon2::password_hash::SaltString;
+use argon2::password_hash::rand_core::OsRng;
 use chrono::{DateTime, Local, Utc};
 use identicon_rs::Identicon;
-use image::load;
 use image::ImageFormat;
+use image::load;
 use jsonwebtoken::Header;
 use rocket::http::Status;
 use serde::{Deserialize, Serialize};
 use std::fs;
 
 use crate::database::DatabaseHandler;
-use crate::token::get_encoding_key;
 use crate::token::Claims;
+use crate::token::get_encoding_key;
 
 const FOUR_HOURS_AS_SECS: usize = 60 * 60 * 4;
 

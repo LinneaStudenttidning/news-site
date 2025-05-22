@@ -1,9 +1,9 @@
 use forms::SaveOrEditPage;
 
-use rocket::{http::Status, serde::json::Json, State};
+use rocket::{State, http::Status, serde::json::Json};
 
 use crate::{
-    database::{models::page::Page, DatabaseHandler},
+    database::{DatabaseHandler, models::page::Page},
     error::Error,
     token::Claims,
 };
@@ -72,7 +72,7 @@ pub async fn page_edit(
                 &format!("{}:{}", file!(), line!()),
                 "Field `old_path` (`old_path`) not specified!",
                 Status::BadRequest,
-            ))
+            ));
         }
     };
 

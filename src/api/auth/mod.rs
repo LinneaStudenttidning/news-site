@@ -1,13 +1,13 @@
 use rocket::{
+    State,
     form::Form,
     http::{Cookie, CookieJar, Status},
     response::{Flash, Redirect},
     time::Duration,
-    State,
 };
 
 use crate::{
-    database::{models::creator::Creator, DatabaseHandler},
+    database::{DatabaseHandler, models::creator::Creator},
     error::Error,
     token::Claims,
 };
@@ -28,7 +28,7 @@ pub async fn auth_login(
             return Ok(Flash::error(
                 Redirect::to(uri!("/control-panel/login")),
                 "Användaren finns inte!",
-            ))
+            ));
         }
     };
 
@@ -45,7 +45,7 @@ pub async fn auth_login(
             return Ok(Flash::error(
                 Redirect::to(uri!("/control-panel/login")),
                 "Fel lösenord",
-            ))
+            ));
         }
     };
 

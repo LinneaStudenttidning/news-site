@@ -1,13 +1,13 @@
 use rocket::{Route, State};
-use rocket_dyn_templates::{context, Template};
+use rocket_dyn_templates::{Template, context};
 
 use crate::{
     database::{
+        DatabaseHandler,
         models::{
             article::{Text, TextType},
             creator::Creator,
         },
-        DatabaseHandler,
     },
     error::Error,
 };
